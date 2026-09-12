@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kokomu Style Hub</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="loader" class="loader">
+      <div class="loader-content">
+        <img src="../../assets/avatar.jpg" class="avatar" />
+
+        <h1>Naoya</h1>
+
+        <p class="loader-status">INITIALIZING PERSONA HUB</p>
+
+        <div class="loader-progress">
+          <div id="loaderBar"></div>
+        </div>
+
+        <div id="loaderPercent">00%</div>
+      </div>
+
+      <div class="loader-corner top-left">SYBAU // 01</div>
+
+      <div class="loader-corner bottom-right">Naoya.INFO</div>
+    </div>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="profile">
+          <img src="../../assets/avatar.jpg" class="avatar" />
+          <h1>Naoya</h1>
+          <p>Food Mercernary / Coder</p>
+          <span id="discordStatus" class="online">
+            <span></span> Loading...
+          </span>
+        </div>
+
+        <div class="now-playing">
+          <small>PLAYING A GAME</small>
+          <strong>♫ SPOTIFY</strong>
+          <span>Slide the volume to open the song...</span>
+          <input id="volume" type="range" min="0" max="100" value="24" />
+        </div>
+
+        <nav>
+          <button class="nav active" data-page="home">
+            ⌂ <span>HOME</span>
+          </button>
+          <button class="nav" data-page="about">◉ <span>ABOUT</span></button>
+          <button class="nav" data-page="artwork">
+            ▧ <span>ARTWORK</span>
+          </button>
+          <button class="nav" data-page="notepad">
+            ✎ <span>NOTEPAD</span>
+          </button>
+          <button class="nav" data-page="contact">
+            ◌ <span>AFK ZONE</span>
+          </button>
+        </nav>
+
+        <div class="socials">
+          <a href="#">X</a><a href="#">GH</a><a href="#">@</a>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span id="crumb">Home Dashboard</span>
+          <div>
+            <button id="motion">◐</button>
+          </div>
+        </header>
+
+        <section id="home" class="page active">
+          <div class="hero card">
+            <div>
+              <small>WELCOME BACK</small>
+              <h2>yuru_e</h2>
+              <p>pls order me food!! i can eat</p>
+              <span class="status">● IDLE · NOT PLAYING ANYTHING</span>
+            </div>
+            <img src="../../assets/aizen.gif" class="hero-avatar" />
+          </div>
+
+          <div class="two">
+            <article class="card">
+              <header>GITHUB <em>PROFILE</em></header>
+              <div class="stats">
+                <div><b>--</b><small>REPOS</small></div>
+                <div><b>--</b><small>FOLLOWERS</small></div>
+                <div><b>--</b><small>FOLLOWING</small></div>
+              </div>
+            </article>
+            <article class="card">
+              <header>STEAM <em>PROFILE</em></header>
+              <div class="stats">
+                <div><b>--</b><small>GAMES</small></div>
+                <div><b>--</b><small>LEVEL</small></div>
+                <div><b>--</b><small>ACHIEVS</small></div>
+              </div>
+            </article>
+          </div>
+
+          <article class="card link">
+            <header>SOCIAL LINK <em>EXTERNAL</em></header>
+            <a href="https://x.com/Naoya_Totodile"
+              ><strong>X / Twitter<small>@naoya_totodile</small></strong
+              ><b>↗</b></a
+            ><a href="https://www.tiktok.com/@iggar0392?lang=vi-VN"
+              ><strong>Tiktok<small>@iggar0392</small></strong
+              ><b>↗</b></a
+            >
+          </article>
+        </section>
+
+        <section id="about" class="page">
+          <div class="title">
+            <div>
+              <small>PROFILE</small>
+              <h2>Maskguy\Naoya</h2>
+              <p>@yuru_e</p>
+            </div>
+            <span class="badge">STATUS: ONLINE</span>
+          </div>
+          <div class="two">
+            <article class="card">
+              <header>ABOUT ME</header>
+              <p class="copy">
+                Hello, I am Naoya (Maskguy) . I am a beginner coder building a
+                small personal corner on the web.
+              </p>
+              <div class="tags">
+                <span>#dark_fantasy</span><span>#digital_core</span
+                ><span>#naoya</span>
+              </div>
+            </article>
+            <article class="card">
+              <header>FAVORITES</header>
+              <div class="rows">
+                <div><small>ROLE</small><span>Ace Eater</span></div>
+                <div><small>FAV GAME</small><span>Fear and Hunger</span></div>
+                <div><small>MOOD</small><span>Quiet / Nocturnal</span></div>
+              </div>
+            </article>
+          </div>
+          <article class="card games">
+            <header>GAMES I'M PLAYING</header>
+            <div class="gamegrid">
+              <div>
+                <small>01</small><b>Limbus Company</b
+                ><span>ACTIVE · Turn-based RPG</span>
+              </div>
+              <div>
+                <small>02</small><b>Genshin Impact</b
+                ><span>ACTIVE · Open World</span>
+              </div>
+              <div>
+                <small>03</small><b>Roblox</b><span>ACTIVE · Action RPG</span>
+              </div>
+              <div>
+                <small>04</small><b>Fear and Hunger</b
+                ><span>COMPLETED · Dark Fantasy</span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section id="artwork" class="page">
+          <div class="title">
+            <div>
+              <small>PGR MEDIA LAYOUT</small>
+              <h2>Artwork</h2>
+              <p>Selected pieces / sketches / audio</p>
+            </div>
+          </div>
+          <div class="tabs">
+            <button class="tab active" data-kind="art">Artwork</button
+            ><button class="tab" data-kind="sketch">Sketch</button
+            ><button class="tab" data-kind="audio">Audio</button>
+          </div>
+          <div class="media" id="media">
+            <div class="tile tall">
+              <img src="../../assets/artwork/bocchi.png" />
+            </div>
+            <div class="tile"><img src="../../assets/artwork/image.png" /></div>
+            <div class="tile">
+              <img src="../../assets/artwork/kcorp.webp" />
+            </div>
+            <div class="tile wide">
+              <img src="../../assets/artwork/dodoro.webp" />
+            </div>
+          </div>
+        </section>
+
+        <section id="notepad" class="page">
+          <div class="title">
+            <div>
+              <small>LOCAL NOTEBOARD</small>
+              <h2>NOTEPAD</h2>
+              <p>write smth</p>
+            </div>
+          </div>
+          <article class="card">
+            <textarea
+              id="note"
+              rows="6"
+              placeholder="write something..."
+            ></textarea>
+            <div class="note-actions">
+              <span>Saved locally in your browser</span
+              ><button id="add">ADD</button>
+            </div>
+          </article>
+          <div id="notes"></div>
+        </section>
+
+        <section id="contact" class="page">
+          <div class="afk card">
+            <small>SYSTEM STATUS(AFK farm)</small>
+            <h2>AFK MODE</h2>
+            <div id="clock">00:00:00</div>
+            <div class="terminal">
+              <p><b>OPERATOR</b> Naoya</p>
+              <p><b>ORIGIN</b> Vietnam</p>
+              <p><b>STATUS</b> AFK / exploring</p>
+            </div>
+            <a class="contact" href="mailto:hello@example.com"
+              >CONTACT OPERATOR ↗</a
+            >
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
