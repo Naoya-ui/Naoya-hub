@@ -1,4 +1,37 @@
 // ================================
+// VOLUME & AUDIO (ĐẶT Ở ĐẦU FILE SCRIPT.JS)
+// ================================
+window.addEventListener("DOMContentLoaded", () => {
+  const music = document.getElementById("music");
+  const volumeInput = document.getElementById("volume");
+  const volumeText = document.getElementById("volumeText");
+
+  if (!music || !volumeInput) return;
+
+  // Khởi tạo âm lượng
+  music.volume = Number(volumeInput.value) / 100;
+
+  // Lắng nghe kéo thanh slider -> tăng/giảm âm lượng trực tiếp
+  volumeInput.addEventListener("input", (e) => {
+    const val = Number(e.target.value);
+    music.volume = val / 100;
+    if (volumeText) volumeText.textContent = `Volume: ${val}%`;
+
+    if (val > 0 && music.paused) {
+      music.play().catch(() => {});
+    }
+  });
+
+  // Mở khóa âm thanh ở lần tương tác đầu tiên
+  const unlock = () => {
+    if (music.paused) music.play().catch(() => {});
+    document.removeEventListener("click", unlock);
+    document.removeEventListener("keydown", unlock);
+  };
+  document.addEventListener("click", unlock);
+  document.addEventListener("keydown", unlock);
+});
+// ================================
 // KOKOMU LOADING SCREEN
 // ================================
 
@@ -135,205 +168,53 @@ function clock() {
 }
 clock();
 setInterval(clock, 1000);
-const crashChannel = new BroadcastChannel("web_crash_channel");
-const blackoutBox = document.getElementById("blackoutBox");
-const glitchBox = document.getElementById("glitchBox");
-window.isBlackingOut = false;
-let lastAutoBlackoutTime = 0;
+// Bộ lọc Tab Media thông minh
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document
+      .querySelectorAll(".tab")
+      .forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
 
-const DISCORD_ID = 869568513864519690;
+    const category = tab.dataset.kind;
 
-async function loadDiscordStatus() {
-  const statusElement = document.getElementById("discordStatus");
-
-  if (!statusElement) return;
-
-  try {
-    const response = await fetch(
-      `https://api.lanyard.rest/v1/users/${DISCORD_ID}`,
-    );
-
-    if (!response.ok) {
-      throw new Error("Lanyard request failed");
-    }
-
-    const result = await response.json();
-
-    const status = result.data?.discord_status || "offline";
-
-    let text = "Offline";
-
-    if (status === "online") {
-      text = "Online";
-    } else if (status === "idle") {
-      text = "Idle";
-    } else if (status === "dnd") {
-      text = "Do Not Disturb";
-    }
-
-    statusElement.innerHTML = `
-            <span></span>
-            ${text}
-        `;
-
-    statusElement.classList.toggle("offline", status === "offline");
-  } catch (error) {
-    console.error("Discord status error:", error);
-
-    statusElement.innerHTML = `
-            <span></span>
-            Offline
-        `;
-
-    statusElement.classList.add("offline");
-  }
-}
-
-loadDiscordStatus();
-
-setInterval(loadDiscordStatus, 30000);
-// ================================
-// CUSTOM MUSIC PLAYER
-// ================================
-
-const music = document.getElementById("music");
-const volumeSlider = document.getElementById("volumeSlider");
-const volumeFill = document.getElementById("volumeFill");
-const volumeThumb = document.getElementById("volumeThumb");
-const volumeText = document.getElementById("volumeText");
-
-let currentVolume = 24;
-
-// ================================
-// SET VOLUME
-// ================================
-
-function setVolume(value) {
-  value = Math.max(0, Math.min(100, value));
-
-  currentVolume = value;
-
-  music.volume = value / 100;
-
-  music.muted = value === 0;
-
-  volumeFill.style.width = value + "%";
-  volumeThumb.style.left = value + "%";
-
-  if (volumeText) {
-    volumeText.textContent = `Volume: ${Math.round(value)}%`;
-  }
-}
-
-// Start at 24%
-setVolume(24);
-
-// ================================
-// MOUSE / TOUCH SLIDER
-// ================================
-
-function updateSlider(event) {
-  const rect = volumeSlider.getBoundingClientRect();
-
-  let x;
-
-  if (event.touches) {
-    x = event.touches[0].clientX;
-  } else {
-    x = event.clientX;
-  }
-
-  let percentage = ((x - rect.left) / rect.width) * 100;
-
-  percentage = Math.max(0, Math.min(100, percentage));
-
-  setVolume(percentage);
-
-  // User interacted with the slider,
-  // so try to unlock audio.
-  music.muted = false;
-
-  music.play().catch(() => {});
-}
-
-// Mouse
-volumeSlider.addEventListener("mousedown", (event) => {
-  updateSlider(event);
-
-  function move(e) {
-    updateSlider(e);
-  }
-
-  function stop() {
-    document.removeEventListener("mousemove", move);
-    document.removeEventListener("mouseup", stop);
-  }
-
-  document.addEventListener("mousemove", move);
-  document.addEventListener("mouseup", stop);
+    document.querySelectorAll(".media-item").forEach((item) => {
+      if (item.classList.contains(category)) {
+        item.classList.remove("hidden");
+      } else {
+        item.classList.add("hidden");
+      }
+    });
+  });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const tabs = document.querySelectorAll(".tab");
+  const mediaItems = document.querySelectorAll("[data-category]");
 
-// Touch
-volumeSlider.addEventListener(
-  "touchstart",
-  (event) => {
-    updateSlider(event);
-  },
-  { passive: true },
-);
-
-volumeSlider.addEventListener(
-  "touchmove",
-  (event) => {
-    updateSlider(event);
-  },
-  { passive: true },
-);
-
-// ================================
-// AUTOPLAY
-// ================================
-
-async function startMusic() {
-  setVolume(currentVolume);
-
-  try {
-    // Try normal autoplay
-    music.muted = false;
-
-    await music.play();
-
-    console.log("Music autoplay started.");
-  } catch (error) {
-    console.log("Browser blocked autoplay with sound.");
-
-    // Browser may allow muted autoplay
-    music.muted = true;
-
-    try {
-      await music.play();
-
-      console.log("Music started muted.");
-    } catch (error2) {
-      console.log("Autoplay completely blocked.");
+  // Khởi tạo: Chỉ hiện artwork khi vừa tải trang
+  mediaItems.forEach((item) => {
+    if (item.getAttribute("data-category") !== "artwork") {
+      item.style.display = "none";
     }
-  }
-}
+  });
 
-startMusic();
+  // Lắng nghe sự kiện click từng Tab
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      // Đổi trạng thái hiển thị của Nút
+      tabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
 
-// ================================
-// FIRST USER INTERACTION
-// ================================
+      const targetFilter = tab.getAttribute("data-filter");
 
-function unlockMusic() {
-  music.muted = false;
-
-  setVolume(currentVolume);
-
-  music.play().catch(() => {});
-}
-
-document.addEventListener("click", unlockMusic, { once: true });
-
-document.addEventListener("keydown", unlockMusic, { once: true });
+      // Lọc danh mục ảnh / audio
+      mediaItems.forEach((item) => {
+        if (item.getAttribute("data-category") === targetFilter) {
+          item.style.display = ""; // Hiện
+        } else {
+          item.style.display = "none"; // Ẩn
+        }
+      });
+    });
+  });
+});

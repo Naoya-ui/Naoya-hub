@@ -36,21 +36,37 @@
             <span></span> Loading...
           </span>
         </div>
+        <div class="now-playing">
+          <small>PLAYING A GAME</small>
+          <strong>♫ SPOTIFY / LOCAL</strong>
+          <span
+            id="volumeText"
+            style="
+              display: block;
+              font-size: 11px;
+              margin-top: 6px;
+              color: #a8acb6;
+            "
+            >Volume: 24%</span
+          >
 
-        <span id="volumeText">Volume: 24%</span>
+          <input
+            id="volume"
+            type="range"
+            min="0"
+            max="100"
+            value="24"
+            class="custom-range"
+          />
 
-        <div id="volumeSlider" class="volume-slider">
-          <div id="volumeFill" class="volume-fill"></div>
-          <div id="volumeThumb" class="volume-thumb"></div>
+          <audio
+            id="music"
+            src="assets/audio/bus_theme.mp3"
+            autoplay
+            loop
+          ></audio>
         </div>
 
-        <audio
-          id="music"
-          src="assets/audio/bus_theme.mp3"
-          preload="auto"
-          autoplay
-          loop
-        ></audio>
         <nav>
           <button class="nav active" data-page="home">
             ⌂ <span>HOME</span>
@@ -66,10 +82,6 @@
             ◌ <span>AFK ZONE</span>
           </button>
         </nav>
-
-        <div class="socials">
-          <a href="#">X</a><a href="#">GH</a><a href="#">@</a>
-        </div>
       </aside>
 
       <main class="main">
@@ -112,11 +124,30 @@
 
           <article class="card link">
             <header>SOCIAL LINK <em>EXTERNAL</em></header>
-            <a href="https://x.com/Naoya_Totodile"
-              ><strong>X / Twitter<small>@naoya_totodile</small></strong></a
-            ><a href="https://www.tiktok.com/@iggar0392?lang=vi-VN"
-              ><strong>Tiktok<small>@iggar0392</small></strong></a
-            >
+
+            <!-- Link X / Twitter -->
+            <a href="https://x.com/Naoya_Totodile">
+              <img src="../../assets/icons/x.png" class="social-icon" alt="X" />
+              <div>
+                <strong>X / Twitter</strong>
+                <small>@naoya_totodile</small>
+              </div>
+              <b>↗</b>
+            </a>
+
+            <!-- Link TikTok -->
+            <a href="https://www.tiktok.com/@iggar0392?lang=vi-VN">
+              <img
+                src="../../assets/icons/tiktok.jpeg"
+                class="social-icon"
+                alt="TikTok"
+              />
+              <div>
+                <strong>Tiktok</strong>
+                <small>@iggar0392</small>
+              </div>
+              <b>↗</b>
+            </a>
           </article>
         </section>
 
@@ -176,25 +207,72 @@
           <div class="title">
             <div>
               <small>PGR MEDIA LAYOUT</small>
-              <h2>Artwork</h2>
-              <p>Selected pieces / sketches / audio</p>
+              <h2>MEDIA HUB</h2>
+              <p>Gallery / Visual Drafts / Sound Archive</p>
             </div>
           </div>
+
           <div class="tabs">
-            <button class="tab active" data-kind="art">Artwork</button
-            ><button class="tab" data-kind="sketch">Sketch</button
-            ><button class="tab" data-kind="audio">Audio</button>
+            <button class="tab active" data-filter="artwork">Artwork</button>
+            <button class="tab" data-filter="sketch">Sketch</button>
+            <button class="tab" data-filter="audio">Audio</button>
           </div>
-          <div class="media" id="media">
-            <div class="tile tall">
-              <img src="../../assets/artwork/bocchi.png" />
+          <div class="media-grid" id="mediaGrid">
+            <!-- ARTWORK TAB -->
+            <div class="media-item tile tall art" data-category="artwork">
+              <img src="../../assets/artwork/bocchi.png" alt="Art 1" />
+              <div class="media-overlay">
+                <span class="media-tag">#Roblox</span>
+                <strong>BOCCHI DIGITAL</strong>
+              </div>
             </div>
-            <div class="tile"><img src="../../assets/artwork/image.png" /></div>
-            <div class="tile">
-              <img src="../../assets/artwork/kcorp.webp" />
+            <div class="media-item art" data-category="artwork">
+              <img src="../../assets/artwork/image.png" alt="Art 2" />
+              <div class="media-overlay">
+                <span class="media-tag">#DON</span>
+                <strong>PROJECT SLOP</strong>
+              </div>
             </div>
-            <div class="tile wide">
-              <img src="../../assets/artwork/dodoro.webp" />
+            <div class="media-item art" data-category="artwork">
+              <img src="../../assets/artwork/kcorp.webp" alt="Art 3" />
+              <div class="media-overlay">
+                <span class="media-tag">#Kcorp</span>
+                <strong>K-CORP DISTRICT</strong>
+              </div>
+            </div>
+            <div class="media-item art wide" data-category="artwork">
+              <img src="../../assets/artwork/dodoro.png" alt="Art 4" />
+              <div class="media-overlay">
+                <span class="media-tag">#ENVIRONMENT</span>
+                <strong>DODORO</strong>
+              </div>
+            </div>
+
+            <!-- SKETCH TAB -->
+            <div class="media-item sketch wide hidden" data-category="sketch">
+              <div class="tile sketch">
+                <span class="media-tag">#DRAFT_01</span>
+                <h3>Limbus Concept Draft</h3>
+                <p>Rough lines / Pencil shading practice</p>
+              </div>
+            </div>
+            <div class="media-item sketch hidden" data-category="sketch">
+              <div class="tile sketch">
+                <span class="media-tag">#DRAFT_02</span>
+                <h3>Character Pose</h3>
+              </div>
+            </div>
+
+            <!-- AUDIO TAB -->
+            <div class="media-item tile wide audio" data-category="audio">
+              <div class="audio-card">
+                <div class="audio-info">
+                  <span class="media-tag">#OST_TRACK</span>
+                  <h3>City Ambient BGM</h3>
+                  <small>320kbps · Stereo</small>
+                </div>
+                <button class="play-btn">▶ PLAY</button>
+              </div>
             </div>
           </div>
         </section>
