@@ -37,13 +37,20 @@
           </span>
         </div>
 
-        <div class="now-playing">
-          <small>PLAYING A GAME</small>
-          <strong>♫ SPOTIFY</strong>
-          <span>Slide the volume to open the song...</span>
-          <input id="volume" type="range" min="0" max="100" value="24" />
+        <span id="volumeText">Volume: 24%</span>
+
+        <div id="volumeSlider" class="volume-slider">
+          <div id="volumeFill" class="volume-fill"></div>
+          <div id="volumeThumb" class="volume-thumb"></div>
         </div>
 
+        <audio
+          id="music"
+          src="assets/audio/bus_theme.mp3"
+          preload="auto"
+          autoplay
+          loop
+        ></audio>
         <nav>
           <button class="nav active" data-page="home">
             ⌂ <span>HOME</span>
@@ -106,11 +113,9 @@
           <article class="card link">
             <header>SOCIAL LINK <em>EXTERNAL</em></header>
             <a href="https://x.com/Naoya_Totodile"
-              ><strong>X / Twitter<small>@naoya_totodile</small></strong
-              ><b>↗</b></a
+              ><strong>X / Twitter<small>@naoya_totodile</small></strong></a
             ><a href="https://www.tiktok.com/@iggar0392?lang=vi-VN"
-              ><strong>Tiktok<small>@iggar0392</small></strong
-              ><b>↗</b></a
+              ><strong>Tiktok<small>@iggar0392</small></strong></a
             >
           </article>
         </section>

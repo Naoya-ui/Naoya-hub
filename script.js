@@ -140,43 +140,200 @@ const blackoutBox = document.getElementById("blackoutBox");
 const glitchBox = document.getElementById("glitchBox");
 window.isBlackingOut = false;
 let lastAutoBlackoutTime = 0;
+
+const DISCORD_ID = 869568513864519690;
+
 async function loadDiscordStatus() {
+  const statusElement = document.getElementById("discordStatus");
+
+  if (!statusElement) return;
+
   try {
-    const response = await fetch("/api/discord-status");
+    const response = await fetch(
+      `https://api.lanyard.rest/v1/users/${DISCORD_ID}`,
+    );
 
     if (!response.ok) {
-      throw new Error("Discord API request failed");
+      throw new Error("Lanyard request failed");
     }
 
-    const data = await response.json();
+    const result = await response.json();
 
-    const statusElement = document.getElementById("discordStatus");
+    const status = result.data?.discord_status || "offline";
 
-    if (!statusElement) return;
+    let text = "Offline";
 
-    if (data.status === "online") {
-      statusElement.innerHTML = "<span></span> Online";
-
-      statusElement.classList.remove("offline");
-    } else if (data.status === "idle") {
-      statusElement.innerHTML = "<span></span> Idle";
-
-      statusElement.classList.remove("offline");
-    } else if (data.status === "dnd") {
-      statusElement.innerHTML = "<span></span> Do Not Disturb";
-
-      statusElement.classList.remove("offline");
-    } else {
-      statusElement.innerHTML = "<span></span> Offline";
-
-      statusElement.classList.add("offline");
+    if (status === "online") {
+      text = "Online";
+    } else if (status === "idle") {
+      text = "Idle";
+    } else if (status === "dnd") {
+      text = "Do Not Disturb";
     }
+
+    statusElement.innerHTML = `
+            <span></span>
+            ${text}
+        `;
+
+    statusElement.classList.toggle("offline", status === "offline");
   } catch (error) {
     console.error("Discord status error:", error);
+
+    statusElement.innerHTML = `
+            <span></span>
+            Offline
+        `;
+
+    statusElement.classList.add("offline");
   }
 }
 
 loadDiscordStatus();
 
-// Check again every 30 seconds
 setInterval(loadDiscordStatus, 30000);
+// ================================
+// CUSTOM MUSIC PLAYER
+// ================================
+
+const music = document.getElementById("music");
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeFill = document.getElementById("volumeFill");
+const volumeThumb = document.getElementById("volumeThumb");
+const volumeText = document.getElementById("volumeText");
+
+let currentVolume = 24;
+
+// ================================
+// SET VOLUME
+// ================================
+
+function setVolume(value) {
+  value = Math.max(0, Math.min(100, value));
+
+  currentVolume = value;
+
+  music.volume = value / 100;
+
+  music.muted = value === 0;
+
+  volumeFill.style.width = value + "%";
+  volumeThumb.style.left = value + "%";
+
+  if (volumeText) {
+    volumeText.textContent = `Volume: ${Math.round(value)}%`;
+  }
+}
+
+// Start at 24%
+setVolume(24);
+
+// ================================
+// MOUSE / TOUCH SLIDER
+// ================================
+
+function updateSlider(event) {
+  const rect = volumeSlider.getBoundingClientRect();
+
+  let x;
+
+  if (event.touches) {
+    x = event.touches[0].clientX;
+  } else {
+    x = event.clientX;
+  }
+
+  let percentage = ((x - rect.left) / rect.width) * 100;
+
+  percentage = Math.max(0, Math.min(100, percentage));
+
+  setVolume(percentage);
+
+  // User interacted with the slider,
+  // so try to unlock audio.
+  music.muted = false;
+
+  music.play().catch(() => {});
+}
+
+// Mouse
+volumeSlider.addEventListener("mousedown", (event) => {
+  updateSlider(event);
+
+  function move(e) {
+    updateSlider(e);
+  }
+
+  function stop() {
+    document.removeEventListener("mousemove", move);
+    document.removeEventListener("mouseup", stop);
+  }
+
+  document.addEventListener("mousemove", move);
+  document.addEventListener("mouseup", stop);
+});
+
+// Touch
+volumeSlider.addEventListener(
+  "touchstart",
+  (event) => {
+    updateSlider(event);
+  },
+  { passive: true },
+);
+
+volumeSlider.addEventListener(
+  "touchmove",
+  (event) => {
+    updateSlider(event);
+  },
+  { passive: true },
+);
+
+// ================================
+// AUTOPLAY
+// ================================
+
+async function startMusic() {
+  setVolume(currentVolume);
+
+  try {
+    // Try normal autoplay
+    music.muted = false;
+
+    await music.play();
+
+    console.log("Music autoplay started.");
+  } catch (error) {
+    console.log("Browser blocked autoplay with sound.");
+
+    // Browser may allow muted autoplay
+    music.muted = true;
+
+    try {
+      await music.play();
+
+      console.log("Music started muted.");
+    } catch (error2) {
+      console.log("Autoplay completely blocked.");
+    }
+  }
+}
+
+startMusic();
+
+// ================================
+// FIRST USER INTERACTION
+// ================================
+
+function unlockMusic() {
+  music.muted = false;
+
+  setVolume(currentVolume);
+
+  music.play().catch(() => {});
+}
+
+document.addEventListener("click", unlockMusic, { once: true });
+
+document.addEventListener("keydown", unlockMusic, { once: true });
