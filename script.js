@@ -279,57 +279,600 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ================================
-  // NOTEPAD
+  // FULL NOTEPAD v7
+  // Local add/edit/delete + cut/copy/paste + import/export + undo/redo.
   // ================================
   const note = document.getElementById("note");
+  const noteTitle = document.getElementById("noteTitle");
   const notes = document.getElementById("notes");
-  const addButton = document.getElementById("add");
+  const noteNew = document.getElementById("noteNew");
+  const noteSave = document.getElementById("noteSave");
+  const noteDelete = document.getElementById("noteDelete");
+  const noteUndo = document.getElementById("noteUndo");
+  const noteRedo = document.getElementById("noteRedo");
+  const noteCut = document.getElementById("noteCut");
+  const noteCopy = document.getElementById("noteCopy");
+  const notePaste = document.getElementById("notePaste");
+  const noteImport = document.getElementById("noteImport");
+  const noteExport = document.getElementById("noteExport");
+  const noteExportAll = document.getElementById("noteExportAll");
+  const noteFileInput = document.getElementById("noteFileInput");
+  const noteSearch = document.getElementById("noteSearch");
+  const noteCount = document.getElementById("noteCount");
+  const noteMode = document.getElementById("noteMode");
+  const noteStats = document.getElementById("noteStats");
+  const noteSavedState = document.getElementById("noteSavedState");
+  const noteClearAll = document.getElementById("noteClearAll");
+  const notepadEditorCard = document.getElementById("notepadEditorCard");
+
+  const NOTE_STORAGE_KEY = "notes";
+  const NOTE_HISTORY_LIMIT = 60;
+  let savedNotes = [];
+  let selectedNoteId = null;
+  let undoStack = [];
+  let redoStack = [];
+  let inputHistoryTimer = null;
+
+  function makeNoteId() {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      return window.crypto.randomUUID();
+    }
+    return `note-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  }
+
+  function normalizeNote(item, index = 0) {
+    const now = new Date().toISOString();
+    if (typeof item === "string") {
+      const clean = item.trim();
+      const firstLine = clean.split(/\r?\n/)[0].trim();
+      return {
+        id: makeNoteId(),
+        title: firstLine.slice(0, 80) || `Note ${index + 1}`,
+        content: item,
+        createdAt: now,
+        updatedAt: now,
+      };
+    }
+
+    if (!item || typeof item !== "object") return null;
+    const content = String(item.content ?? item.text ?? "");
+    const firstLine = content.trim().split(/\r?\n/)[0].trim();
+    return {
+      id: String(item.id || makeNoteId()),
+      title: String(item.title || firstLine || `Note ${index + 1}`).slice(0, 80),
+      content,
+      createdAt: item.createdAt || now,
+      updatedAt: item.updatedAt || item.createdAt || now,
+    };
+  }
+
+  function loadSavedNotes() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(NOTE_STORAGE_KEY) || "[]");
+      const source = Array.isArray(raw) ? raw : Array.isArray(raw?.notes) ? raw.notes : [];
+      savedNotes = source.map(normalizeNote).filter(Boolean);
+      // This also migrates the old string-only note format to the v7 object format.
+      persistNotes();
+    } catch (error) {
+      console.warn("Could not read saved notes:", error);
+      savedNotes = [];
+    }
+  }
+
+  function persistNotes() {
+    try {
+      localStorage.setItem(NOTE_STORAGE_KEY, JSON.stringify(savedNotes));
+      return true;
+    } catch (error) {
+      setNoteStatus("Storage full / unavailable", true);
+      console.warn("Could not save notes:", error);
+      return false;
+    }
+  }
 
   function escapeHTML(value) {
     const div = document.createElement("div");
-    div.textContent = value;
+    div.textContent = String(value ?? "");
     return div.innerHTML;
+  }
+
+  function deriveTitle(content) {
+    const firstLine = String(content || "").trim().split(/\r?\n/)[0].trim();
+    return firstLine.slice(0, 80) || "Untitled note";
+  }
+
+  function formatNoteDate(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "just now";
+    return date.toLocaleString([], {
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  function getEditorState() {
+    return {
+      notes: savedNotes.map((item) => ({ ...item })),
+      selectedNoteId,
+      title: noteTitle ? noteTitle.value : "",
+      content: note ? note.value : "",
+    };
+  }
+
+  function stateSignature(state) {
+    return JSON.stringify(state);
+  }
+
+  function recordHistory() {
+    if (!note || !noteTitle) return;
+    const snapshot = getEditorState();
+    const signature = stateSignature(snapshot);
+    const last = undoStack[undoStack.length - 1];
+    if (last && stateSignature(last) === signature) return;
+    undoStack.push(snapshot);
+    if (undoStack.length > NOTE_HISTORY_LIMIT) undoStack.shift();
+    redoStack = [];
+    updateUndoRedoButtons();
+  }
+
+  function flushInputHistory() {
+    if (inputHistoryTimer) {
+      clearTimeout(inputHistoryTimer);
+      inputHistoryTimer = null;
+      recordHistory();
+    }
+  }
+
+  function scheduleInputHistory() {
+    setNoteStatus("Unsaved changes");
+    updateNoteStats();
+    clearTimeout(inputHistoryTimer);
+    inputHistoryTimer = setTimeout(() => {
+      inputHistoryTimer = null;
+      recordHistory();
+    }, 350);
+  }
+
+  function applyHistoryState(state) {
+    if (!state || !note || !noteTitle) return;
+    savedNotes = (state.notes || []).map((item) => ({ ...item }));
+    selectedNoteId = state.selectedNoteId || null;
+    noteTitle.value = state.title || "";
+    note.value = state.content || "";
+    persistNotes();
+    renderNotes();
+    updateEditorMode();
+    updateNoteStats();
+    setNoteStatus("History restored");
+  }
+
+  function undoNotepad() {
+    flushInputHistory();
+    if (undoStack.length <= 1) return setNoteStatus("Nothing to undo");
+    const current = undoStack.pop();
+    redoStack.push(current);
+    applyHistoryState(undoStack[undoStack.length - 1]);
+    updateUndoRedoButtons();
+  }
+
+  function redoNotepad() {
+    flushInputHistory();
+    if (!redoStack.length) return setNoteStatus("Nothing to redo");
+    const next = redoStack.pop();
+    undoStack.push(next);
+    applyHistoryState(next);
+    updateUndoRedoButtons();
+  }
+
+  function updateUndoRedoButtons() {
+    if (noteUndo) noteUndo.disabled = undoStack.length <= 1;
+    if (noteRedo) noteRedo.disabled = redoStack.length === 0;
+  }
+
+  function setNoteStatus(message, isError = false) {
+    if (!noteSavedState) return;
+    noteSavedState.textContent = message;
+    noteSavedState.classList.toggle("error", Boolean(isError));
+  }
+
+  function updateNoteStats() {
+    if (!noteStats || !note) return;
+    const text = note.value;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    noteStats.textContent = `${text.length} chars · ${words} words`;
+  }
+
+  function updateEditorMode() {
+    const selected = savedNotes.find((item) => item.id === selectedNoteId);
+    if (noteMode) noteMode.textContent = selected ? "EDITING" : "NEW NOTE";
+    if (noteSave) noteSave.textContent = selected ? "UPDATE" : "SAVE";
+    if (noteDelete) noteDelete.disabled = !selected;
   }
 
   function renderNotes() {
     if (!notes) return;
+    const query = (noteSearch?.value || "").trim().toLowerCase();
+    const filtered = savedNotes.filter((item) => {
+      if (!query) return true;
+      return `${item.title} ${item.content}`.toLowerCase().includes(query);
+    });
 
-    let savedNotes = [];
-    try {
-      savedNotes = JSON.parse(localStorage.getItem("notes") || "[]");
-    } catch {
-      savedNotes = [];
+    if (noteCount) {
+      noteCount.textContent = `${savedNotes.length} NOTE${savedNotes.length === 1 ? "" : "S"}`;
     }
 
-    notes.innerHTML = savedNotes
-      .map((item) => `<div class="note">${escapeHTML(item)}</div>`)
+    if (!filtered.length) {
+      notes.innerHTML = `<div class="note-empty">${query ? "No matching notes" : "No notes yet"}</div>`;
+      return;
+    }
+
+    notes.innerHTML = filtered
+      .map((item) => {
+        const preview = item.content.replace(/\s+/g, " ").trim().slice(0, 110) || "Empty note";
+        const selected = item.id === selectedNoteId ? " selected" : "";
+        return `
+          <article class="note-list-item${selected}" data-note-id="${escapeHTML(item.id)}">
+            <button class="note-select" type="button" data-note-action="select" data-note-id="${escapeHTML(item.id)}">
+              <strong>${escapeHTML(item.title)}</strong>
+              <span>${escapeHTML(preview)}</span>
+              <small>${escapeHTML(formatNoteDate(item.updatedAt))}</small>
+            </button>
+            <div class="note-item-actions">
+              <button type="button" data-note-action="edit" data-note-id="${escapeHTML(item.id)}">EDIT</button>
+              <button type="button" class="danger" data-note-action="delete" data-note-id="${escapeHTML(item.id)}">DEL</button>
+            </div>
+          </article>`;
+      })
       .join("");
   }
 
-  if (addButton && note) {
-    addButton.addEventListener("click", () => {
-      const value = note.value.trim();
-      if (!value) return;
-
-      let savedNotes = [];
-      try {
-        savedNotes = JSON.parse(localStorage.getItem("notes") || "[]");
-      } catch {
-        savedNotes = [];
-      }
-
-      savedNotes.unshift(value);
-      localStorage.setItem(
-        "notes",
-        JSON.stringify(savedNotes.slice(0, 20))
-      );
-
-      note.value = "";
-      renderNotes();
-    });
+  function loadNoteIntoEditor(id, shouldRecord = true) {
+    const item = savedNotes.find((entry) => entry.id === id);
+    if (!item || !note || !noteTitle) return;
+    selectedNoteId = item.id;
+    noteTitle.value = item.title;
+    note.value = item.content;
+    updateEditorMode();
+    updateNoteStats();
+    renderNotes();
+    setNoteStatus("Loaded");
+    if (shouldRecord) recordHistory();
+    note.focus();
   }
 
-  renderNotes();
+  function newNote(shouldRecord = true) {
+    if (!note || !noteTitle) return;
+    flushInputHistory();
+    selectedNoteId = null;
+    noteTitle.value = "";
+    note.value = "";
+    updateEditorMode();
+    updateNoteStats();
+    renderNotes();
+    setNoteStatus("New note");
+    if (shouldRecord) recordHistory();
+    noteTitle.focus();
+  }
+
+  function saveCurrentNote() {
+    if (!note || !noteTitle) return;
+    flushInputHistory();
+    const content = note.value;
+    const typedTitle = noteTitle.value.trim();
+    if (!content.trim() && !typedTitle) {
+      return setNoteStatus("Write something first", true);
+    }
+
+    const now = new Date().toISOString();
+    const title = (typedTitle || deriveTitle(content)).slice(0, 80);
+    const existingIndex = savedNotes.findIndex((item) => item.id === selectedNoteId);
+
+    if (existingIndex >= 0) {
+      savedNotes[existingIndex] = {
+        ...savedNotes[existingIndex],
+        title,
+        content,
+        updatedAt: now,
+      };
+      // Bring the edited note to the top.
+      const updated = savedNotes.splice(existingIndex, 1)[0];
+      savedNotes.unshift(updated);
+    } else {
+      const created = {
+        id: makeNoteId(),
+        title,
+        content,
+        createdAt: now,
+        updatedAt: now,
+      };
+      savedNotes.unshift(created);
+      selectedNoteId = created.id;
+    }
+
+    noteTitle.value = title;
+    persistNotes();
+    renderNotes();
+    updateEditorMode();
+    setNoteStatus("Saved locally");
+    recordHistory();
+  }
+
+  function deleteNoteById(id) {
+    const item = savedNotes.find((entry) => entry.id === id);
+    if (!item) return;
+    if (!window.confirm(`Delete “${item.title}”?`)) return;
+
+    flushInputHistory();
+    savedNotes = savedNotes.filter((entry) => entry.id !== id);
+    if (selectedNoteId === id && note && noteTitle) {
+      selectedNoteId = null;
+      noteTitle.value = "";
+      note.value = "";
+    }
+    persistNotes();
+    renderNotes();
+    updateEditorMode();
+    updateNoteStats();
+    setNoteStatus("Deleted");
+    recordHistory();
+  }
+
+  function getActiveEditorField() {
+    const active = document.activeElement;
+    if (active === note || active === noteTitle) return active;
+    return note;
+  }
+
+  async function writeClipboard(text) {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const helper = document.createElement("textarea");
+    helper.value = text;
+    helper.style.position = "fixed";
+    helper.style.opacity = "0";
+    document.body.appendChild(helper);
+    helper.select();
+    document.execCommand("copy");
+    helper.remove();
+  }
+
+  async function copySelection(cut = false) {
+    const field = getActiveEditorField();
+    if (!field) return;
+    const start = field.selectionStart ?? 0;
+    const end = field.selectionEnd ?? 0;
+    if (start === end) return setNoteStatus("Select text first");
+    const selectedText = field.value.slice(start, end);
+
+    try {
+      await writeClipboard(selectedText);
+      if (cut) {
+        field.setRangeText("", start, end, "start");
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+        setNoteStatus("Cut to clipboard");
+      } else {
+        setNoteStatus("Copied");
+      }
+    } catch (error) {
+      console.warn("Clipboard write blocked:", error);
+      setNoteStatus("Clipboard blocked by browser", true);
+    }
+  }
+
+  async function pasteClipboard() {
+    const field = getActiveEditorField();
+    if (!field) return;
+    if (!navigator.clipboard?.readText) {
+      return setNoteStatus("Use Ctrl/Cmd + V to paste", true);
+    }
+
+    try {
+      const textToPaste = await navigator.clipboard.readText();
+      const start = field.selectionStart ?? field.value.length;
+      const end = field.selectionEnd ?? start;
+      field.setRangeText(textToPaste, start, end, "end");
+      field.dispatchEvent(new Event("input", { bubbles: true }));
+      setNoteStatus("Pasted");
+    } catch (error) {
+      console.warn("Clipboard read blocked:", error);
+      setNoteStatus("Browser blocked paste — use Ctrl/Cmd + V", true);
+    }
+  }
+
+  function safeFilename(value, fallback = "note") {
+    const clean = String(value || fallback)
+      .replace(/[\/:*?"<>|]+/g, "-")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 70);
+    return clean || fallback;
+  }
+
+  function downloadBlob(filename, data, type) {
+    const blob = new Blob([data], { type });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 500);
+  }
+
+  function exportCurrentNote() {
+    if (!note || !noteTitle) return;
+    const content = note.value;
+    const title = noteTitle.value.trim() || deriveTitle(content);
+    if (!content && !title) return setNoteStatus("Nothing to export", true);
+    downloadBlob(`${safeFilename(title)}.txt`, content, "text/plain;charset=utf-8");
+    setNoteStatus("Saved .txt file");
+  }
+
+  function exportAllNotes() {
+    const backup = {
+      app: "Naoya Hub Notepad",
+      version: 7,
+      exportedAt: new Date().toISOString(),
+      notes: savedNotes,
+    };
+    downloadBlob(
+      `naoya-notes-${new Date().toISOString().slice(0, 10)}.json`,
+      JSON.stringify(backup, null, 2),
+      "application/json;charset=utf-8"
+    );
+    setNoteStatus("Backup downloaded");
+  }
+
+  function importTextFile(file, text) {
+    const now = new Date().toISOString();
+    const titleFromFile = file.name.replace(/\.[^.]+$/, "") || deriveTitle(text);
+    const imported = {
+      id: makeNoteId(),
+      title: titleFromFile.slice(0, 80),
+      content: text,
+      createdAt: now,
+      updatedAt: now,
+    };
+    savedNotes.unshift(imported);
+    selectedNoteId = imported.id;
+    persistNotes();
+    if (noteTitle) noteTitle.value = imported.title;
+    if (note) note.value = imported.content;
+    renderNotes();
+    updateEditorMode();
+    updateNoteStats();
+    setNoteStatus("Text file imported");
+    recordHistory();
+  }
+
+  function importJsonFile(text) {
+    const parsed = JSON.parse(text);
+    const source = Array.isArray(parsed) ? parsed : parsed?.notes;
+    if (!Array.isArray(source)) throw new Error("JSON does not contain a notes array");
+    const imported = source.map(normalizeNote).filter(Boolean).map((item) => ({ ...item, id: makeNoteId() }));
+    savedNotes = [...imported, ...savedNotes];
+    persistNotes();
+    renderNotes();
+    setNoteStatus(`${imported.length} notes imported`);
+    recordHistory();
+  }
+
+  async function handleImportFile(file) {
+    if (!file) return;
+    try {
+      const text = await file.text();
+      flushInputHistory();
+      if (file.name.toLowerCase().endsWith(".json") || file.type.includes("json")) {
+        importJsonFile(text);
+      } else {
+        importTextFile(file, text);
+      }
+    } catch (error) {
+      console.warn("Could not import note file:", error);
+      setNoteStatus("Import failed / invalid file", true);
+    } finally {
+      if (noteFileInput) noteFileInput.value = "";
+    }
+  }
+
+  if (note && noteTitle && notes) {
+    loadSavedNotes();
+    renderNotes();
+    updateEditorMode();
+    updateNoteStats();
+    recordHistory();
+
+    note.addEventListener("input", scheduleInputHistory);
+    noteTitle.addEventListener("input", scheduleInputHistory);
+    noteSearch?.addEventListener("input", renderNotes);
+
+    noteNew?.addEventListener("click", () => newNote(true));
+    noteSave?.addEventListener("click", saveCurrentNote);
+    noteDelete?.addEventListener("click", () => {
+      if (selectedNoteId) deleteNoteById(selectedNoteId);
+    });
+    noteUndo?.addEventListener("click", undoNotepad);
+    noteRedo?.addEventListener("click", redoNotepad);
+    noteCut?.addEventListener("click", () => copySelection(true));
+    noteCopy?.addEventListener("click", () => copySelection(false));
+    notePaste?.addEventListener("click", pasteClipboard);
+    noteImport?.addEventListener("click", () => noteFileInput?.click());
+    noteExport?.addEventListener("click", exportCurrentNote);
+    noteExportAll?.addEventListener("click", exportAllNotes);
+    noteFileInput?.addEventListener("change", () => handleImportFile(noteFileInput.files?.[0]));
+
+    notes.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-note-action]");
+      if (!button) return;
+      const id = button.dataset.noteId;
+      const action = button.dataset.noteAction;
+      if (action === "select" || action === "edit") loadNoteIntoEditor(id, true);
+      if (action === "delete") deleteNoteById(id);
+    });
+
+    noteClearAll?.addEventListener("click", () => {
+      if (!savedNotes.length) return setNoteStatus("No notes to clear");
+      if (!window.confirm("Delete ALL saved notes? This can be undone until you reload the page.")) return;
+      flushInputHistory();
+      savedNotes = [];
+      selectedNoteId = null;
+      noteTitle.value = "";
+      note.value = "";
+      persistNotes();
+      renderNotes();
+      updateEditorMode();
+      updateNoteStats();
+      setNoteStatus("All notes cleared");
+      recordHistory();
+    });
+
+    // Drag a .txt or .json file directly onto the editor card to import it.
+    notepadEditorCard?.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      notepadEditorCard.classList.add("dragging-file");
+    });
+    notepadEditorCard?.addEventListener("dragleave", () => {
+      notepadEditorCard.classList.remove("dragging-file");
+    });
+    notepadEditorCard?.addEventListener("drop", (event) => {
+      event.preventDefault();
+      notepadEditorCard.classList.remove("dragging-file");
+      const file = event.dataTransfer?.files?.[0];
+      if (file) handleImportFile(file);
+    });
+
+    // Shortcuts work only while the Notepad page or its controls are active.
+    document.addEventListener("keydown", (event) => {
+      const page = document.getElementById("notepad");
+      const notepadVisible = page?.classList.contains("active");
+      if (!notepadVisible) return;
+      const modifier = event.ctrlKey || event.metaKey;
+      if (!modifier) return;
+
+      const key = event.key.toLowerCase();
+      if (key === "s" && !event.shiftKey) {
+        event.preventDefault();
+        saveCurrentNote();
+      } else if (key === "n") {
+        event.preventDefault();
+        newNote(true);
+      } else if (key === "z" && !event.shiftKey) {
+        event.preventDefault();
+        undoNotepad();
+      } else if (key === "y" || (key === "z" && event.shiftKey)) {
+        event.preventDefault();
+        redoNotepad();
+      } else if (key === "s" && event.shiftKey) {
+        event.preventDefault();
+        exportCurrentNote();
+      }
+    });
+  }
 
   // ================================
   // GALLERY / GAME PROJECT / AUDIO TABS

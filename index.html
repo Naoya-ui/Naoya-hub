@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Naoya Style Hub</title>
-    <link rel="stylesheet" href="style.css?v=discord-v5" />
+    <link rel="stylesheet" href="style.css?v=notepad-v7" />
     <link
       href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
@@ -159,6 +159,20 @@
               <div>
                 <strong>Tiktok</strong>
                 <small>@iggar0392</small>
+              </div>
+              <b>↗</b>
+            </a>
+
+            <!-- Link Facebook -->
+            <a
+              href="https://www.facebook.com/Junkimgoon?locale=en_US"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="social-icon social-icon-text facebook-icon" aria-hidden="true">f</span>
+              <div>
+                <strong>Facebook</strong>
+                <small>Junkimgoon</small>
               </div>
               <b>↗</b>
             </a>
@@ -374,25 +388,81 @@
         </section>
         <!-- KHU VỰC NOTEPAD -->
         <section id="notepad" class="page">
-          <div class="title">
+          <div class="title notepad-page-title">
             <div>
               <small>LOCAL NOTEBOARD</small>
               <h2>NOTEPAD</h2>
-              <p>write smth</p>
+              <p>write / edit / import / export locally</p>
             </div>
+            <span id="noteGlobalState" class="note-global-state">LOCAL STORAGE</span>
           </div>
-          <article class="card">
-            <textarea
-              id="note"
-              rows="6"
-              placeholder="write something..."
-            ></textarea>
-            <div class="note-actions">
-              <span>Saved locally in your browser</span>
-              <button id="add">ADD</button>
-            </div>
-          </article>
-          <div id="notes"></div>
+
+          <div class="notepad-shell">
+            <article class="card notepad-editor-card" id="notepadEditorCard">
+              <div class="notepad-toolbar" role="toolbar" aria-label="Notepad tools">
+                <div class="notepad-toolgroup">
+                  <button class="note-tool-btn primary" id="noteNew" type="button" title="New note (Ctrl/Cmd + N)">＋ NEW</button>
+                  <button class="note-tool-btn" id="noteSave" type="button" title="Save note (Ctrl/Cmd + S)">SAVE</button>
+                  <button class="note-tool-btn danger" id="noteDelete" type="button" title="Delete selected note" disabled>DELETE</button>
+                </div>
+
+                <div class="notepad-toolgroup">
+                  <button class="note-tool-btn icon-tool" id="noteUndo" type="button" title="Undo (Ctrl/Cmd + Z)" aria-label="Undo">↶</button>
+                  <button class="note-tool-btn icon-tool" id="noteRedo" type="button" title="Redo (Ctrl/Cmd + Shift + Z / Ctrl + Y)" aria-label="Redo">↷</button>
+                  <button class="note-tool-btn" id="noteCut" type="button" title="Cut selected text">CUT</button>
+                  <button class="note-tool-btn" id="noteCopy" type="button" title="Copy selected text">COPY</button>
+                  <button class="note-tool-btn" id="notePaste" type="button" title="Paste from clipboard">PASTE</button>
+                </div>
+
+                <div class="notepad-toolgroup import-export-group">
+                  <button class="note-tool-btn" id="noteImport" type="button" title="Import .txt or .json">IMPORT</button>
+                  <button class="note-tool-btn" id="noteExport" type="button" title="Save current note as .txt">SAVE FILE</button>
+                  <button class="note-tool-btn" id="noteExportAll" type="button" title="Backup all notes as .json">BACKUP</button>
+                  <input id="noteFileInput" type="file" accept=".txt,.json,text/plain,application/json" hidden />
+                </div>
+              </div>
+
+              <input
+                id="noteTitle"
+                class="note-title-input"
+                type="text"
+                maxlength="80"
+                placeholder="Untitled note"
+                autocomplete="off"
+                spellcheck="true"
+              />
+
+              <textarea
+                id="note"
+                rows="13"
+                placeholder="write something..."
+                spellcheck="true"
+              ></textarea>
+
+              <div class="note-statusbar">
+                <span id="noteMode">NEW NOTE</span>
+                <span id="noteStats">0 chars · 0 words</span>
+                <span id="noteSavedState">Ready</span>
+              </div>
+            </article>
+
+            <aside class="card note-library-card">
+              <div class="note-library-head">
+                <div>
+                  <small>NOTE LIBRARY</small>
+                  <strong id="noteCount">0 NOTES</strong>
+                </div>
+                <button class="note-tool-btn compact" id="noteClearAll" type="button" title="Delete every saved note">CLEAR ALL</button>
+              </div>
+
+              <label class="note-search-wrap" for="noteSearch">
+                <span>⌕</span>
+                <input id="noteSearch" type="search" placeholder="Search notes..." autocomplete="off" />
+              </label>
+
+              <div id="notes" class="notes-list" aria-live="polite"></div>
+            </aside>
+          </div>
         </section>
 
         <!-- KHU VỰC AFK ZONE (Đã đổi ID thành "afk") -->
@@ -430,6 +500,6 @@
         </section>
       </main>
     </div>
-    <script src="script.js?v=light-v3"></script>
+    <script src="script.js?v=notepad-v7"></script>
   </body>
 </html>

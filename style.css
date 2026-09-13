@@ -2633,3 +2633,583 @@ body.light-mode .profile .discord-status .discord-status-text {
   border: 0 !important;
   color: inherit !important;
 }
+
+/* ================================
+   FACEBOOK SOCIAL LINK v6
+   Text-based icon: no extra image asset required.
+================================ */
+.social-icon-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1;
+  text-align: center;
+}
+
+.facebook-icon {
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 800;
+  padding: 0;
+}
+
+body.light-mode .facebook-icon,
+body.light .facebook-icon {
+  color: #2f3542 !important;
+}
+
+
+/* ================================
+   FULL NOTEPAD v7
+================================ */
+.notepad-page-title {
+  align-items: flex-end;
+}
+
+.note-global-state {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 6px 10px;
+  border: 1px solid #30333d;
+  border-radius: 999px;
+  background: #101218;
+  color: #848a98;
+  font: 700 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.12em;
+}
+
+.notepad-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 330px);
+  gap: 14px;
+  align-items: start;
+}
+
+.notepad-editor-card,
+.note-library-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.notepad-editor-card {
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notepad-editor-card.dragging-file {
+  border-color: #8b70d8;
+  box-shadow: 0 0 0 3px rgba(139, 112, 216, 0.12);
+}
+
+.notepad-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid #292c35;
+  background: #0f1116;
+}
+
+.notepad-toolgroup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding-right: 8px;
+  border-right: 1px solid #292c35;
+}
+
+.notepad-toolgroup:last-child {
+  padding-right: 0;
+  border-right: 0;
+}
+
+.note-tool-btn {
+  min-height: 30px;
+  padding: 7px 9px;
+  border: 1px solid #323641;
+  border-radius: 8px;
+  background: #171a21;
+  color: #a9aeba;
+  font: 700 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.note-tool-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: #555b69;
+  background: #20232c;
+  color: #f1f2f5;
+}
+
+.note-tool-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.note-tool-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.note-tool-btn.primary {
+  border-color: #7259bd;
+  background: #2a2140;
+  color: #d9ccff;
+}
+
+.note-tool-btn.danger:hover:not(:disabled),
+.note-item-actions .danger:hover {
+  border-color: #8f4147;
+  background: #321a1d;
+  color: #ffb6bc;
+}
+
+.note-tool-btn.icon-tool {
+  width: 32px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  font-size: 17px;
+  letter-spacing: 0;
+}
+
+.note-tool-btn.compact {
+  min-height: 27px;
+  padding: 6px 8px;
+  font-size: 8px;
+}
+
+.note-title-input {
+  width: 100%;
+  padding: 18px 18px 8px;
+  border: 0;
+  border-bottom: 1px solid #252832;
+  outline: 0;
+  background: #12141a;
+  color: #f0f1f4;
+  font: 700 18px/1.25 Inter, system-ui, sans-serif;
+}
+
+.note-title-input::placeholder {
+  color: #5f6470;
+}
+
+.notepad-editor-card > textarea#note {
+  display: block;
+  width: 100%;
+  min-height: 330px;
+  margin: 0;
+  padding: 14px 18px 18px;
+  border: 0;
+  border-radius: 0;
+  background: #12141a;
+  color: #d2d5dc;
+  resize: vertical;
+  outline: none;
+  font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  tab-size: 2;
+}
+
+.notepad-editor-card > textarea#note::placeholder {
+  color: #5c616d;
+}
+
+.note-statusbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-top: 1px solid #292c35;
+  background: #0d0f14;
+  color: #727886;
+  font: 700 8px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.note-statusbar #noteStats {
+  text-align: center;
+}
+
+.note-statusbar #noteSavedState {
+  text-align: right;
+  color: #88a993;
+}
+
+.note-statusbar #noteSavedState.error {
+  color: #d98b91;
+}
+
+.note-library-card {
+  min-height: 452px;
+}
+
+.note-library-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px;
+  border-bottom: 1px solid #292c35;
+  background: #0f1116;
+}
+
+.note-library-head > div {
+  display: grid;
+  gap: 4px;
+}
+
+.note-library-head small {
+  color: #686e7b;
+  font: 700 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.13em;
+}
+
+.note-library-head strong {
+  color: #c5c9d2;
+  font: 700 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.07em;
+}
+
+.note-search-wrap {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  margin: 10px;
+  border: 1px solid #2b2f39;
+  border-radius: 9px;
+  background: #0d0f14;
+  overflow: hidden;
+}
+
+.note-search-wrap > span {
+  display: grid;
+  place-items: center;
+  color: #69707d;
+  background: transparent;
+  border: 0;
+}
+
+.note-search-wrap input {
+  min-width: 0;
+  padding: 9px 10px 9px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #d7dae1;
+  font-size: 11px;
+}
+
+.note-search-wrap input::placeholder {
+  color: #636975;
+}
+
+.notes-list {
+  display: grid;
+  gap: 8px;
+  max-height: 520px;
+  padding: 0 10px 10px;
+  overflow: auto;
+}
+
+.note-list-item {
+  overflow: hidden;
+  border: 1px solid #292d37;
+  border-radius: 10px;
+  background: #101217;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.note-list-item:hover {
+  transform: translateY(-1px);
+  border-color: #3d424e;
+  background: #14171d;
+}
+
+.note-list-item.selected {
+  border-color: #7159b8;
+  box-shadow: inset 3px 0 0 #8a6ed6;
+}
+
+.note-select {
+  width: 100%;
+  padding: 11px 11px 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.note-select strong,
+.note-select span,
+.note-select small {
+  display: block;
+  border: 0;
+  background: transparent;
+}
+
+.note-select strong {
+  overflow: hidden;
+  color: #d9dce3;
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.note-select span {
+  display: -webkit-box;
+  margin-top: 6px;
+  overflow: hidden;
+  color: #808694;
+  font-size: 10px;
+  line-height: 1.45;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.note-select small {
+  margin-top: 7px;
+  color: #5f6572;
+  font: 700 8px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.05em;
+}
+
+.note-item-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  padding: 0 8px 8px;
+}
+
+.note-item-actions button {
+  padding: 5px 7px;
+  border: 1px solid #2e323c;
+  border-radius: 7px;
+  background: #171920;
+  color: #858b98;
+  font: 700 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  cursor: pointer;
+}
+
+.note-item-actions button:hover {
+  border-color: #555b69;
+  color: #e2e4e9;
+}
+
+.note-empty {
+  padding: 28px 12px;
+  border: 1px dashed #2c3039;
+  border-radius: 10px;
+  color: #666c79;
+  text-align: center;
+  font: 700 9px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Light mode: only recolor the Notepad. Keep the exact same geometry as dark mode. */
+body.light-mode .note-global-state {
+  background: #ffffff !important;
+  border-color: #d9dde5 !important;
+  color: #687181 !important;
+}
+
+body.light-mode .notepad-editor-card,
+body.light-mode .note-library-card {
+  background: #ffffff !important;
+  border-color: #d9dde5 !important;
+}
+
+body.light-mode .notepad-toolbar,
+body.light-mode .note-library-head {
+  background: #f5f6f8 !important;
+  border-color: #dde0e6 !important;
+}
+
+body.light-mode .notepad-toolgroup {
+  border-color: #d9dde5 !important;
+}
+
+body.light-mode .note-tool-btn,
+body.light-mode .note-item-actions button {
+  background: #ffffff !important;
+  border-color: #d5dae3 !important;
+  color: #4e5665 !important;
+}
+
+body.light-mode .note-tool-btn:hover:not(:disabled),
+body.light-mode .note-item-actions button:hover {
+  background: #eceff4 !important;
+  border-color: #b9c0cc !important;
+  color: #171a20 !important;
+}
+
+body.light-mode .note-tool-btn.primary {
+  background: #eee9ff !important;
+  border-color: #cbbcff !important;
+  color: #61499f !important;
+}
+
+body.light-mode .note-tool-btn.danger:hover:not(:disabled),
+body.light-mode .note-item-actions .danger:hover {
+  background: #fff0f1 !important;
+  border-color: #e8b7bb !important;
+  color: #a33b42 !important;
+}
+
+body.light-mode .note-title-input {
+  background: #ffffff !important;
+  border-color: #e1e4ea !important;
+  color: #171a20 !important;
+}
+
+body.light-mode .note-title-input::placeholder,
+body.light-mode .notepad-editor-card > textarea#note::placeholder {
+  color: #9aa1ad !important;
+}
+
+body.light-mode .notepad-editor-card > textarea#note {
+  background: #ffffff !important;
+  color: #2b3039 !important;
+}
+
+body.light-mode .note-statusbar {
+  background: #f5f6f8 !important;
+  border-color: #dde0e6 !important;
+  color: #7a8290 !important;
+}
+
+body.light-mode .note-statusbar span {
+  background: transparent !important;
+  border: 0 !important;
+  color: inherit !important;
+}
+
+body.light-mode .note-statusbar #noteSavedState {
+  color: #39724d !important;
+}
+
+body.light-mode .note-statusbar #noteSavedState.error {
+  color: #a33b42 !important;
+}
+
+body.light-mode .note-library-head small,
+body.light-mode .note-library-head strong {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+body.light-mode .note-library-head small { color: #7a8290 !important; }
+body.light-mode .note-library-head strong { color: #2d333d !important; }
+
+body.light-mode .note-search-wrap {
+  background: #ffffff !important;
+  border-color: #d9dde5 !important;
+}
+
+body.light-mode .note-search-wrap > span {
+  background: transparent !important;
+  border: 0 !important;
+  color: #818998 !important;
+}
+
+body.light-mode .note-search-wrap input {
+  background: transparent !important;
+  color: #2b3039 !important;
+}
+
+body.light-mode .note-list-item {
+  background: #fbfbfc !important;
+  border-color: #e0e3e9 !important;
+}
+
+body.light-mode .note-list-item:hover {
+  background: #f4f5f8 !important;
+  border-color: #c9ced8 !important;
+}
+
+body.light-mode .note-list-item.selected {
+  border-color: #b7a5ec !important;
+  box-shadow: inset 3px 0 0 #8064ca;
+}
+
+body.light-mode .note-select,
+body.light-mode .note-select strong,
+body.light-mode .note-select span,
+body.light-mode .note-select small {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+body.light-mode .note-select strong { color: #2a2f38 !important; }
+body.light-mode .note-select span { color: #697180 !important; }
+body.light-mode .note-select small { color: #969daa !important; }
+
+body.light-mode .note-empty {
+  border-color: #d9dde5 !important;
+  background: #fafbfc !important;
+  color: #8a929f !important;
+}
+
+@media (max-width: 980px) {
+  .notepad-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .note-library-card {
+    min-height: 0;
+  }
+
+  .notes-list {
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 620px) {
+  .notepad-toolbar {
+    align-items: stretch;
+  }
+
+  .notepad-toolgroup {
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 8px;
+    border-right: 0;
+    border-bottom: 1px solid #292c35;
+  }
+
+  .notepad-toolgroup:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .note-tool-btn:not(.icon-tool) {
+    flex: 1 1 auto;
+  }
+
+  .note-statusbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .note-statusbar #noteStats {
+    text-align: right;
+  }
+
+  .note-statusbar #noteSavedState {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  body.light-mode .notepad-toolgroup {
+    border-color: #d9dde5 !important;
+  }
+}

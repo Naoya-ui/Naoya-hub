@@ -1170,12 +1170,10 @@ body.light-mode strong {
 }
 
 /* 6. Thẻ Hashtag (#dark_fantasy, #digital_core...) */
-body.light .tags *,
-body.light [class*="tag"],
-body.light div > span,
-body.light-mode .tags *,
-body.light-mode [class*="tag"],
-body.light-mode div > span {
+body.light .tags span,
+body.light .media-tag,
+body.light-mode .tags span,
+body.light-mode .media-tag {
   background: #ffffff !important; /* Đổi nền thẻ sang xám sáng */
   color: #0f172a !important; /* Chữ đen sắc nét */
   border: 1px solid #e2e8f0 !important;
@@ -2068,7 +2066,7 @@ body.light-mode .game-info strong {
 }
 
 body.light-mode .tags span,
-body.light-mode [class*="tag"] {
+body.light-mode .media-tag {
   background: #f1ecff !important;
   color: #7c3aed !important;
   border: 1px solid #ded0ff !important;
@@ -2233,4 +2231,985 @@ body.light-mode .loader-line { background: #dfe3eb !important; }
 body.light-mode #loaderBar,
 body.light-mode .loader-line span {
   background: linear-gradient(90deg, #a855f7, #7c3aed) !important;
+}
+
+/* =========================================================
+   LIGHT MODE MEDIA FIX — keep Gallery/Game Project balanced
+   like the dark theme and the Home Dashboard cards
+   ========================================================= */
+
+/* Smooth theme switch without changing the page geometry. */
+body,
+.shell,
+.sidebar,
+.main,
+.card,
+.now-playing,
+.media-item,
+.sketch-card,
+.audio-card,
+.topbar,
+.nav,
+.tab {
+  transition:
+    background-color .24s ease,
+    background .24s ease,
+    color .24s ease,
+    border-color .24s ease,
+    box-shadow .24s ease;
+}
+
+/* Keep Media Hub at the same vertical rhythm as Home Dashboard. */
+#artwork.page {
+  padding-top: 22px;
+}
+
+/* Do not let media tags stretch across flex cards/overlays. */
+.media-tag {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Gallery overlay typography should stay readable in both themes. */
+.media-overlay strong {
+  margin-top: 7px;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: .015em;
+}
+
+/* Game Project typography: same compact hierarchy as dark mode. */
+.sketch-card .media-tag {
+  margin-bottom: 5px;
+}
+
+.sketch-card h3 {
+  margin: 5px 0 8px;
+  font-size: 16px;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.sketch-card p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+body.light-mode .media-item {
+  background: #ffffff !important;
+  border: 1px solid #d9dee8 !important;
+  box-shadow: 0 8px 24px rgba(31, 36, 48, .045) !important;
+}
+
+body.light-mode .media-item:hover {
+  border-color: #b99ae9 !important;
+  box-shadow: 0 10px 26px rgba(126, 87, 194, .13) !important;
+}
+
+body.light-mode .sketch-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f7f8fb 100%) !important;
+}
+
+body.light-mode .sketch-card h3 {
+  color: #1f2430 !important;
+  font-weight: 700 !important;
+}
+
+body.light-mode .sketch-card p {
+  color: #697182 !important;
+  font-weight: 400 !important;
+}
+
+/* Replace the accidental full-width lavender bars with small tags. */
+body.light-mode .media-tag {
+  padding: 4px 7px !important;
+  border-radius: 6px !important;
+  background: #f1ecff !important;
+  border: 1px solid #ded0ff !important;
+  color: #7440d4 !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .12em !important;
+}
+
+/* Image cards still use a dark fade, so their titles must remain white. */
+body.light-mode .media-overlay {
+  background: linear-gradient(0deg, rgba(8, 9, 12, .88) 0%, rgba(8, 9, 12, .18) 58%, transparent 78%) !important;
+}
+
+body.light-mode .media-overlay strong {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .35);
+}
+
+/* Keep the title/header spacing consistent when toggling theme. */
+body.light-mode #artwork .title,
+#artwork .title {
+  margin-bottom: 15px;
+}
+
+body.light-mode #artwork .tabs,
+#artwork .tabs {
+  margin-bottom: 14px;
+}
+
+/* =========================================================
+   LIGHT MODE MEDIA HARD FIX v3
+   Keeps exact dark-mode geometry; changes colors only.
+   ========================================================= */
+body.light-mode #artwork .media-grid {
+  gap: 14px !important;
+}
+
+/* Keep the same card shape/spacing as dark mode. */
+body.light-mode #artwork .media-item {
+  border: 1px solid #cfd5e1 !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+  box-shadow: 0 7px 18px rgba(31, 36, 48, 0.06) !important;
+}
+
+body.light-mode #artwork .media-item:hover {
+  border-color: #a855f7 !important;
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.16) !important;
+}
+
+/* IMPORTANT: prevent the purple tag from stretching into a full-width bar. */
+body.light-mode #artwork .media-tag,
+body.light-mode #artwork span.media-tag,
+#artwork .sketch-card > .media-tag,
+#artwork .media-overlay > .media-tag {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: max-content !important;
+  flex: 0 0 auto !important;
+  align-self: flex-start !important;
+  padding: 4px 7px !important;
+  margin: 0 0 6px 0 !important;
+  border-radius: 6px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .12em !important;
+}
+
+body.light-mode #artwork .media-tag {
+  color: #7c3aed !important;
+  background: #f3efff !important;
+  border: 1px solid #ddcffd !important;
+}
+
+/* Gallery text must stay readable on the dark image fade. */
+body.light-mode #artwork .media-overlay .media-tag {
+  color: #d8b4fe !important;
+  background: rgba(22, 16, 34, .72) !important;
+  border-color: rgba(216, 180, 254, .32) !important;
+}
+
+body.light-mode #artwork .media-overlay strong {
+  color: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  letter-spacing: .015em !important;
+}
+
+/* Game Project: match dark-mode typography and padding exactly. */
+body.light-mode #artwork .sketch-card {
+  padding: 20px !important;
+  background: linear-gradient(145deg, #ffffff, #f7f8fb) !important;
+  justify-content: center !important;
+}
+
+body.light-mode #artwork .sketch-card h3 {
+  margin: 6px 0 4px !important;
+  color: #1f2430 !important;
+  font-size: 16px !important;
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+
+body.light-mode #artwork .sketch-card p {
+  margin: 8px 0 0 !important;
+  color: #697182 !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  font-weight: 400 !important;
+}
+
+/* Tabs: same proportions as dark mode. */
+body.light-mode #artwork .tab {
+  padding: 9px 12px !important;
+  border-radius: 9px !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  letter-spacing: normal !important;
+}
+
+/* Do not change dimensions during theme switch; only colors fade. */
+#artwork .media-item,
+#artwork .sketch-card,
+#artwork .media-overlay,
+#artwork .media-tag,
+#artwork .tab {
+  transition-property: background, background-color, color, border-color, box-shadow !important;
+  transition-duration: .24s !important;
+  transition-timing-function: ease !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE TAG FIX v4
+   .tags is only a flex wrapper; never draw a panel around it.
+   ========================================================= */
+body.light .tags,
+body.light-mode .tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 7px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.light .tags > span,
+body.light-mode .tags > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+  flex: 0 0 auto !important;
+  padding: 7px 9px !important;
+  margin: 0 !important;
+  border-radius: 9px !important;
+  background: #f1ecff !important;
+  border: 1px solid #ded0ff !important;
+  color: #7c3aed !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+}
+
+
+/* ================================
+   DISCORD LIVE PRESENCE
+================================ */
+.profile .discord-status {
+  width: max-content;
+  max-width: 100%;
+  margin: 7px auto 0;
+  padding: 5px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid #2b2f38;
+  border-radius: 999px;
+  background: #101218;
+  color: #9da3af;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.profile .discord-status:hover {
+  background: #171a22;
+  border-color: #454b59;
+  color: #f1f3f7;
+  transform: translateY(-1px);
+}
+
+.profile .discord-status .discord-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  display: block;
+  border: 0;
+  border-radius: 50%;
+  background: #80848e;
+  box-shadow: 0 0 0 2px rgba(128, 132, 142, 0.08);
+}
+
+.profile .discord-status .discord-status-text {
+  display: inline;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.profile .discord-status.status-online { color: #b8e8c8; }
+.profile .discord-status.status-online .discord-dot {
+  background: #23a55a;
+  box-shadow: 0 0 8px rgba(35, 165, 90, 0.42);
+}
+
+.profile .discord-status.status-idle { color: #f5d58d; }
+.profile .discord-status.status-idle .discord-dot {
+  background: #f0b232;
+  box-shadow: 0 0 8px rgba(240, 178, 50, 0.35);
+}
+
+.profile .discord-status.status-dnd { color: #f5b0b2; }
+.profile .discord-status.status-dnd .discord-dot {
+  background: #f23f43;
+  box-shadow: 0 0 8px rgba(242, 63, 67, 0.35);
+}
+
+.profile .discord-status.status-offline,
+.profile .discord-status.status-unknown,
+.profile .discord-status.status-loading {
+  color: #969ba6;
+}
+
+.profile .discord-status.status-offline .discord-dot,
+.profile .discord-status.status-unknown .discord-dot {
+  background: #80848e;
+}
+
+.profile .discord-status.status-loading .discord-dot {
+  background: #a855f7;
+  animation: discord-status-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes discord-status-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+body.light-mode .profile .discord-status {
+  background: #ffffff !important;
+  border-color: #dce1e9 !important;
+  color: #697180 !important;
+  box-shadow: 0 4px 12px rgba(31, 36, 48, 0.04);
+}
+
+body.light-mode .profile .discord-status:hover {
+  background: #f8f6ff !important;
+  border-color: #d8c9ff !important;
+  color: #262b35 !important;
+}
+
+body.light-mode .profile .discord-status.status-online { color: #33784c !important; }
+body.light-mode .profile .discord-status.status-idle { color: #9a6b0e !important; }
+body.light-mode .profile .discord-status.status-dnd { color: #b83236 !important; }
+body.light-mode .profile .discord-status.status-offline,
+body.light-mode .profile .discord-status.status-unknown,
+body.light-mode .profile .discord-status.status-loading { color: #697180 !important; }
+
+/* Override older broad light-mode span/tag rules only inside Discord status. */
+body.light-mode .profile .discord-status .discord-dot {
+  border: 0 !important;
+}
+body.light-mode .profile .discord-status.status-online .discord-dot { background: #23a55a !important; }
+body.light-mode .profile .discord-status.status-idle .discord-dot { background: #f0b232 !important; }
+body.light-mode .profile .discord-status.status-dnd .discord-dot { background: #f23f43 !important; }
+body.light-mode .profile .discord-status.status-offline .discord-dot,
+body.light-mode .profile .discord-status.status-unknown .discord-dot { background: #80848e !important; }
+body.light-mode .profile .discord-status.status-loading .discord-dot { background: #a855f7 !important; }
+body.light-mode .profile .discord-status .discord-status-text {
+  background: transparent !important;
+  border: 0 !important;
+  color: inherit !important;
+}
+
+/* ================================
+   FACEBOOK SOCIAL LINK v6
+   Text-based icon: no extra image asset required.
+================================ */
+.social-icon-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1;
+  text-align: center;
+}
+
+.facebook-icon {
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 800;
+  padding: 0;
+}
+
+body.light-mode .facebook-icon,
+body.light .facebook-icon {
+  color: #2f3542 !important;
+}
+
+
+/* ================================
+   FULL NOTEPAD v7
+================================ */
+.notepad-page-title {
+  align-items: flex-end;
+}
+
+.note-global-state {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 6px 10px;
+  border: 1px solid #30333d;
+  border-radius: 999px;
+  background: #101218;
+  color: #848a98;
+  font: 700 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.12em;
+}
+
+.notepad-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 330px);
+  gap: 14px;
+  align-items: start;
+}
+
+.notepad-editor-card,
+.note-library-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.notepad-editor-card {
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.notepad-editor-card.dragging-file {
+  border-color: #8b70d8;
+  box-shadow: 0 0 0 3px rgba(139, 112, 216, 0.12);
+}
+
+.notepad-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid #292c35;
+  background: #0f1116;
+}
+
+.notepad-toolgroup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding-right: 8px;
+  border-right: 1px solid #292c35;
+}
+
+.notepad-toolgroup:last-child {
+  padding-right: 0;
+  border-right: 0;
+}
+
+.note-tool-btn {
+  min-height: 30px;
+  padding: 7px 9px;
+  border: 1px solid #323641;
+  border-radius: 8px;
+  background: #171a21;
+  color: #a9aeba;
+  font: 700 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.note-tool-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: #555b69;
+  background: #20232c;
+  color: #f1f2f5;
+}
+
+.note-tool-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.note-tool-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.note-tool-btn.primary {
+  border-color: #7259bd;
+  background: #2a2140;
+  color: #d9ccff;
+}
+
+.note-tool-btn.danger:hover:not(:disabled),
+.note-item-actions .danger:hover {
+  border-color: #8f4147;
+  background: #321a1d;
+  color: #ffb6bc;
+}
+
+.note-tool-btn.icon-tool {
+  width: 32px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  font-size: 17px;
+  letter-spacing: 0;
+}
+
+.note-tool-btn.compact {
+  min-height: 27px;
+  padding: 6px 8px;
+  font-size: 8px;
+}
+
+.note-title-input {
+  width: 100%;
+  padding: 18px 18px 8px;
+  border: 0;
+  border-bottom: 1px solid #252832;
+  outline: 0;
+  background: #12141a;
+  color: #f0f1f4;
+  font: 700 18px/1.25 Inter, system-ui, sans-serif;
+}
+
+.note-title-input::placeholder {
+  color: #5f6470;
+}
+
+.notepad-editor-card > textarea#note {
+  display: block;
+  width: 100%;
+  min-height: 330px;
+  margin: 0;
+  padding: 14px 18px 18px;
+  border: 0;
+  border-radius: 0;
+  background: #12141a;
+  color: #d2d5dc;
+  resize: vertical;
+  outline: none;
+  font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  tab-size: 2;
+}
+
+.notepad-editor-card > textarea#note::placeholder {
+  color: #5c616d;
+}
+
+.note-statusbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-top: 1px solid #292c35;
+  background: #0d0f14;
+  color: #727886;
+  font: 700 8px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.note-statusbar #noteStats {
+  text-align: center;
+}
+
+.note-statusbar #noteSavedState {
+  text-align: right;
+  color: #88a993;
+}
+
+.note-statusbar #noteSavedState.error {
+  color: #d98b91;
+}
+
+.note-library-card {
+  min-height: 452px;
+}
+
+.note-library-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px;
+  border-bottom: 1px solid #292c35;
+  background: #0f1116;
+}
+
+.note-library-head > div {
+  display: grid;
+  gap: 4px;
+}
+
+.note-library-head small {
+  color: #686e7b;
+  font: 700 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.13em;
+}
+
+.note-library-head strong {
+  color: #c5c9d2;
+  font: 700 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.07em;
+}
+
+.note-search-wrap {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  margin: 10px;
+  border: 1px solid #2b2f39;
+  border-radius: 9px;
+  background: #0d0f14;
+  overflow: hidden;
+}
+
+.note-search-wrap > span {
+  display: grid;
+  place-items: center;
+  color: #69707d;
+  background: transparent;
+  border: 0;
+}
+
+.note-search-wrap input {
+  min-width: 0;
+  padding: 9px 10px 9px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #d7dae1;
+  font-size: 11px;
+}
+
+.note-search-wrap input::placeholder {
+  color: #636975;
+}
+
+.notes-list {
+  display: grid;
+  gap: 8px;
+  max-height: 520px;
+  padding: 0 10px 10px;
+  overflow: auto;
+}
+
+.note-list-item {
+  overflow: hidden;
+  border: 1px solid #292d37;
+  border-radius: 10px;
+  background: #101217;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.note-list-item:hover {
+  transform: translateY(-1px);
+  border-color: #3d424e;
+  background: #14171d;
+}
+
+.note-list-item.selected {
+  border-color: #7159b8;
+  box-shadow: inset 3px 0 0 #8a6ed6;
+}
+
+.note-select {
+  width: 100%;
+  padding: 11px 11px 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.note-select strong,
+.note-select span,
+.note-select small {
+  display: block;
+  border: 0;
+  background: transparent;
+}
+
+.note-select strong {
+  overflow: hidden;
+  color: #d9dce3;
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.note-select span {
+  display: -webkit-box;
+  margin-top: 6px;
+  overflow: hidden;
+  color: #808694;
+  font-size: 10px;
+  line-height: 1.45;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.note-select small {
+  margin-top: 7px;
+  color: #5f6572;
+  font: 700 8px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.05em;
+}
+
+.note-item-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  padding: 0 8px 8px;
+}
+
+.note-item-actions button {
+  padding: 5px 7px;
+  border: 1px solid #2e323c;
+  border-radius: 7px;
+  background: #171920;
+  color: #858b98;
+  font: 700 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  cursor: pointer;
+}
+
+.note-item-actions button:hover {
+  border-color: #555b69;
+  color: #e2e4e9;
+}
+
+.note-empty {
+  padding: 28px 12px;
+  border: 1px dashed #2c3039;
+  border-radius: 10px;
+  color: #666c79;
+  text-align: center;
+  font: 700 9px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Light mode: only recolor the Notepad. Keep the exact same geometry as dark mode. */
+body.light-mode .note-global-state {
+  background: #ffffff !important;
+  border-color: #d9dde5 !important;
+  color: #687181 !important;
+}
+
+body.light-mode .notepad-editor-card,
+body.light-mode .note-library-card {
+  background: #ffffff !important;
+  border-color: #d9dde5 !important;
+}
+
+body.light-mode .notepad-toolbar,
+body.light-mode .note-library-head {
+  background: #f5f6f8 !important;
+  border-color: #dde0e6 !important;
+}
+
+body.light-mode .notepad-toolgroup {
+  border-color: #d9dde5 !important;
+}
+
+body.light-mode .note-tool-btn,
+body.light-mode .note-item-actions button {
+  background: #ffffff !important;
+  border-color: #d5dae3 !important;
+  color: #4e5665 !important;
+}
+
+body.light-mode .note-tool-btn:hover:not(:disabled),
+body.light-mode .note-item-actions button:hover {
+  background: #eceff4 !important;
+  border-color: #b9c0cc !important;
+  color: #171a20 !important;
+}
+
+body.light-mode .note-tool-btn.primary {
+  background: #eee9ff !important;
+  border-color: #cbbcff !important;
+  color: #61499f !important;
+}
+
+body.light-mode .note-tool-btn.danger:hover:not(:disabled),
+body.light-mode .note-item-actions .danger:hover {
+  background: #fff0f1 !important;
+  border-color: #e8b7bb !important;
+  color: #a33b42 !important;
+}
+
+body.light-mode .note-title-input {
+  background: #ffffff !important;
+  border-color: #e1e4ea !important;
+  color: #171a20 !important;
+}
+
+body.light-mode .note-title-input::placeholder,
+body.light-mode .notepad-editor-card > textarea#note::placeholder {
+  color: #9aa1ad !important;
+}
+
+body.light-mode .notepad-editor-card > textarea#note {
+  background: #ffffff !important;
+  color: #2b3039 !important;
+}
+
+body.light-mode .note-statusbar {
+  background: #f5f6f8 !important;
+  border-color: #dde0e6 !important;
+  color: #7a8290 !important;
+}
+
+body.light-mode .note-statusbar span {
+  background: transparent !important;
+  border: 0 !important;
+  color: inherit !important;
+}
+
+body.light-mode .note-statusbar #noteSavedState {
+  color: #39724d !important;
+}
+
+body.light-mode .note-statusbar #noteSavedState.error {
+  color: #a33b42 !important;
+}
+
+body.light-mode .note-library-head small,
+body.light-mode .note-library-head strong {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+body.light-mode .note-library-head small { color: #7a8290 !important; }
+body.light-mode .note-library-head strong { color: #2d333d !important; }
+
+body.light-mode .note-search-wrap {
+  background: #ffffff !important;
+  border-color: #d9dde5 !important;
+}
+
+body.light-mode .note-search-wrap > span {
+  background: transparent !important;
+  border: 0 !important;
+  color: #818998 !important;
+}
+
+body.light-mode .note-search-wrap input {
+  background: transparent !important;
+  color: #2b3039 !important;
+}
+
+body.light-mode .note-list-item {
+  background: #fbfbfc !important;
+  border-color: #e0e3e9 !important;
+}
+
+body.light-mode .note-list-item:hover {
+  background: #f4f5f8 !important;
+  border-color: #c9ced8 !important;
+}
+
+body.light-mode .note-list-item.selected {
+  border-color: #b7a5ec !important;
+  box-shadow: inset 3px 0 0 #8064ca;
+}
+
+body.light-mode .note-select,
+body.light-mode .note-select strong,
+body.light-mode .note-select span,
+body.light-mode .note-select small {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+body.light-mode .note-select strong { color: #2a2f38 !important; }
+body.light-mode .note-select span { color: #697180 !important; }
+body.light-mode .note-select small { color: #969daa !important; }
+
+body.light-mode .note-empty {
+  border-color: #d9dde5 !important;
+  background: #fafbfc !important;
+  color: #8a929f !important;
+}
+
+@media (max-width: 980px) {
+  .notepad-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .note-library-card {
+    min-height: 0;
+  }
+
+  .notes-list {
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 620px) {
+  .notepad-toolbar {
+    align-items: stretch;
+  }
+
+  .notepad-toolgroup {
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 8px;
+    border-right: 0;
+    border-bottom: 1px solid #292c35;
+  }
+
+  .notepad-toolgroup:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .note-tool-btn:not(.icon-tool) {
+    flex: 1 1 auto;
+  }
+
+  .note-statusbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .note-statusbar #noteStats {
+    text-align: right;
+  }
+
+  .note-statusbar #noteSavedState {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  body.light-mode .notepad-toolgroup {
+    border-color: #d9dde5 !important;
+  }
 }
