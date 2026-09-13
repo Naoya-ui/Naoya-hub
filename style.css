@@ -1044,3 +1044,671 @@ body.light-mode .loader-line span {
   font-weight: bold;
   cursor: pointer;
 }
+
+/* ================================
+   LIGHT MODE CHO SOCIAL LINKS
+================================ */
+/* Tự động đổi màu khi body có class light / light-mode */
+body.light .link > a,
+body.light-mode .link > a {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+body.light .link a div strong,
+body.light-mode .link a div strong {
+  color: #0f172a;
+}
+
+body.light .link a div small,
+body.light-mode .link a div small {
+  color: #64748b;
+}
+
+body.light .social-icon,
+body.light-mode .social-icon {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+body.light .link > a b,
+body.light-mode .link > a b {
+  color: #64748b;
+}
+/* ================================
+   LIGHT MODE CHO SOCIAL LINKS
+================================ */
+/* Tự động đổi màu khi body có class light / light-mode */
+body.light .link > a,
+body.light-mode .link > a {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+body.light .link a div strong,
+body.light-mode .link a div strong {
+  color: #0f172a;
+}
+
+body.light .link a div small,
+body.light-mode .link a div small {
+  color: #64748b;
+}
+
+body.light .social-icon,
+body.light-mode .social-icon {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+body.light .link > a b,
+body.light-mode .link > a b {
+  color: #64748b;
+} /* ================================
+   LIGHT MODE SUPER CONTRAST OVERRIDE
+================================ */
+body.light,
+body.light-mode {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+/* 1. Khôi phục độ đục 100% cho toàn bộ chữ (xóa bỏ hiệu ứng làm mờ opacity) */
+body.light *,
+body.light-mode * {
+  opacity: 1 !important;
+}
+
+/* 2. Tiêu đề phụ, Breadcrumb & Subtext (PROFILE, ABOUT ME, FAVORITES, ROLE...) */
+body.light small,
+body.light-mode small,
+body.light header,
+body.light-mode header,
+body.light label,
+body.light-mode label,
+body.light .title small,
+body.light-mode .title small {
+  color: #1e293b !important; /* Đổi sang màu xám đen đậm nét */
+  font-weight: 700 !important;
+}
+
+/* 3. Văn bản giới thiệu & Các giá trị chi tiết (Hello..., Ace Eater, Quiet...) */
+body.light p,
+body.light-mode p,
+body.light span,
+body.light-mode span,
+body.light div,
+body.light-mode div {
+  color: #0f172a !important; /* Đen sắc nét */
+}
+
+/* 4. Chữ trên Menu Sidebar bên trái (HOME, ABOUT, ARTWORK...) */
+body.light nav a,
+body.light-mode nav a,
+body.light .sidebar a,
+body.light-mode .sidebar a,
+body.light [class*="nav"] a,
+body.light-mode [class*="nav"] a {
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+
+/* 5. Tiêu đề chính (Maskguy\Naoya, H1, H2, Strong) */
+body.light h1,
+body.light h2,
+body.light h3,
+body.light strong,
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode strong {
+  color: #000000 !important;
+}
+
+/* 6. Thẻ Hashtag (#dark_fantasy, #digital_core...) */
+body.light .tags *,
+body.light [class*="tag"],
+body.light div > span,
+body.light-mode .tags *,
+body.light-mode [class*="tag"],
+body.light-mode div > span {
+  background: #ffffff !important; /* Đổi nền thẻ sang xám sáng */
+  color: #0f172a !important; /* Chữ đen sắc nét */
+  border: 1px solid #e2e8f0 !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+}
+
+/* 7. Đường kẻ phân cách & Viền khung */
+body.light hr,
+body.light-mode hr,
+body.light .card,
+body.light-mode .card,
+body.light .gamegrid > div,
+body.light-mode .gamegrid > div,
+body.light .stats > div,
+body.light-mode .stats > div {
+  border-color: #cbd5e1 !important;
+}
+/* ================================
+   BỐ CỤC GAME CARD VÀ LOGO ĐỐI DIỆN
+================================ */
+/* Chuyển thẻ card thành Flexbox đẩy chữ 1 bên, ảnh 1 bên */
+.gamegrid > div {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px !important;
+  min-height: 75px;
+}
+
+/* Khung chữ bên trái */
+.game-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  padding-right: 12px;
+}
+
+/* Logo vuông ở bên phải, nhỏ hơn card 10px */
+.game-logo {
+  width: 55px; /* Kích thước vuông cố định */
+  height: 55px;
+  aspect-ratio: 1 / 1; /* Ép tỷ lệ vuông 1:1 */
+  object-fit: cover; /* Chống vỡ/méo hình */
+  border-radius: 10px; /* Bo góc khớp với viền card */
+  border: 1px solid #2b2e38;
+  background: #171a22;
+  flex-shrink: 0; /* Không bị co ép khi tên game quá dài */
+}
+
+/* Tự động đổi màu viền logo khi bật Light Mode */
+body.light .game-logo,
+body.light-mode .game-logo {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+/* ================================
+   BỐ CỤC GAME CARD VÀ LOGO ĐỐI DIỆN
+================================ */
+/* Chuyển thẻ card thành Flexbox đẩy chữ 1 bên, ảnh 1 bên */
+.gamegrid > div {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px !important;
+  min-height: 75px;
+}
+
+/* Khung chữ bên trái */
+.game-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  padding-right: 12px;
+}
+
+/* Logo vuông ở bên phải, nhỏ hơn card 10px */
+.game-logo {
+  width: 55px; /* Kích thước vuông cố định */
+  height: 55px;
+  aspect-ratio: 1 / 1; /* Ép tỷ lệ vuông 1:1 */
+  object-fit: cover; /* Chống vỡ/méo hình */
+  border-radius: 10px; /* Bo góc khớp với viền card */
+  border: 1px solid #2b2e38;
+  background: #171a22;
+  flex-shrink: 0; /* Không bị co ép khi tên game quá dài */
+}
+
+/* Tự động đổi màu viền logo khi bật Light Mode */
+body.light .game-logo,
+body.light-mode .game-logo {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+/* Sửa hiển thị cho thẻ Sketch Card */
+.sketch-card {
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sketch-card h3 {
+  margin: 6px 0 4px;
+  font-size: 16px;
+}
+
+/* Light Mode tương thích cho Media Cards */
+body.light .media-item,
+body.light-mode .media-item {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+body.light .sketch-card h3,
+body.light-mode .sketch-card h3,
+body.light .audio-info h3,
+body.light-mode .audio-info h3 {
+  color: #0f172a !important;
+}
+/* Font & hiệu ứng LED điện tử kiểu đèn giao thông */
+#afkTimer {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 4.5rem;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: #00ff66; /* Màu xanh lá neon đèn giao thông */
+  text-shadow:
+    0 0 10px rgba(0, 255, 102, 0.7),
+    0 0 20px rgba(0, 255, 102, 0.3);
+  margin: 16px 0;
+  text-align: center;
+  user-select: none;
+}
+
+/* Tương thích Light Mode sắc nét */
+body.light #afkTimer,
+body.light-mode #afkTimer {
+  color: #059669 !important; /* Xanh lá kỹ thuật số đậm */
+  text-shadow: 0 0 8px rgba(5, 150, 105, 0.3) !important;
+}
+/* Khung AFK gọn gàng căn giữa */
+.afk-wrapper {
+  max-width: 480px;
+  margin: 20px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.afk-sub {
+  color: #7e8390;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.afk-title {
+  font-size: 28px;
+  margin: 4px 0 12px;
+  color: #fff;
+}
+
+/* Đồng hồ điện tử LED */
+.afk-timer {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 3.8rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #00ff66;
+  text-shadow: 0 0 12px rgba(0, 255, 102, 0.4);
+  margin: 10px 0 20px;
+  user-select: none;
+}
+
+/* Khung chi tiết dạng danh sách sạch */
+.afk-card {
+  width: 100%;
+  background: #0f1116;
+  border: 1px solid #252832;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.afk-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.afk-row span {
+  color: #64748b;
+  font-weight: 600;
+}
+.afk-row strong {
+  color: #e2e8f0;
+}
+
+/* Nút bấm Contact */
+.afk-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #e2e8f0;
+  color: #0f172a;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+
+.afk-btn:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+}
+
+/* Tương thích Light Mode */
+body.light .afk-title,
+body.light-mode .afk-title {
+  color: #0f172a !important;
+}
+body.light .afk-timer,
+body.light-mode .afk-timer {
+  color: #059669 !important;
+  text-shadow: none !important;
+}
+body.light .afk-card,
+body.light-mode .afk-card {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+body.light .afk-row strong,
+body.light-mode .afk-row strong {
+  color: #0f172a !important;
+}
+body.light .afk-btn,
+body.light-mode .afk-btn {
+  background: #0f172a !important;
+  color: #ffffff !important;
+}
+/* ================================
+   CẤU TRÚC HOÀN CHỈNH AFK / CONTACT ZONE
+================================ */
+#contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  padding: 20px;
+}
+
+.afk-wrapper {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.afk-sub {
+  color: #64748b;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.afk-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 6px 0 16px;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.afk-timer {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 3.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #00ff66;
+  text-shadow: 0 0 14px rgba(0, 255, 102, 0.4);
+  margin-bottom: 24px;
+  user-select: none;
+}
+
+.afk-card {
+  width: 100%;
+  background: #0f1116;
+  border: 1px solid #232733;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.afk-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.afk-row span {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.afk-row strong {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.afk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 24px;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.afk-btn:hover {
+  transform: translateY(-2px);
+  background: #e2e8f0;
+  box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+/* Ép kiểu sắc nét cho Light Mode */
+body.light #contact,
+body.light-mode #contact {
+  background: transparent;
+}
+
+body.light .afk-title,
+body.light-mode .afk-title {
+  color: #0f172a !important;
+}
+
+body.light .afk-sub,
+body.light-mode .afk-sub {
+  color: #475569 !important;
+}
+
+body.light .afk-timer,
+body.light-mode .afk-timer {
+  color: #059669 !important;
+  text-shadow: none !important;
+}
+
+body.light .afk-card,
+body.light-mode .afk-card {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+}
+
+body.light .afk-row strong,
+body.light-mode .afk-row strong {
+  color: #0f172a !important;
+}
+
+body.light .afk-btn,
+body.light-mode .afk-btn {
+  background: #0f172a !important;
+  color: #ffffff !important;
+}
+
+body.light .afk-btn:hover,
+body.light-mode .afk-btn:hover {
+  background: #1e293b !important;
+}
+#contact,
+#afk {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  padding: 20px;
+}
+
+/* Ép hiển thị dạng Flex Center khi trang active */
+#contact.active,
+#afk.active {
+  display: flex !important;
+}
+
+.afk-wrapper {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.afk-sub {
+  color: #64748b;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.afk-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 6px 0 16px;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.afk-timer {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 3.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #00ff66;
+  text-shadow: 0 0 14px rgba(0, 255, 102, 0.4);
+  margin-bottom: 24px;
+  user-select: none;
+}
+
+.afk-card {
+  width: 100%;
+  background: #0f1116;
+  border: 1px solid #232733;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.afk-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.afk-row span {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.afk-row strong {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.afk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 24px;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.afk-btn:hover {
+  transform: translateY(-2px);
+  background: #e2e8f0;
+}
+
+/* Ghi đè Light Mode cho cả 2 ID */
+body.light #contact,
+body.light-mode #contact,
+body.light #afk,
+body.light-mode #afk {
+  background: transparent;
+}
+
+body.light .afk-title,
+body.light-mode .afk-title {
+  color: #0f172a !important;
+}
+body.light .afk-sub,
+body.light-mode .afk-sub {
+  color: #475569 !important;
+}
+body.light .afk-timer,
+body.light-mode .afk-timer {
+  color: #059669 !important;
+  text-shadow: none !important;
+}
+body.light .afk-card,
+body.light-mode .afk-card {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+}
+body.light .afk-row strong,
+body.light-mode .afk-row strong {
+  color: #0f172a !important;
+}
+body.light .afk-btn,
+body.light-mode .afk-btn {
+  background: #0f172a !important;
+  color: #ffffff !important;
+}

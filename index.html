@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Naoya Style Hub</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="loader" class="loader">
@@ -37,8 +41,8 @@
           </span>
         </div>
         <div class="now-playing">
-          <small>PLAYING A GAME</small>
-          <strong>♫ SPOTIFY / LOCAL</strong>
+          <small>click on slider to run music</small>
+          <strong>♫ BGM / LOCAL</strong>
           <span
             id="volumeText"
             style="
@@ -73,7 +77,7 @@
           </button>
           <button class="nav" data-page="about">◉ <span>ABOUT</span></button>
           <button class="nav" data-page="artwork">
-            ▧ <span>ARTWORK</span>
+            ▧ <span>GALLERY</span>
           </button>
           <button class="nav" data-page="notepad">
             ✎ <span>NOTEPAD</span>
@@ -181,28 +185,64 @@
               </div>
             </article>
           </div>
-          <article class="card games">
-            <header>GAMES I'M PLAYING</header>
-            <div class="gamegrid">
-              <div>
-                <small>01</small><b>Limbus Company</b
-                ><span>ACTIVE · Turn-based RPG</span>
+          <div class="gamegrid">
+            <!-- Game 01 -->
+            <div>
+              <div class="game-info">
+                <small>01</small>
+                <strong>Limbus Company</strong>
+                <small>ACTIVE - Turn-based RPG</small>
               </div>
-              <div>
-                <small>02</small><b>Genshin Impact</b
-                ><span>ACTIVE · Open World</span>
-              </div>
-              <div>
-                <small>03</small><b>Roblox</b><span>ACTIVE · Action RPG</span>
-              </div>
-              <div>
-                <small>04</small><b>Fear and Hunger</b
-                ><span>COMPLETED · Dark Fantasy</span>
-              </div>
+              <img
+                src="../../assets/icons/limbus.jpeg"
+                class="game-logo"
+                alt="Limbus Logo"
+              />
             </div>
-          </article>
-        </section>
 
+            <!-- Game 02 -->
+            <div>
+              <div class="game-info">
+                <small>02</small>
+                <strong>Genshin Impact</strong>
+                <small>ACTIVE - Open World</small>
+              </div>
+              <img
+                src="../../assets/icons/genshin.jpeg"
+                class="game-logo"
+                alt="Genshin Logo"
+              />
+            </div>
+
+            <!-- Game 03 -->
+            <div>
+              <div class="game-info">
+                <small>03</small>
+                <strong>SMT:Perona/Megami Ibunruku Persona</strong>
+                <small>COMPLETED - Turn-base RPG</small>
+              </div>
+              <img
+                src="../../assets/icons/Persona.jpeg"
+                class="game-logo"
+                alt="Persona Logo"
+              />
+            </div>
+
+            <!-- Game 04 -->
+            <div>
+              <div class="game-info">
+                <small>04</small>
+                <strong>Fear and Hunger</strong>
+                <small>COMPLETED - Dark Fantasy</small>
+              </div>
+              <img
+                src="../../assets/icons/funger.jpeg"
+                class="game-logo"
+                alt="Fear & Hunger Logo"
+              />
+            </div>
+          </div>
+        </section>
         <section id="artwork" class="page">
           <div class="title">
             <div>
@@ -212,59 +252,66 @@
             </div>
           </div>
 
+          <!-- BỘ NÚT CHUYỂN TAB -->
           <div class="tabs">
             <button class="tab active" data-filter="artwork">Artwork</button>
             <button class="tab" data-filter="sketch">Sketch</button>
             <button class="tab" data-filter="audio">Audio</button>
           </div>
+
+          <!-- KHUNG HIỂN THỊ MEDIA BENTO GRID -->
           <div class="media-grid" id="mediaGrid">
-            <!-- ARTWORK TAB -->
-            <div class="media-item tile tall art" data-category="artwork">
-              <img src="../../assets/artwork/bocchi.png" alt="Art 1" />
+            <!-- 1. ARTWORK TAB (Hiện mặc định) -->
+            <div class="media-item tall" data-category="artwork">
+              <img src="../../assets/artwork/bocchi.png" alt="Bocchi" />
               <div class="media-overlay">
                 <span class="media-tag">#Roblox</span>
                 <strong>BOCCHI DIGITAL</strong>
               </div>
             </div>
-            <div class="media-item art" data-category="artwork">
-              <img src="../../assets/artwork/image.png" alt="Art 2" />
+
+            <div class="media-item" data-category="artwork">
+              <img src="../../assets/artwork/image.png" alt="Project Slop" />
               <div class="media-overlay">
                 <span class="media-tag">#DON</span>
                 <strong>PROJECT SLOP</strong>
               </div>
             </div>
-            <div class="media-item art" data-category="artwork">
-              <img src="../../assets/artwork/kcorp.webp" alt="Art 3" />
+
+            <div class="media-item" data-category="artwork">
+              <img src="../../assets/artwork/kcorp.webp" alt="K-Corp" />
               <div class="media-overlay">
                 <span class="media-tag">#Kcorp</span>
                 <strong>K-CORP DISTRICT</strong>
               </div>
             </div>
-            <div class="media-item art wide" data-category="artwork">
-              <img src="../../assets/artwork/dodoro.png" alt="Art 4" />
+
+            <div class="media-item wide" data-category="artwork">
+              <img src="../../assets/artwork/dodoro.png" alt="Dodoro" />
               <div class="media-overlay">
                 <span class="media-tag">#ENVIRONMENT</span>
                 <strong>DODORO</strong>
               </div>
             </div>
 
-            <!-- SKETCH TAB -->
-            <div class="media-item sketch wide hidden" data-category="sketch">
-              <div class="tile sketch">
+            <!-- 2. SKETCH TAB (Ẩn mặc định) -->
+            <div class="media-item wide hidden" data-category="sketch">
+              <div class="sketch-card">
                 <span class="media-tag">#DRAFT_01</span>
                 <h3>Limbus Concept Draft</h3>
                 <p>Rough lines / Pencil shading practice</p>
               </div>
             </div>
-            <div class="media-item sketch hidden" data-category="sketch">
-              <div class="tile sketch">
+
+            <div class="media-item hidden" data-category="sketch">
+              <div class="sketch-card">
                 <span class="media-tag">#DRAFT_02</span>
                 <h3>Character Pose</h3>
               </div>
             </div>
 
-            <!-- AUDIO TAB -->
-            <div class="media-item tile wide audio" data-category="audio">
+            <!-- 3. AUDIO TAB (Ẩn mặc định) -->
+            <div class="media-item wide hidden" data-category="audio">
               <div class="audio-card">
                 <div class="audio-info">
                   <span class="media-tag">#OST_TRACK</span>
@@ -276,7 +323,7 @@
             </div>
           </div>
         </section>
-
+        <!-- KHU VỰC NOTEPAD -->
         <section id="notepad" class="page">
           <div class="title">
             <div>
@@ -292,26 +339,44 @@
               placeholder="write something..."
             ></textarea>
             <div class="note-actions">
-              <span>Saved locally in your browser</span
-              ><button id="add">ADD</button>
+              <span>Saved locally in your browser</span>
+              <button id="add">ADD</button>
             </div>
           </article>
           <div id="notes"></div>
         </section>
 
+        <!-- KHU VỰC AFK ZONE (Đã đổi ID thành "afk") -->
         <section id="contact" class="page">
-          <div class="afk card">
-            <small>SYSTEM STATUS(AFK farm)</small>
-            <h2>AFK MODE</h2>
-            <div id="clock">00:00:00</div>
-            <div class="terminal">
-              <p><b>OPERATOR</b> Naoya</p>
-              <p><b>ORIGIN</b> Vietnam</p>
-              <p><b>STATUS</b> AFK / exploring</p>
+          <div class="afk-wrapper">
+            <small class="afk-sub">SYSTEM STATUS (AFK farm)</small>
+            <h2 class="afk-title">AFK MODE</h2>
+
+            <!-- Đồng hồ LED -->
+            <div id="afkTimer" class="afk-timer">00:00:00</div>
+
+            <!-- Khung thông tin -->
+            <div class="afk-card">
+              <div class="afk-row">
+                <span>OPERATOR</span><strong>Naoya</strong>
+              </div>
+              <div class="afk-row">
+                <span>ORIGIN</span><strong>Vietnam</strong>
+              </div>
+              <div class="afk-row">
+                <span>STATUS</span><strong>AFK / exploring</strong>
+              </div>
             </div>
-            <a class="contact" href="mailto:hello@example.com"
-              >CONTACT OPERATOR ↗</a
+
+            <!-- Nút liên hệ -->
+            <a
+              href="https://x.com/Naoya_Totodile"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="afk-btn"
             >
+              CONTACT OPERATOR ↗
+            </a>
           </div>
         </section>
       </main>

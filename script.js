@@ -218,3 +218,132 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+// Bộ đếm AFK thời gian thực (Chuẩn xác 100%, không bị trôi khi ẩn tab)
+document.addEventListener("DOMContentLoaded", () => {
+  const timerElement = document.getElementById("afkTimer");
+  if (!timerElement) return;
+
+  const startTime = Date.now();
+
+  function updateAFKTimer() {
+    const elapsedMs = Date.now() - startTime;
+    const totalSecs = Math.floor(elapsedMs / 1000);
+
+    const hrs = String(Math.floor(totalSecs / 3600)).padStart(2, "0");
+    const mins = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, "0");
+    const secs = String(totalSecs % 60).padStart(2, "0");
+
+    timerElement.textContent = `${hrs}:${mins}:${secs}`;
+  }
+
+  // Chạy ngay lập tức 1 lần để không bị trễ 1s đầu tiên
+  updateAFKTimer();
+  setInterval(updateAFKTimer, 1000);
+});
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Kích hoạt đồng hồ AFK thời gian thực
+  const timerElement = document.getElementById("afkTimer");
+  if (timerElement) {
+    const startTime = Date.now();
+    const updateAFKTimer = () => {
+      const elapsedMs = Date.now() - startTime;
+      const totalSecs = Math.floor(elapsedMs / 1000);
+      const hrs = String(Math.floor(totalSecs / 3600)).padStart(2, "0");
+      const mins = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, "0");
+      const secs = String(totalSecs % 60).padStart(2, "0");
+      timerElement.textContent = `${hrs}:${mins}:${secs}`;
+    };
+    updateAFKTimer();
+    setInterval(updateAFKTimer, 1000);
+  }
+
+  // 2. Chuyển đổi Trang Sidebar an toàn
+  const navLinks = document.querySelectorAll(".sidebar a, .sidebar button");
+  const pages = document.querySelectorAll(".page");
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const targetId =
+        link.dataset.page || link.getAttribute("href")?.replace("#", "");
+      if (!targetId) return;
+
+      const targetPage = document.getElementById(targetId);
+      if (!targetPage) return;
+
+      e.preventDefault();
+      navLinks.forEach((l) => l.classList.remove("active"));
+      link.classList.add("active");
+
+      pages.forEach((page) => {
+        page.classList.remove("active");
+        page.style.display = "none";
+      });
+
+      targetPage.classList.add("active");
+      targetPage.style.display = targetId === "contact" ? "flex" : "block";
+    });
+  });
+});
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Đồng hồ AFK thời gian thực
+  const timerElement = document.getElementById("afkTimer");
+  if (timerElement) {
+    const startTime = Date.now();
+    const updateAFKTimer = () => {
+      const elapsedMs = Date.now() - startTime;
+      const totalSecs = Math.floor(elapsedMs / 1000);
+      const hrs = String(Math.floor(totalSecs / 3600)).padStart(2, "0");
+      const mins = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, "0");
+      const secs = String(totalSecs % 60).padStart(2, "0");
+      timerElement.textContent = `${hrs}:${mins}:${secs}`;
+    };
+    updateAFKTimer();
+    setInterval(updateAFKTimer, 1000);
+  }
+
+  // 2. Chuyển trang Sidebar (Hỗ trợ cả "afk" và "contact")
+  const navLinks = document.querySelectorAll(".sidebar a, .sidebar button");
+  const pages = document.querySelectorAll(".page");
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      let targetId =
+        link.dataset.page || link.getAttribute("href")?.replace("#", "");
+      if (!targetId) return;
+
+      // Đồng bộ nếu nút ghi "contact" thì tự hiểu là trang "afk"
+      if (targetId === "contact") targetId = "afk";
+
+      const targetPage = document.getElementById(targetId);
+      if (!targetPage) return;
+
+      e.preventDefault();
+
+      navLinks.forEach((l) => l.classList.remove("active"));
+      link.classList.add("active");
+
+      pages.forEach((page) => {
+        page.classList.remove("active");
+        page.style.display = "none";
+      });
+
+      targetPage.classList.add("active");
+      targetPage.style.display = targetId === "afk" ? "flex" : "block";
+    });
+  });
+
+  // 3. Xử lý Notepad cơ bản (Chống lỗi Null nếu thiếu nút)
+  const addBtn = document.getElementById("add");
+  const noteInput = document.getElementById("note");
+  const notesContainer = document.getElementById("notes");
+
+  addBtn?.addEventListener("click", () => {
+    if (!noteInput?.value.trim()) return;
+    const noteDiv = document.createElement("div");
+    noteDiv.className = "card";
+    noteDiv.style.marginTop = "10px";
+    noteDiv.textContent = noteInput.value;
+    notesContainer?.appendChild(noteDiv);
+    noteInput.value = "";
+  });
+});
