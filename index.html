@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Naoya Style Hub</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=light-v4" />
     <link
       href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
@@ -63,8 +63,9 @@
             class="custom-range"
           />
 
+          <!-- Background music: controlled only by the sidebar volume slider. -->
           <audio
-            id="music"
+            id="backgroundMusic"
             src="assets/audio/bus_theme.mp3"
             autoplay
             loop
@@ -254,8 +255,8 @@
 
           <!-- BỘ NÚT CHUYỂN TAB -->
           <div class="tabs">
-            <button class="tab active" data-filter="artwork">Artwork</button>
-            <button class="tab" data-filter="sketch">Sketch</button>
+            <button class="tab active" data-filter="artwork">Gallery</button>
+            <button class="tab" data-filter="game">Game Project</button>
             <button class="tab" data-filter="audio">Audio</button>
           </div>
 
@@ -294,32 +295,71 @@
               </div>
             </div>
 
-            <!-- 2. SKETCH TAB (Ẩn mặc định) -->
-            <div class="media-item wide hidden" data-category="sketch">
+            <!-- 2. GAME PROJECT TAB (Ẩn mặc định) -->
+            <div class="media-item wide hidden" data-category="game">
               <div class="sketch-card">
-                <span class="media-tag">#DRAFT_01</span>
-                <h3>Limbus Concept Draft</h3>
-                <p>Rough lines / Pencil shading practice</p>
+                <span class="media-tag">#PJ_01</span>
+                <h3>Limbus Feel the Don</h3>
+                <p>Rough light novel lines / renpy practice</p>
               </div>
             </div>
 
-            <div class="media-item hidden" data-category="sketch">
+            <div class="media-item hidden" data-category="game">
               <div class="sketch-card">
-                <span class="media-tag">#DRAFT_02</span>
-                <h3>Character Pose</h3>
+                <span class="media-tag">#PJ_02</span>
+                <h3>JAVA slop</h3>
               </div>
             </div>
 
             <!-- 3. AUDIO TAB (Ẩn mặc định) -->
             <div class="media-item wide hidden" data-category="audio">
-              <div class="audio-card">
-                <div class="audio-info">
-                  <span class="media-tag">#OST_TRACK</span>
-                  <h3>City Ambient BGM</h3>
-                  <small>320kbps · Stereo</small>
+              <div class="audio-card" id="audioPlayer">
+                <!-- This player has its OWN audio element, independent from the BGM above. -->
+                <audio id="music" preload="metadata"></audio>
+                <div class="audio-cover">♫</div>
+                <div class="audio-main">
+                  <div class="audio-top">
+                    <div class="audio-info">
+                      <span class="media-tag">#OST_TRACK</span>
+                      <h3 id="trackTitle">City Ambient Track</h3>
+                      <small id="trackMeta">Local audio · Stereo</small>
+                    </div>
+                    <div class="audio-status"><span id="audioStatusDot"></span><span id="audioStatus">PAUSED</span></div>
+                  </div>
+
+                  <div class="audio-progress-row">
+                    <span id="currentTime">0:00</span>
+                    <input id="progressBar" type="range" min="0" max="100" value="0" step="0.1" aria-label="Music progress" />
+                    <span id="duration">0:00</span>
+                  </div>
+
+                  <div class="audio-controls">
+                    <button id="prevTrack" class="player-btn small" type="button" title="Previous">⏮</button>
+                    <button id="playBtn" class="player-btn main" type="button" title="Play">▶</button>
+                    <button id="nextTrack" class="player-btn small" type="button" title="Next">⏭</button>
+                    <button id="muteBtn" class="player-btn small" type="button" title="Mute">🔊</button>
+                    <div class="mini-volume">
+                      <span>VOL</span>
+                      <input id="playerVolume" type="range" min="0" max="100" value="24" aria-label="Player volume" />
+                    </div>
+                    <div class="audio-wave" aria-hidden="true">
+                      <i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                  </div>
                 </div>
-                <button class="play-btn">▶ PLAY</button>
               </div>
+            </div>
+
+            <!-- SPOTIFY-STYLE PLAYLIST -->
+            <div class="playlist-panel hidden" data-category="audio">
+              <div class="playlist-header">
+                <div>
+                  <span class="media-tag">#PLAYLIST</span>
+                  <h3>Audio Library</h3>
+                </div>
+                <span id="playlistCount">5 TRACKS</span>
+              </div>
+              <div id="playlist" class="playlist" aria-label="Music playlist"></div>
             </div>
           </div>
         </section>
@@ -381,6 +421,6 @@
         </section>
       </main>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js?v=light-v3"></script>
   </body>
 </html>

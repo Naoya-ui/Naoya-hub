@@ -1170,12 +1170,10 @@ body.light-mode strong {
 }
 
 /* 6. Thẻ Hashtag (#dark_fantasy, #digital_core...) */
-body.light .tags *,
-body.light [class*="tag"],
-body.light div > span,
-body.light-mode .tags *,
-body.light-mode [class*="tag"],
-body.light-mode div > span {
+body.light .tags span,
+body.light .media-tag,
+body.light-mode .tags span,
+body.light-mode .media-tag {
   background: #ffffff !important; /* Đổi nền thẻ sang xám sáng */
   color: #0f172a !important; /* Chữ đen sắc nét */
   border: 1px solid #e2e8f0 !important;
@@ -1711,4 +1709,801 @@ body.light .afk-btn,
 body.light-mode .afk-btn {
   background: #0f172a !important;
   color: #ffffff !important;
+}
+
+
+/* ================================
+   MINI MUSIC PLAYER
+================================ */
+.audio-card {
+  position: relative;
+  gap: 18px;
+  padding: 18px;
+  min-height: 150px;
+  overflow: hidden;
+}
+
+.audio-cover {
+  width: 82px;
+  height: 82px;
+  min-width: 82px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #a855f7, #252936);
+  color: #fff;
+  font-size: 34px;
+  box-shadow: 0 0 30px rgba(168, 85, 247, .25);
+}
+
+.audio-main { flex: 1; min-width: 0; }
+.audio-top { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+.audio-info h3 { margin: 4px 0; }
+.audio-status { font: 10px "Share Tech Mono", monospace; letter-spacing: .12em; opacity: .7; white-space: nowrap; }
+.audio-status span:first-child { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #666; margin-right: 6px; }
+.audio-card.is-playing .audio-status span:first-child { background: #a855f7; box-shadow: 0 0 10px #a855f7; }
+.audio-progress-row { display: grid; grid-template-columns: 38px 1fr 38px; align-items: center; gap: 9px; margin: 17px 0 10px; font-size: 10px; opacity: .7; }
+.audio-progress-row input, .mini-volume input { width: 100%; accent-color: #a855f7; cursor: pointer; }
+.audio-controls {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+}
+.player-btn {
+  border: 1px solid rgba(168,85,247,.35);
+  background: rgba(255,255,255,.04);
+  color: inherit;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: .2s ease;
+  display: inline-grid;
+  place-items: center;
+  text-align: center;
+  line-height: 1;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+}
+.player-btn:hover { transform: translateY(-1px); background: rgba(168,85,247,.16); border-color: #a855f7; }
+.player-btn.main {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42px;
+  height: 42px;
+  transform: translate(-50%, -50%);
+  background: #a855f7;
+  color: #fff;
+  border-color: #a855f7;
+  font-size: 15px;
+  z-index: 2;
+}
+.player-btn.main:hover {
+  transform: translate(-50%, -50%) scale(1.04);
+}
+.player-btn.main {
+  padding: 0;
+  line-height: 1;
+  place-items: center;
+}
+
+.mini-volume { display: flex; align-items: center; gap: 7px; width: 125px; margin-left: 6px; font: 9px "Share Tech Mono", monospace; opacity: .8; }
+.audio-wave { display: flex; align-items: end; gap: 3px; height: 28px; margin-left: auto; }
+.audio-wave i { display: block; width: 3px; height: 8px; border-radius: 3px; background: #a855f7; opacity: .45; }
+.audio-card.is-playing .audio-wave i { animation: musicWave .8s ease-in-out infinite alternate; opacity: 1; }
+.audio-wave i:nth-child(2) { animation-delay: .12s; }
+.audio-wave i:nth-child(3) { animation-delay: .24s; }
+.audio-wave i:nth-child(4) { animation-delay: .36s; }
+.audio-wave i:nth-child(5) { animation-delay: .48s; }
+@keyframes musicWave { from { height: 6px; } to { height: 26px; } }
+
+@media (max-width: 650px) {
+  .audio-card { align-items: flex-start; }
+  .audio-cover { width: 58px; height: 58px; min-width: 58px; font-size: 25px; }
+  .audio-top { flex-direction: column; gap: 5px; }
+  .audio-controls { flex-wrap: wrap; }
+  .audio-wave { display: none; }
+}
+
+
+/* ================================
+   SPOTIFY-STYLE PLAYLIST
+================================ */
+.playlist-panel {
+  grid-column: 1 / -1;
+  margin-top: 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 14px;
+}
+
+.playlist-panel.hidden {
+  display: none !important;
+}
+
+.playlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.playlist-header h3 {
+  margin: 4px 0 0;
+  font-size: 15px;
+}
+
+.playlist-header > span {
+  font: 9px "Share Tech Mono", monospace;
+  letter-spacing: .12em;
+  opacity: .5;
+}
+
+.playlist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 330px;
+  overflow-y: auto;
+  padding-right: 3px;
+}
+
+.playlist::-webkit-scrollbar { width: 5px; }
+.playlist::-webkit-scrollbar-thumb {
+  background: rgba(168,85,247,.45);
+  border-radius: 10px;
+}
+
+.playlist-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 28px 42px minmax(0, 1fr) auto 28px;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.playlist-item:hover {
+  background: rgba(168,85,247,.08);
+  border-color: rgba(168,85,247,.16);
+}
+
+.playlist-item.active {
+  background: rgba(168,85,247,.12);
+  border-color: rgba(168,85,247,.22);
+}
+
+.playlist-number {
+  font: 10px "Share Tech Mono", monospace;
+  opacity: .45;
+  text-align: center;
+}
+
+.playlist-item.active .playlist-number { color: #a855f7; opacity: 1; }
+
+.playlist-cover {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #a855f7, #292235);
+  color: #fff;
+  font-size: 18px;
+  box-shadow: 0 4px 16px rgba(168,85,247,.12);
+}
+
+.playlist-track-info { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.playlist-track-info strong {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.playlist-track-info small {
+  font-size: 10px;
+  opacity: .52;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-meta {
+  font: 9px "Share Tech Mono", monospace;
+  opacity: .4;
+  white-space: nowrap;
+}
+
+.playlist-play {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #a855f7;
+  font-size: 10px;
+  opacity: 0;
+  transition: opacity .18s ease, transform .18s ease;
+}
+
+.playlist-item:hover .playlist-play,
+.playlist-item.active .playlist-play,
+.playlist-item.playing .playlist-play { opacity: 1; }
+
+.playlist-item.playing .playlist-play { background: #a855f7; color: #fff; }
+
+@media (max-width: 650px) {
+  .playlist-item { grid-template-columns: 24px 40px minmax(0, 1fr) 28px; gap: 8px; }
+  .playlist-meta { display: none; }
+  .playlist-cover { width: 40px; height: 40px; }
+}
+
+/* =========================================================
+   FINAL LIGHT MODE POLISH — clean, soft, dark-mode parity
+   ========================================================= */
+body.light-mode {
+  background: #eef1f6 !important;
+  color: #20232b !important;
+}
+
+body.light-mode .shell {
+  background: #f7f8fb !important;
+  border-color: #d9dde7 !important;
+  box-shadow: 0 24px 70px rgba(37, 42, 54, 0.12) !important;
+}
+
+body.light-mode .sidebar {
+  background: #f1f3f8 !important;
+  border-right-color: #d9dde7 !important;
+}
+
+body.light-mode .main {
+  background: #f8f9fc !important;
+}
+
+/* restore intentional muted hierarchy instead of forcing every element black */
+body.light-mode *,
+body.light-mode div,
+body.light-mode span {
+  opacity: initial !important;
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode strong,
+body.light-mode b {
+  color: #1f2430 !important;
+}
+
+body.light-mode p,
+body.light-mode .copy,
+body.light-mode .title p,
+body.light-mode .hero p,
+body.light-mode .profile p,
+body.light-mode .muted {
+  color: #697182 !important;
+}
+
+body.light-mode small,
+body.light-mode header,
+body.light-mode label,
+body.light-mode .title small,
+body.light-mode .rows small,
+body.light-mode .gamegrid small {
+  color: #7b8495 !important;
+  font-weight: 500 !important;
+}
+
+body.light-mode .card,
+body.light-mode .now-playing,
+body.light-mode .media-item,
+body.light-mode .afk-card {
+  background: #ffffff !important;
+  border-color: #dde1ea !important;
+  box-shadow: 0 10px 28px rgba(31, 36, 48, 0.055) !important;
+}
+
+body.light-mode .hero {
+  background: linear-gradient(145deg, #ffffff 0%, #f0f2f8 100%) !important;
+  border-color: #dce1eb !important;
+}
+
+body.light-mode .topbar {
+  border-bottom-color: #dce1ea !important;
+  color: #747d8e !important;
+}
+
+body.light-mode .topbar button {
+  background: #ffffff !important;
+  border-color: #d8dde7 !important;
+  color: #5f6878 !important;
+  box-shadow: 0 4px 12px rgba(40, 45, 58, 0.05);
+}
+
+body.light-mode .nav {
+  color: #687184 !important;
+}
+
+body.light-mode .nav:hover {
+  background: #e9ecf3 !important;
+  border-color: #d7dce7 !important;
+  color: #282d39 !important;
+}
+
+body.light-mode .nav.active {
+  background: #ffffff !important;
+  border-color: #cfd5e1 !important;
+  color: #232833 !important;
+  box-shadow: 0 6px 16px rgba(37, 42, 54, 0.07) !important;
+}
+
+body.light-mode .stats div,
+body.light-mode .gamegrid > div,
+body.light-mode textarea,
+body.light-mode .terminal {
+  background: #f7f8fb !important;
+  border-color: #e0e4ec !important;
+  color: #2c3240 !important;
+}
+
+body.light-mode .stats b,
+body.light-mode .rows span,
+body.light-mode .game-info strong {
+  color: #303644 !important;
+}
+
+body.light-mode .tags span,
+body.light-mode .media-tag {
+  background: #f1ecff !important;
+  color: #7c3aed !important;
+  border: 1px solid #ded0ff !important;
+  font-weight: 600 !important;
+}
+
+body.light-mode .badge,
+body.light-mode .status {
+  background: #f4f6fa !important;
+  color: #667085 !important;
+  border-color: #dce1ea !important;
+}
+
+body.light-mode .online {
+  color: #4e8b63 !important;
+}
+body.light-mode .online span {
+  background: #61a975 !important;
+  border: 0 !important;
+}
+
+body.light-mode .link > a {
+  background: #ffffff !important;
+  border: 1px solid #e0e4ec !important;
+  color: #242936 !important;
+  box-shadow: 0 7px 20px rgba(31, 36, 48, 0.045) !important;
+}
+body.light-mode .link > a:hover {
+  background: #f7f5ff !important;
+  border-color: #d8c9ff !important;
+  transform: translateY(-1px);
+}
+body.light-mode .link a div strong { color: #272d39 !important; }
+body.light-mode .link a div small { color: #7d8697 !important; }
+body.light-mode .link > a b { color: #8b5cf6 !important; }
+body.light-mode .social-icon {
+  background: #f7f8fb !important;
+  border-color: #e0e4ec !important;
+}
+
+/* Gallery / Game Project */
+body.light-mode .tabs {
+  border-color: #dce1ea !important;
+}
+body.light-mode .tab {
+  background: #f5f6fa !important;
+  color: #687184 !important;
+  border-color: #dce1ea !important;
+}
+body.light-mode .tab:hover {
+  background: #eeebfb !important;
+  color: #6d3cd6 !important;
+  border-color: #d9ccfa !important;
+}
+body.light-mode .tab.active {
+  background: #ffffff !important;
+  color: #6f3bd2 !important;
+  border-color: #bfa6f4 !important;
+  box-shadow: 0 5px 14px rgba(126, 87, 194, 0.10) !important;
+}
+body.light-mode .sketch-card {
+  background: linear-gradient(145deg, #ffffff, #f7f5fc) !important;
+}
+body.light-mode .sketch-card h3 { color: #252b37 !important; }
+
+/* Audio player */
+body.light-mode .audio-card {
+  background: linear-gradient(145deg, #ffffff, #f7f6fb) !important;
+  border-color: #dedbea !important;
+}
+body.light-mode .audio-info h3 { color: #242a36 !important; }
+body.light-mode .audio-status { color: #727b8c !important; }
+body.light-mode .audio-progress-row { color: #737c8d !important; }
+body.light-mode .player-btn {
+  background: #ffffff !important;
+  color: #6f3bd2 !important;
+  border-color: #d8c8f3 !important;
+  box-shadow: 0 4px 12px rgba(92, 61, 145, 0.07) !important;
+}
+body.light-mode .player-btn:hover {
+  background: #f0e9ff !important;
+  border-color: #a855f7 !important;
+}
+body.light-mode .player-btn.main {
+  background: linear-gradient(145deg, #aa5bf4, #8d45dc) !important;
+  color: #ffffff !important;
+  border-color: #9a4be8 !important;
+  box-shadow: 0 8px 20px rgba(154, 75, 232, 0.27) !important;
+}
+body.light-mode .mini-volume { color: #5f6878 !important; }
+body.light-mode .playlist-panel { border-top-color: #e1e4eb !important; }
+body.light-mode .playlist-header h3 { color: #242a36 !important; }
+body.light-mode .playlist-header > span { color: #8790a0 !important; }
+body.light-mode .playlist-item {
+  color: #252b37 !important;
+  border-color: transparent !important;
+}
+body.light-mode .playlist-item:hover {
+  background: #f4effd !important;
+  border-color: #e1d4f7 !important;
+}
+body.light-mode .playlist-item.active {
+  background: #eee6fb !important;
+  border-color: #d4bdf4 !important;
+}
+body.light-mode .playlist-track-info strong { color: #272d39 !important; }
+body.light-mode .playlist-track-info small,
+body.light-mode .playlist-meta,
+body.light-mode .playlist-number { color: #788295 !important; }
+body.light-mode .playlist-item.active .playlist-number,
+body.light-mode .playlist-play { color: #8b46dc !important; }
+body.light-mode .playlist-item.playing .playlist-play {
+  background: #9c4ee9 !important;
+  color: #ffffff !important;
+}
+
+/* Notepad */
+body.light-mode textarea {
+  background: #fbfcfe !important;
+  color: #252b36 !important;
+}
+body.light-mode textarea::placeholder { color: #9aa2b1 !important; }
+body.light-mode .note {
+  background: #ffffff !important;
+  border-color: #e0e4ec !important;
+  color: #424a58 !important;
+}
+
+/* AFK page */
+body.light-mode #contact,
+body.light-mode #afk {
+  background: transparent !important;
+}
+body.light-mode .afk-title { color: #242a35 !important; }
+body.light-mode .afk-sub { color: #747d8e !important; }
+body.light-mode .afk-timer {
+  color: #7e43d5 !important;
+  text-shadow: 0 0 18px rgba(126, 67, 213, 0.13) !important;
+}
+body.light-mode .afk-row strong { color: #2a303c !important; }
+body.light-mode .afk-btn {
+  background: #ffffff !important;
+  border-color: #dce1ea !important;
+  color: #555f70 !important;
+}
+body.light-mode .afk-btn:hover {
+  background: #f2ecfc !important;
+  border-color: #cdb7f0 !important;
+  color: #7641ca !important;
+}
+
+/* Loader */
+body.light-mode .loader {
+  background: radial-gradient(circle at center, #ffffff 0%, #eef1f6 78%) !important;
+}
+body.light-mode .loader-content h1,
+body.light-mode .loader-name { color: #252a35 !important; }
+body.light-mode .loader-status,
+body.light-mode .loader-corner { color: #7f8795 !important; }
+body.light-mode .loader-progress,
+body.light-mode .loader-line { background: #dfe3eb !important; }
+body.light-mode #loaderBar,
+body.light-mode .loader-line span {
+  background: linear-gradient(90deg, #a855f7, #7c3aed) !important;
+}
+
+/* =========================================================
+   LIGHT MODE MEDIA FIX — keep Gallery/Game Project balanced
+   like the dark theme and the Home Dashboard cards
+   ========================================================= */
+
+/* Smooth theme switch without changing the page geometry. */
+body,
+.shell,
+.sidebar,
+.main,
+.card,
+.now-playing,
+.media-item,
+.sketch-card,
+.audio-card,
+.topbar,
+.nav,
+.tab {
+  transition:
+    background-color .24s ease,
+    background .24s ease,
+    color .24s ease,
+    border-color .24s ease,
+    box-shadow .24s ease;
+}
+
+/* Keep Media Hub at the same vertical rhythm as Home Dashboard. */
+#artwork.page {
+  padding-top: 22px;
+}
+
+/* Do not let media tags stretch across flex cards/overlays. */
+.media-tag {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Gallery overlay typography should stay readable in both themes. */
+.media-overlay strong {
+  margin-top: 7px;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: .015em;
+}
+
+/* Game Project typography: same compact hierarchy as dark mode. */
+.sketch-card .media-tag {
+  margin-bottom: 5px;
+}
+
+.sketch-card h3 {
+  margin: 5px 0 8px;
+  font-size: 16px;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.sketch-card p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+body.light-mode .media-item {
+  background: #ffffff !important;
+  border: 1px solid #d9dee8 !important;
+  box-shadow: 0 8px 24px rgba(31, 36, 48, .045) !important;
+}
+
+body.light-mode .media-item:hover {
+  border-color: #b99ae9 !important;
+  box-shadow: 0 10px 26px rgba(126, 87, 194, .13) !important;
+}
+
+body.light-mode .sketch-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f7f8fb 100%) !important;
+}
+
+body.light-mode .sketch-card h3 {
+  color: #1f2430 !important;
+  font-weight: 700 !important;
+}
+
+body.light-mode .sketch-card p {
+  color: #697182 !important;
+  font-weight: 400 !important;
+}
+
+/* Replace the accidental full-width lavender bars with small tags. */
+body.light-mode .media-tag {
+  padding: 4px 7px !important;
+  border-radius: 6px !important;
+  background: #f1ecff !important;
+  border: 1px solid #ded0ff !important;
+  color: #7440d4 !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .12em !important;
+}
+
+/* Image cards still use a dark fade, so their titles must remain white. */
+body.light-mode .media-overlay {
+  background: linear-gradient(0deg, rgba(8, 9, 12, .88) 0%, rgba(8, 9, 12, .18) 58%, transparent 78%) !important;
+}
+
+body.light-mode .media-overlay strong {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .35);
+}
+
+/* Keep the title/header spacing consistent when toggling theme. */
+body.light-mode #artwork .title,
+#artwork .title {
+  margin-bottom: 15px;
+}
+
+body.light-mode #artwork .tabs,
+#artwork .tabs {
+  margin-bottom: 14px;
+}
+
+/* =========================================================
+   LIGHT MODE MEDIA HARD FIX v3
+   Keeps exact dark-mode geometry; changes colors only.
+   ========================================================= */
+body.light-mode #artwork .media-grid {
+  gap: 14px !important;
+}
+
+/* Keep the same card shape/spacing as dark mode. */
+body.light-mode #artwork .media-item {
+  border: 1px solid #cfd5e1 !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+  box-shadow: 0 7px 18px rgba(31, 36, 48, 0.06) !important;
+}
+
+body.light-mode #artwork .media-item:hover {
+  border-color: #a855f7 !important;
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.16) !important;
+}
+
+/* IMPORTANT: prevent the purple tag from stretching into a full-width bar. */
+body.light-mode #artwork .media-tag,
+body.light-mode #artwork span.media-tag,
+#artwork .sketch-card > .media-tag,
+#artwork .media-overlay > .media-tag {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: max-content !important;
+  flex: 0 0 auto !important;
+  align-self: flex-start !important;
+  padding: 4px 7px !important;
+  margin: 0 0 6px 0 !important;
+  border-radius: 6px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .12em !important;
+}
+
+body.light-mode #artwork .media-tag {
+  color: #7c3aed !important;
+  background: #f3efff !important;
+  border: 1px solid #ddcffd !important;
+}
+
+/* Gallery text must stay readable on the dark image fade. */
+body.light-mode #artwork .media-overlay .media-tag {
+  color: #d8b4fe !important;
+  background: rgba(22, 16, 34, .72) !important;
+  border-color: rgba(216, 180, 254, .32) !important;
+}
+
+body.light-mode #artwork .media-overlay strong {
+  color: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  letter-spacing: .015em !important;
+}
+
+/* Game Project: match dark-mode typography and padding exactly. */
+body.light-mode #artwork .sketch-card {
+  padding: 20px !important;
+  background: linear-gradient(145deg, #ffffff, #f7f8fb) !important;
+  justify-content: center !important;
+}
+
+body.light-mode #artwork .sketch-card h3 {
+  margin: 6px 0 4px !important;
+  color: #1f2430 !important;
+  font-size: 16px !important;
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+
+body.light-mode #artwork .sketch-card p {
+  margin: 8px 0 0 !important;
+  color: #697182 !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  font-weight: 400 !important;
+}
+
+/* Tabs: same proportions as dark mode. */
+body.light-mode #artwork .tab {
+  padding: 9px 12px !important;
+  border-radius: 9px !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  letter-spacing: normal !important;
+}
+
+/* Do not change dimensions during theme switch; only colors fade. */
+#artwork .media-item,
+#artwork .sketch-card,
+#artwork .media-overlay,
+#artwork .media-tag,
+#artwork .tab {
+  transition-property: background, background-color, color, border-color, box-shadow !important;
+  transition-duration: .24s !important;
+  transition-timing-function: ease !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE TAG FIX v4
+   .tags is only a flex wrapper; never draw a panel around it.
+   ========================================================= */
+body.light .tags,
+body.light-mode .tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 7px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.light .tags > span,
+body.light-mode .tags > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+  flex: 0 0 auto !important;
+  padding: 7px 9px !important;
+  margin: 0 !important;
+  border-radius: 9px !important;
+  background: #f1ecff !important;
+  border: 1px solid #ded0ff !important;
+  color: #7c3aed !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
 }
