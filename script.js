@@ -347,3 +347,21 @@ document.addEventListener("DOMContentLoaded", () => {
     noteInput.value = "";
   });
 });
+(function initAFKClock() {
+  const startTime = Date.now();
+
+  function updateClock() {
+    const timerElement = document.getElementById("afkTimer");
+    if (!timerElement) return;
+
+    const totalSecs = Math.floor((Date.now() - startTime) / 1000);
+    const hrs = String(Math.floor(totalSecs / 3600)).padStart(2, "0");
+    const mins = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, "0");
+    const secs = String(totalSecs % 60).padStart(2, "0");
+
+    timerElement.textContent = `${hrs}:${mins}:${secs}`;
+  }
+
+  // Chạy lặp lại mỗi 1 giây liên tục
+  setInterval(updateClock, 1000);
+})();
