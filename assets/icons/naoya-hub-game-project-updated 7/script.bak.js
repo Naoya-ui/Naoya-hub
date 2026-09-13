@@ -11,165 +11,42 @@ document.addEventListener("DOMContentLoaded", () => {
   // ================================
   // VOLUME & AUDIO
   // ================================
-  const backgroundMusic = document.getElementById("backgroundMusic");
+  const music = document.getElementById("music");
   const volumeInput = document.getElementById("volume");
   const volumeText = document.getElementById("volumeText");
 
-  // Background BGM volume is remembered separately from the Audio-tab player.
-  let bgmBaseVolume = volumeInput ? Number(volumeInput.value) / 100 : 0.24;
-  let bgmFadeTimer = null;
-  const BGM_FADE_MS = 1200;
-  const BGM_DUCK_VOLUME = 0; // Spotify-like: fade the BGM completely out.
+  if (music && volumeInput) {
+    const initialVolume = Number(volumeInput.value) / 100;
+    music.volume = initialVolume;
 
-  function fadeBackgroundMusic(target, duration = BGM_FADE_MS) {
-    if (!backgroundMusic) return;
-    if (bgmFadeTimer) cancelAnimationFrame(bgmFadeTimer);
+    volumeInput.addEventListener("input", (e) => {
+      const value = Math.max(0, Math.min(100, Number(e.target.value)));
+      music.volume = value / 100;
 
-    const start = backgroundMusic.volume;
-    const end = Math.max(0, Math.min(1, target));
-    const startedAt = performance.now();
-
-    const step = (now) => {
-      const progress = Math.min(1, (now - startedAt) / duration);
-      // Smooth ease-in-out curve.
-      const eased = progress < 0.5
-        ? 2 * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-
-      backgroundMusic.volume = start + (end - start) * eased;
-
-      if (progress < 1) {
-        bgmFadeTimer = requestAnimationFrame(step);
-      } else {
-        backgroundMusic.volume = end;
-        bgmFadeTimer = null;
+      if (volumeText) {
+        volumeText.textContent = `Volume: ${value}%`;
       }
+
+      // If user moves the slider above 0, try to start music.
+      if (value > 0 && music.paused) {
+        music.play().catch(() => {
+          // Browser may block autoplay until the user interacts.
+        });
+      }
+    });
+
+    // Browser autoplay policy: first user interaction unlocks audio.
+    const unlockAudio = () => {
+      if (music.paused && music.volume > 0) {
+        music.play().catch(() => {});
+      }
+      document.removeEventListener("click", unlockAudio);
+      document.removeEventListener("keydown", unlockAudio);
     };
 
-    bgmFadeTimer = requestAnimationFrame(step);
+    document.addEventListener("click", unlockAudio);
+    document.addEventListener("keydown", unlockAudio);
   }
-
-  function restoreBackgroundMusic() {
-    if (!backgroundMusic) return;
-    fadeBackgroundMusic(bgmBaseVolume);
-    if (backgroundMusic.paused && bgmBaseVolume > 0) {
-      backgroundMusic.play().catch(() => {});
-    }
-  }
-
-  function duckBackgroundMusic() {
-    if (!backgroundMusic) return;
-    fadeBackgroundMusic(BGM_DUCK_VOLUME);
-  }
-
-  if (backgroundMusic) {
-    backgroundMusic.volume = bgmBaseVolume;
-
-    if (volumeInput) {
-      volumeInput.addEventListener("input", (e) => {
-        const value = Math.max(0, Math.min(100, Number(e.target.value)));
-        bgmBaseVolume = value / 100;
-
-        // If the Audio player is currently playing, keep the BGM ducked.
-        const audioTabPlayer = document.getElementById("music");
-        if (!audioTabPlayer || audioTabPlayer.paused) {
-          backgroundMusic.volume = bgmBaseVolume;
-        }
-
-        if (volumeText) {
-          volumeText.textContent = `BGM Volume: ${value}%`;
-        }
-      });
-    }
-
-    // Try to start ONLY the background BGM. The Audio-tab player is independent.
-    const unlockBackgroundAudio = () => {
-      if (backgroundMusic.paused && bgmBaseVolume > 0) {
-        backgroundMusic.play().catch(() => {});
-      }
-      document.removeEventListener("click", unlockBackgroundAudio);
-      document.removeEventListener("keydown", unlockBackgroundAudio);
-    };
-
-    document.addEventListener("click", unlockBackgroundAudio);
-    document.addEventListener("keydown", unlockBackgroundAudio);
-  }
-
-  // ================================
-  // DISCORD LIVE STATUS
-  // ================================
-  // Uses Lanyard's public presence API so no Discord bot token is exposed
-  // in the browser. Statuses handled: online, idle, dnd and offline.
-  const DISCORD_USER_ID = "869568513864519690";
-  const discordStatus = document.getElementById("discordStatus");
-  const discordStatusText = discordStatus
-    ? discordStatus.querySelector(".discord-status-text")
-    : null;
-
-  const discordStatusMap = {
-    online: { label: "Online", className: "status-online" },
-    idle: { label: "Idle", className: "status-idle" },
-    dnd: { label: "Do Not Disturb", className: "status-dnd" },
-    offline: { label: "Offline", className: "status-offline" },
-  };
-
-  let discordPresenceRequestRunning = false;
-
-  function setDiscordStatus(status, customLabel = "") {
-    if (!discordStatus || !discordStatusText) return;
-
-    const knownStatus = discordStatusMap[status];
-    const nextClass = knownStatus ? knownStatus.className : "status-unknown";
-    const nextLabel = customLabel || (knownStatus ? knownStatus.label : "Unavailable");
-
-    discordStatus.classList.remove(
-      "status-loading",
-      "status-online",
-      "status-idle",
-      "status-dnd",
-      "status-offline",
-      "status-unknown"
-    );
-    discordStatus.classList.add(nextClass);
-    discordStatusText.textContent = nextLabel;
-    discordStatus.setAttribute("aria-label", `Discord status: ${nextLabel}`);
-    discordStatus.title = `${nextLabel} · Open Discord profile`;
-  }
-
-  async function updateDiscordPresence() {
-    if (!discordStatus || discordPresenceRequestRunning) return;
-
-    discordPresenceRequestRunning = true;
-    try {
-      const response = await fetch(
-        `https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`,
-        { cache: "no-store" }
-      );
-
-      if (!response.ok) throw new Error(`Discord status HTTP ${response.status}`);
-
-      const payload = await response.json();
-      if (!payload.success || !payload.data) {
-        throw new Error("Discord presence is not available");
-      }
-
-      const status = payload.data.discord_status || "offline";
-      setDiscordStatus(status);
-    } catch (error) {
-      setDiscordStatus("unknown", "Status unavailable");
-      console.warn("Could not load Discord presence:", error);
-    } finally {
-      discordPresenceRequestRunning = false;
-    }
-  }
-
-  updateDiscordPresence();
-  setInterval(updateDiscordPresence, 15000);
-
-  // Refresh immediately when the user returns to the tab.
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) updateDiscordPresence();
-  });
 
   // ================================
   // LOADING SCREEN
@@ -332,10 +209,10 @@ document.addEventListener("DOMContentLoaded", () => {
   renderNotes();
 
   // ================================
-  // GALLERY / GAME PROJECT / AUDIO TABS
+  // GALLERY / SKETCH / AUDIO TABS
   // ================================
   const tabs = document.querySelectorAll(".tab");
-  const mediaItems = document.querySelectorAll(".media-item, .playlist-panel[data-category]");
+  const mediaItems = document.querySelectorAll(".media-item");
 
   function filterMedia(category) {
     tabs.forEach((tab) => {
@@ -365,7 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // MINI MUSIC PLAYER
   // ================================
   const audioPlayer = document.getElementById("audioPlayer");
-  const music = document.getElementById("music");
   const playBtn = document.getElementById("playBtn");
   const prevTrack = document.getElementById("prevTrack");
   const nextTrack = document.getElementById("nextTrack");
@@ -375,84 +251,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const durationEl = document.getElementById("duration");
   const playerVolume = document.getElementById("playerVolume");
   const audioStatus = document.getElementById("audioStatus");
-  const playlist = document.getElementById("playlist");
-  const playlistCount = document.getElementById("playlistCount");
 
-  // IMPORTANT: these tracks are completely separate from the background BGM.
-  // Put your audio files in assets/audio/ and add their paths here.
+  // Add more tracks later by putting another object in this array.
   const tracks = [
     {
-      title: "A Lone Prayer",
-      artist: "Yumi Kawamura · Shoji Meguro",
-      meta: "Persona · 320kbps",
-      src: "assets/audio/A Lone Prayer.mp3"
-    },
-    {
-      title: "pepepepe (Bocchi the Rock!)",
-      artist: "Tomoki Kikuya",
-      meta: "Bocchi the Rock! OST · 320kbps",
-      src: "assets/audio/pepepepe.wav"
-    },
-    {
-      title: "School Days",
-      artist: "Yumi Kawamura · Shoji Meguro",
-      meta: "Persona · 320kbps",
-      src: "assets/audio/Persona (PSP) ost - School Days [Extended] - MeRuleDaWorld (youtube).mp3"
-    },
-    {
-      title: "Clavar La Espada",
-      artist: "Shiro Sagisu",
-      meta: "BLEACH OST 3 · 320kbps",
-      src: "assets/audio/y2mate.com - Clavar La Espada.mp3"
-    },
-    {
-      title: "Mass Destruction",
-      artist: "Yumi Kawamura · Lotus Juice · Shoji Meguro",
-      meta: "Persona 3 · 320kbps",
-      src: "assets/audio/1412 Mass Destruction (Ost Persona 3).mp3"
+      title: "City Ambient BGM",
+      meta: "320kbps · Stereo",
+      src: music ? music.getAttribute("src") : "assets/audio/bus_theme.mp3"
     }
   ];
   let trackIndex = 0;
-
-  function renderPlaylist() {
-    if (!playlist) return;
-    playlist.innerHTML = tracks.map((track, index) => `
-      <button class="playlist-item${index === trackIndex ? " active" : ""}" data-track-index="${index}" type="button">
-        <span class="playlist-number">${String(index + 1).padStart(2, "0")}</span>
-        <span class="playlist-cover">♫</span>
-        <span class="playlist-track-info">
-          <strong>${track.title}</strong>
-          <small>${track.artist}</small>
-        </span>
-        <span class="playlist-meta">${track.meta}</span>
-        <span class="playlist-play">▶</span>
-      </button>
-    `).join("");
-
-    playlist.querySelectorAll(".playlist-item").forEach((item) => {
-      item.addEventListener("click", () => {
-        const index = Number(item.dataset.trackIndex);
-        if (index === trackIndex && music && !music.paused) {
-          music.pause();
-        } else {
-          loadTrack(index, true);
-        }
-      });
-    });
-
-    if (playlistCount) playlistCount.textContent = `${tracks.length} TRACKS`;
-  }
-
-  function syncPlaylistUI() {
-    if (!playlist) return;
-    playlist.querySelectorAll(".playlist-item").forEach((item, index) => {
-      const active = index === trackIndex;
-      item.classList.toggle("active", active);
-      item.classList.toggle("playing", active && music && !music.paused);
-      const icon = item.querySelector(".playlist-play");
-      if (icon) icon.textContent = active && music && !music.paused ? "❚❚" : "▶";
-    });
-  }
 
   const formatTime = (seconds) => {
     if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
@@ -478,7 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (playerVolume) playerVolume.value = String(Math.round(music.volume * 100));
     if (muteBtn) muteBtn.textContent = music.muted || music.volume === 0 ? "🔇" : "🔊";
-    syncPlaylistUI();
   }
 
   function loadTrack(index, autoPlay = false) {
@@ -489,36 +296,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const title = document.getElementById("trackTitle");
     const meta = document.getElementById("trackMeta");
     if (title) title.textContent = track.title;
-    if (meta) meta.textContent = `${track.artist} · ${track.meta}`;
-    renderPlaylist();
+    if (meta) meta.textContent = track.meta;
     music.load();
     if (autoPlay) music.play().catch(() => {});
   }
 
   if (music && playBtn) {
-    music.addEventListener("play", () => {
-      // Audio-tab music gets priority: fade the website BGM down smoothly.
-      duckBackgroundMusic();
-      syncPlayerUI();
-    });
-
-    music.addEventListener("pause", () => {
-      syncPlayerUI();
-      // When the user pauses the Audio tab, bring the website BGM back smoothly.
-      restoreBackgroundMusic();
-    });
-
+    music.addEventListener("play", syncPlayerUI);
+    music.addEventListener("pause", syncPlayerUI);
     music.addEventListener("timeupdate", syncPlayerUI);
     music.addEventListener("loadedmetadata", syncPlayerUI);
     music.addEventListener("volumechange", syncPlayerUI);
     music.addEventListener("ended", () => {
-      if (tracks.length > 1) {
-        loadTrack(trackIndex + 1, true);
-      } else {
-        music.currentTime = 0;
-        syncPlayerUI();
-        restoreBackgroundMusic();
-      }
+      if (tracks.length > 1) loadTrack(trackIndex + 1, true);
+      else { music.currentTime = 0; syncPlayerUI(); }
     });
 
     playBtn.addEventListener("click", () => {
@@ -547,17 +338,23 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    if (playerVolume) {
-      playerVolume.addEventListener("input", () => {
-        const value = Math.max(0, Math.min(100, Number(playerVolume.value)));
-        music.volume = value / 100;
-        music.muted = value === 0;
+    playerVolume.addEventListener("input", () => {
+      const value = Math.max(0, Math.min(100, Number(playerVolume.value)));
+      music.volume = value / 100;
+      music.muted = value === 0;
+      if (volumeInput) volumeInput.value = String(value);
+      if (volumeText) volumeText.textContent = `Volume: ${value}%`;
+      syncPlayerUI();
+    });
+
+    // Keep the sidebar volume slider and the player slider synchronized.
+    if (volumeInput) {
+      volumeInput.addEventListener("input", () => {
+        if (playerVolume) playerVolume.value = volumeInput.value;
         syncPlayerUI();
       });
     }
 
-    renderPlaylist();
-    loadTrack(0, false);
     syncPlayerUI();
   }
 

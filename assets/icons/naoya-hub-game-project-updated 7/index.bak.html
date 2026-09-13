@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Naoya Style Hub</title>
-    <link rel="stylesheet" href="style.css?v=discord-v5" />
+    <link rel="stylesheet" href="style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
@@ -36,18 +36,9 @@
           <img src="../../assets/avatar.jpg" class="avatar" />
           <h1>Naoya</h1>
           <p>Food Mercernary / Coder</p>
-          <a
-            id="discordStatus"
-            class="discord-status status-loading"
-            href="https://discord.com/users/869568513864519690"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Open Discord profile"
-            aria-label="Discord status: loading"
-          >
-            <span class="discord-dot" aria-hidden="true"></span>
-            <span class="discord-status-text">Loading...</span>
-          </a>
+          <span id="discordStatus" class="online">
+            <span></span> Loading...
+          </span>
         </div>
         <div class="now-playing">
           <small>click on slider to run music</small>
@@ -72,9 +63,8 @@
             class="custom-range"
           />
 
-          <!-- Background music: controlled only by the sidebar volume slider. -->
           <audio
-            id="backgroundMusic"
+            id="music"
             src="assets/audio/bus_theme.mp3"
             autoplay
             loop
@@ -264,8 +254,8 @@
 
           <!-- BỘ NÚT CHUYỂN TAB -->
           <div class="tabs">
-            <button class="tab active" data-filter="artwork">Gallery</button>
-            <button class="tab" data-filter="game">Game Project</button>
+            <button class="tab active" data-filter="artwork">Artwork</button>
+            <button class="tab" data-filter="sketch">Sketch</button>
             <button class="tab" data-filter="audio">Audio</button>
           </div>
 
@@ -304,34 +294,32 @@
               </div>
             </div>
 
-            <!-- 2. GAME PROJECT TAB (Ẩn mặc định) -->
-            <div class="media-item wide hidden" data-category="game">
+            <!-- 2. SKETCH TAB (Ẩn mặc định) -->
+            <div class="media-item wide hidden" data-category="sketch">
               <div class="sketch-card">
-                <span class="media-tag">#PJ_01</span>
-                <h3>Limbus Feel the Don</h3>
-                <p>Rough light novel lines / renpy practice</p>
+                <span class="media-tag">#DRAFT_01</span>
+                <h3>Limbus Concept Draft</h3>
+                <p>Rough lines / Pencil shading practice</p>
               </div>
             </div>
 
-            <div class="media-item hidden" data-category="game">
+            <div class="media-item hidden" data-category="sketch">
               <div class="sketch-card">
-                <span class="media-tag">#PJ_02</span>
-                <h3>JAVA slop</h3>
+                <span class="media-tag">#DRAFT_02</span>
+                <h3>Character Pose</h3>
               </div>
             </div>
 
             <!-- 3. AUDIO TAB (Ẩn mặc định) -->
             <div class="media-item wide hidden" data-category="audio">
               <div class="audio-card" id="audioPlayer">
-                <!-- This player has its OWN audio element, independent from the BGM above. -->
-                <audio id="music" preload="metadata"></audio>
                 <div class="audio-cover">♫</div>
                 <div class="audio-main">
                   <div class="audio-top">
                     <div class="audio-info">
                       <span class="media-tag">#OST_TRACK</span>
-                      <h3 id="trackTitle">City Ambient Track</h3>
-                      <small id="trackMeta">Local audio · Stereo</small>
+                      <h3 id="trackTitle">City Ambient BGM</h3>
+                      <small id="trackMeta">320kbps · Stereo</small>
                     </div>
                     <div class="audio-status"><span id="audioStatusDot"></span><span id="audioStatus">PAUSED</span></div>
                   </div>
@@ -357,18 +345,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- SPOTIFY-STYLE PLAYLIST -->
-            <div class="playlist-panel hidden" data-category="audio">
-              <div class="playlist-header">
-                <div>
-                  <span class="media-tag">#PLAYLIST</span>
-                  <h3>Audio Library</h3>
-                </div>
-                <span id="playlistCount">5 TRACKS</span>
-              </div>
-              <div id="playlist" class="playlist" aria-label="Music playlist"></div>
             </div>
           </div>
         </section>
@@ -430,6 +406,6 @@
         </section>
       </main>
     </div>
-    <script src="script.js?v=light-v3"></script>
+    <script src="script.js"></script>
   </body>
 </html>
