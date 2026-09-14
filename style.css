@@ -3945,3 +3945,1536 @@ body.light-mode .elastic-slider:focus-within .elastic-slider-thumb {
     animation: none !important;
   }
 }
+
+/* =========================================================
+   DARK GLITCH HOVER v11
+   Keeps the original Naoya Hub dark UI intact.
+   Only hover/focus feedback is changed from purple glow
+   to a cyan/red digital glitch effect. No Persona 1 restyle.
+========================================================= */
+
+:root {
+  --glitch-cyan: #00eaff;
+  --glitch-red: #ff2d55;
+  --glitch-white: #f4f7fb;
+  --glitch-dark: #101218;
+}
+
+/* Give hover overlays a safe positioning context without changing layout. */
+.nav,
+.tab,
+.player-btn,
+.playlist-item,
+.afk-btn,
+.link > a,
+.note-tool-btn,
+.note-item-actions button,
+.depth-nav,
+.profile .discord-status,
+.card,
+.hero,
+.gamegrid > div,
+.stats div,
+.media-item,
+.depth-carousel-panel,
+.note-list-item {
+  position: relative;
+}
+
+/* Interactive controls: replace purple hover with monochrome + RGB split. */
+.nav:hover,
+.tab:hover,
+.player-btn:hover,
+.playlist-item:hover,
+.afk-btn:hover,
+.link > a:hover,
+.note-tool-btn:not(.danger):hover:not(:disabled),
+.note-item-actions button:not(.danger):hover,
+.depth-nav:hover,
+.profile .discord-status:hover {
+  background-color: var(--glitch-dark) !important;
+  background-image: none !important;
+  border-color: rgba(244, 247, 251, 0.82) !important;
+  color: var(--glitch-white) !important;
+  text-shadow:
+    -1.5px 0 0 var(--glitch-cyan),
+     1.5px 0 0 var(--glitch-red) !important;
+  box-shadow:
+    -3px 0 0 rgba(0, 234, 255, 0.70),
+     3px 0 0 rgba(255, 45, 85, 0.65),
+     0 8px 20px rgba(0, 0, 0, 0.28) !important;
+  animation: naoyaGlitchJitter 180ms steps(2, end) infinite;
+}
+
+/* Preserve circular play button geometry while still glitching on hover. */
+.player-btn.main:hover {
+  transform: translate(-50%, -50%) !important;
+  animation: naoyaGlitchMainButton 180ms steps(2, end) infinite;
+}
+
+/* Larger panels/cards: no purple border/glow on hover. */
+.card:hover,
+.hero:hover,
+.gamegrid > div:hover,
+.stats div:hover,
+.media-item:hover,
+.depth-carousel-panel:hover,
+.note-list-item:hover {
+  border-color: rgba(230, 235, 242, 0.70) !important;
+  box-shadow:
+    -3px 0 0 rgba(0, 234, 255, 0.52),
+     3px 0 0 rgba(255, 45, 85, 0.46),
+     0 12px 28px rgba(0, 0, 0, 0.30) !important;
+  text-shadow:
+    -1px 0 rgba(0, 234, 255, 0.50),
+     1px 0 rgba(255, 45, 85, 0.44);
+  animation: naoyaGlitchPanel 260ms steps(2, end) infinite;
+}
+
+/* Thin scan slice on hover. It is intentionally subtle so text stays readable. */
+.nav:hover::after,
+.tab:hover::after,
+.player-btn:hover::after,
+.playlist-item:hover::after,
+.afk-btn:hover::after,
+.link > a:hover::after,
+.note-tool-btn:not(.danger):hover:not(:disabled)::after,
+.depth-nav:hover::after,
+.card:hover::after,
+.gamegrid > div:hover::after,
+.stats div:hover::after,
+.media-item:hover::after,
+.note-list-item:hover::after {
+  content: "";
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  right: 0;
+  top: 46%;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0 8%,
+    rgba(0, 234, 255, 0.72) 8% 38%,
+    rgba(255, 255, 255, 0.82) 38% 56%,
+    rgba(255, 45, 85, 0.72) 56% 88%,
+    transparent 88% 100%
+  );
+  opacity: 0.78;
+  mix-blend-mode: screen;
+  animation: naoyaGlitchScan 420ms steps(3, end) infinite;
+}
+
+/* Keep content above the hover scan where necessary. */
+.nav > *,
+.tab > *,
+.player-btn > *,
+.playlist-item > *,
+.afk-btn > *,
+.link > a > *,
+.note-tool-btn > *,
+.depth-nav > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Elastic sliders: remove purple hover halo only; functionality stays unchanged. */
+.elastic-slider:hover .elastic-slider-visual::before,
+.elastic-slider:focus-within .elastic-slider-visual::before {
+  border-color: rgba(244, 247, 251, 0.70) !important;
+  box-shadow:
+    -2px 0 0 rgba(0, 234, 255, 0.34),
+     2px 0 0 rgba(255, 45, 85, 0.30) !important;
+}
+
+.elastic-slider:hover .elastic-slider-thumb,
+.elastic-slider:focus-within .elastic-slider-thumb,
+.elastic-slider.is-dragging .elastic-slider-thumb {
+  border-color: rgba(244, 247, 251, 0.90) !important;
+  box-shadow:
+    -3px 0 0 rgba(0, 234, 255, 0.58),
+     3px 0 0 rgba(255, 45, 85, 0.52),
+     0 5px 16px rgba(0, 0, 0, 0.38) !important;
+}
+
+/* Light mode also uses glitch hover instead of purple, but its normal style is untouched. */
+body.light-mode .nav:hover,
+body.light-mode .tab:hover,
+body.light-mode .player-btn:hover,
+body.light-mode .playlist-item:hover,
+body.light-mode .afk-btn:hover,
+body.light-mode .link > a:hover,
+body.light-mode .note-tool-btn:not(.danger):hover:not(:disabled),
+body.light-mode .note-item-actions button:not(.danger):hover,
+body.light-mode .depth-nav:hover,
+body.light-mode .profile .discord-status:hover {
+  background: #17191f !important;
+  color: #ffffff !important;
+  border-color: #5c606b !important;
+  text-shadow:
+    -1.5px 0 var(--glitch-cyan),
+     1.5px 0 var(--glitch-red) !important;
+  box-shadow:
+    -3px 0 0 rgba(0, 183, 204, 0.60),
+     3px 0 0 rgba(222, 38, 74, 0.58),
+     0 8px 18px rgba(15, 23, 42, 0.16) !important;
+}
+
+body.light-mode .card:hover,
+body.light-mode .hero:hover,
+body.light-mode .gamegrid > div:hover,
+body.light-mode .stats div:hover,
+body.light-mode .media-item:hover,
+body.light-mode .depth-carousel-panel:hover,
+body.light-mode .note-list-item:hover {
+  border-color: #a8adb7 !important;
+  box-shadow:
+    -3px 0 0 rgba(0, 183, 204, 0.42),
+     3px 0 0 rgba(222, 38, 74, 0.38),
+     0 10px 24px rgba(15, 23, 42, 0.12) !important;
+}
+
+body.light-mode .elastic-slider:hover .elastic-slider-thumb,
+body.light-mode .elastic-slider:focus-within .elastic-slider-thumb,
+body.light-mode .elastic-slider.is-dragging .elastic-slider-thumb {
+  border-color: #5c606b !important;
+  box-shadow:
+    -3px 0 0 rgba(0, 183, 204, 0.48),
+     3px 0 0 rgba(222, 38, 74, 0.44),
+     0 5px 14px rgba(63, 44, 91, 0.14) !important;
+}
+
+@keyframes naoyaGlitchJitter {
+  0%, 100% { transform: translate(0, 0); filter: none; }
+  25% { transform: translate(-1px, 0); filter: contrast(1.04); }
+  50% { transform: translate(1px, -1px); filter: contrast(1.08); }
+  75% { transform: translate(0, 1px); filter: none; }
+}
+
+@keyframes naoyaGlitchMainButton {
+  0%, 100% { transform: translate(-50%, -50%); }
+  25% { transform: translate(calc(-50% - 1px), -50%); }
+  50% { transform: translate(calc(-50% + 1px), calc(-50% - 1px)); }
+  75% { transform: translate(-50%, calc(-50% + 1px)); }
+}
+
+@keyframes naoyaGlitchPanel {
+  0%, 100% { filter: none; }
+  35% { filter: contrast(1.035); }
+  60% { filter: contrast(1.07) saturate(1.03); }
+}
+
+@keyframes naoyaGlitchScan {
+  0% { top: 18%; transform: translateX(-2%); opacity: 0.42; }
+  33% { top: 54%; transform: translateX(2%); opacity: 0.78; }
+  66% { top: 72%; transform: translateX(-1%); opacity: 0.52; }
+  100% { top: 28%; transform: translateX(1%); opacity: 0.68; }
+}
+
+/* Respect the site's reduce-motion setting and OS preference. */
+body.reduce-motion .nav:hover,
+body.reduce-motion .tab:hover,
+body.reduce-motion .player-btn:hover,
+body.reduce-motion .playlist-item:hover,
+body.reduce-motion .afk-btn:hover,
+body.reduce-motion .link > a:hover,
+body.reduce-motion .card:hover,
+body.reduce-motion .gamegrid > div:hover,
+body.reduce-motion .stats div:hover,
+body.reduce-motion .media-item:hover,
+body.reduce-motion .note-list-item:hover {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav:hover,
+  .tab:hover,
+  .player-btn:hover,
+  .playlist-item:hover,
+  .afk-btn:hover,
+  .link > a:hover,
+  .card:hover,
+  .gamegrid > div:hover,
+  .stats div:hover,
+  .media-item:hover,
+  .note-list-item:hover,
+  .nav:hover::after,
+  .tab:hover::after,
+  .player-btn:hover::after,
+  .playlist-item:hover::after,
+  .afk-btn:hover::after,
+  .link > a:hover::after,
+  .card:hover::after,
+  .media-item:hover::after {
+    animation: none !important;
+  }
+}
+
+/* ================================================================
+   V12 — VIDEO-INSPIRED DARK GLASS UI
+   Keeps all existing Naoya Hub features + glitch interactions.
+   Visual direction: fullscreen atmospheric background, translucent
+   glass panels, soft purple/cyan accents, rounded dashboard cards.
+================================================================ */
+
+:root {
+  --glass-bg: rgba(10, 12, 22, 0.56);
+  --glass-bg-strong: rgba(9, 11, 19, 0.74);
+  --glass-bg-soft: rgba(18, 20, 34, 0.42);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(255, 255, 255, 0.24);
+  --glass-text: #f3f4f8;
+  --glass-muted: #9ea5b7;
+  --glass-purple: #a56cff;
+  --glass-cyan: #86e8ff;
+  --glass-green: #78e6a2;
+  --glass-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  --glass-blur: 18px;
+  --glass-radius: 18px;
+}
+
+html {
+  background: #08090f;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  background-color: #08090f !important;
+  background-image:
+    linear-gradient(180deg, rgba(6, 7, 15, 0.24), rgba(7, 8, 16, 0.50)),
+    radial-gradient(circle at 78% 12%, rgba(128, 72, 210, 0.18), transparent 34%),
+    radial-gradient(circle at 14% 68%, rgba(68, 118, 160, 0.15), transparent 36%),
+    url("../../assets/artwork/dodoro.png") !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+  color: var(--glass-text) !important;
+}
+
+/* Dark film + bottom fog like the reference video. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(6, 7, 14, 0.26), rgba(9, 8, 18, 0.08) 45%, rgba(5, 7, 14, 0.22)),
+    linear-gradient(180deg, rgba(4, 5, 11, 0.12), rgba(4, 5, 10, 0.30) 70%, rgba(3, 4, 8, 0.60));
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -9vh;
+  height: 38vh;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(104, 70, 174, 0.22), transparent 62%),
+    linear-gradient(180deg, transparent, rgba(8, 9, 18, 0.48));
+  filter: blur(4px);
+}
+
+.shell {
+  width: min(1320px, calc(100% - 32px)) !important;
+  min-height: calc(100vh - 32px) !important;
+  margin: 16px auto !important;
+  grid-template-columns: 248px minmax(0, 1fr) !important;
+  background: rgba(8, 10, 18, 0.14) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.30) !important;
+  backdrop-filter: blur(7px) saturate(1.08) !important;
+  -webkit-backdrop-filter: blur(7px) saturate(1.08) !important;
+}
+
+.sidebar {
+  padding: 24px 16px !important;
+  gap: 18px !important;
+  background: rgba(8, 10, 18, 0.54) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(22px) saturate(1.14) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.14) !important;
+}
+
+.main {
+  padding: 17px 22px 30px !important;
+  background: rgba(7, 9, 16, 0.08) !important;
+}
+
+.topbar {
+  min-height: 44px;
+  align-items: center !important;
+  padding: 0 2px 14px !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+  color: rgba(226, 230, 240, 0.72) !important;
+  backdrop-filter: blur(8px);
+}
+
+.topbar button,
+#motion {
+  background: rgba(13, 15, 25, 0.56) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  color: #e7e9f1 !important;
+  box-shadow: 0 6px 16px rgba(0,0,0,.18) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* Profile block — simple floating identity card look. */
+.profile {
+  padding: 14px 12px 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, rgba(24, 25, 42, 0.48), rgba(11, 13, 22, 0.30)) !important;
+  box-shadow: 0 14px 34px rgba(0,0,0,.20) !important;
+  backdrop-filter: blur(14px) saturate(1.1) !important;
+}
+
+.profile .avatar {
+  width: 78px !important;
+  height: 78px !important;
+  border: 2px solid rgba(255,255,255,.42) !important;
+  box-shadow:
+    0 0 0 4px rgba(163, 104, 255, 0.10),
+    0 10px 26px rgba(0,0,0,.28) !important;
+}
+
+.profile h1 {
+  margin-top: 2px !important;
+  font-size: 17px !important;
+  letter-spacing: .03em !important;
+}
+
+.profile p {
+  color: rgba(210, 214, 228, .62) !important;
+  font-size: 11px !important;
+}
+
+.discord-status {
+  background: rgba(10, 12, 20, .46) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 999px !important;
+  padding: 7px 10px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+.now-playing,
+.card,
+.sketch-card,
+.audio-player,
+.playlist-panel,
+.note-workspace,
+.note-list-panel,
+.afk-card,
+.depth-carousel-panel,
+.depth-carousel {
+  background: linear-gradient(145deg, rgba(20, 22, 37, 0.61), rgba(8, 10, 18, 0.48)) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--glass-radius) !important;
+  box-shadow: var(--glass-shadow) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.14) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.14) !important;
+}
+
+.now-playing {
+  padding: 13px !important;
+}
+
+/* Navigation in the reference is quiet until hovered/selected. */
+.nav {
+  min-height: 43px !important;
+  padding: 10px 12px !important;
+  margin-bottom: 5px !important;
+  border: 1px solid transparent !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  color: rgba(213, 218, 232, .66) !important;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease !important;
+}
+
+.nav.active {
+  background: linear-gradient(90deg, rgba(140, 84, 231, .24), rgba(80, 55, 140, .10)) !important;
+  border-color: rgba(169, 121, 255, .32) !important;
+  color: #fff !important;
+  box-shadow: inset 3px 0 0 rgba(177, 126, 255, .82) !important;
+}
+
+.nav span {
+  font-size: 10px !important;
+  letter-spacing: .13em !important;
+}
+
+.page {
+  padding-top: 18px !important;
+}
+
+.title {
+  margin-bottom: 18px !important;
+}
+
+.title h2,
+.hero h2,
+.afk-title {
+  color: #f7f7fb !important;
+  text-shadow: 0 5px 24px rgba(0,0,0,.32) !important;
+}
+
+.title p,
+.hero p,
+.copy,
+.rows small,
+.gamegrid small,
+.note-meta,
+.note-actions span {
+  color: var(--glass-muted) !important;
+}
+
+/* Hero resembles a wide floating dashboard tile. */
+.hero {
+  min-height: 190px;
+  padding: 28px 30px !important;
+  background:
+    linear-gradient(105deg, rgba(23, 24, 42, .72), rgba(12, 14, 25, .40)),
+    radial-gradient(circle at 85% 25%, rgba(151, 96, 235, .20), transparent 36%) !important;
+}
+
+.hero-avatar {
+  width: 118px !important;
+  height: 118px !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  box-shadow: 0 18px 35px rgba(0,0,0,.33) !important;
+}
+
+.status,
+.badge,
+.tags span,
+.media-tag {
+  background: rgba(12, 14, 24, .46) !important;
+  border: 1px solid rgba(190, 156, 255, .18) !important;
+  color: rgba(224, 211, 255, .86) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+.two {
+  gap: 14px !important;
+}
+
+.stats div,
+.gamegrid > div,
+.note-list-item,
+.playlist-item {
+  background: rgba(8, 10, 18, .36) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.stats b,
+.gamegrid strong,
+.rows span,
+.playlist-item strong {
+  color: #f2f3f7 !important;
+}
+
+/* Social links become individual floating rows. */
+.link > a {
+  position: relative !important;
+  margin-top: 9px !important;
+  padding: 10px 11px !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(255,255,255,.06) !important;
+  background: rgba(10,12,20,.26) !important;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease !important;
+}
+
+.social-icon,
+.social-icon-text {
+  border-radius: 11px !important;
+  border: 1px solid rgba(255,255,255,.09) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,.22) !important;
+}
+
+/* Media tabs as compact translucent pills. */
+.tabs {
+  gap: 8px !important;
+  margin-bottom: 16px !important;
+}
+
+.tab {
+  background: rgba(11, 13, 22, .42) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 999px !important;
+  color: rgba(218, 222, 232, .64) !important;
+  padding: 9px 14px !important;
+  backdrop-filter: blur(10px);
+}
+
+.tab.active {
+  background: rgba(130, 79, 215, .22) !important;
+  border-color: rgba(177, 127, 255, .36) !important;
+  color: #fff !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.025) !important;
+}
+
+/* Depth carousel gains the reference video's floating modal/card quality. */
+.depth-stage {
+  border-radius: 18px !important;
+  background: rgba(7, 9, 16, .24) !important;
+  border: 1px solid rgba(255,255,255,.05) !important;
+}
+
+.depth-slide {
+  border-color: rgba(255,255,255,.12) !important;
+  box-shadow: 0 24px 55px rgba(0,0,0,.38) !important;
+}
+
+.depth-slide.is-active {
+  border-color: rgba(194, 161, 255, .34) !important;
+  box-shadow:
+    0 28px 70px rgba(0,0,0,.43),
+    0 0 32px rgba(145, 90, 230, .08) !important;
+}
+
+/* Audio surfaces. */
+.player-btn,
+.depth-nav,
+.note-tool-btn,
+.note-item-actions button,
+.afk-btn {
+  background: rgba(11, 13, 22, .56) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  color: #edf0f5 !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,.20) !important;
+  backdrop-filter: blur(10px);
+}
+
+.player-btn.main {
+  background: linear-gradient(145deg, #a067ff, #7b4de1) !important;
+  border-color: rgba(255,255,255,.28) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 28px rgba(121, 69, 217, .35) !important;
+}
+
+.elastic-slider-track,
+.elastic-slider-visual::before {
+  background: rgba(255,255,255,.08) !important;
+}
+
+.elastic-slider-fill,
+.elastic-slider-visual::after {
+  background: linear-gradient(90deg, rgba(139, 91, 224, .92), rgba(164, 110, 255, .92)) !important;
+}
+
+/* Notepad should feel like a glass app rather than an opaque terminal. */
+textarea,
+.note-editor,
+.note-search input,
+.note-title-input {
+  background: rgba(6, 8, 14, .38) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: #f2f4f8 !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+textarea::placeholder,
+.note-editor::placeholder,
+.note-search input::placeholder,
+.note-title-input::placeholder {
+  color: rgba(188, 194, 210, .43) !important;
+}
+
+/* AFK page becomes a centered atmospheric HUD over the scenery. */
+#contact.page.active {
+  min-height: calc(100vh - 112px) !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.afk-wrapper {
+  width: min(680px, 100%) !important;
+  padding: 34px !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 24px !important;
+  background: rgba(8, 10, 18, .34) !important;
+  box-shadow: 0 22px 58px rgba(0,0,0,.30) !important;
+  backdrop-filter: blur(18px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.1) !important;
+}
+
+.afk-timer {
+  color: rgba(245,247,251,.88) !important;
+  text-shadow:
+    0 0 24px rgba(166, 116, 255, .16),
+    0 10px 34px rgba(0,0,0,.36) !important;
+}
+
+/* Preserve glitch hover from v11, but blend it with glass instead of flat black. */
+.nav:hover,
+.tab:hover,
+.player-btn:hover,
+.playlist-item:hover,
+.afk-btn:hover,
+.link > a:hover,
+.note-tool-btn:not(.danger):hover:not(:disabled),
+.note-item-actions button:not(.danger):hover,
+.depth-nav:hover,
+.profile .discord-status:hover {
+  background-color: rgba(13, 15, 26, .78) !important;
+  backdrop-filter: blur(16px) saturate(1.15) !important;
+}
+
+.card:hover,
+.hero:hover,
+.gamegrid > div:hover,
+.stats div:hover,
+.media-item:hover,
+.depth-carousel-panel:hover,
+.note-list-item:hover {
+  background-color: rgba(14, 16, 28, .63) !important;
+  border-color: rgba(255,255,255,.20) !important;
+}
+
+/* Light mode keeps the same glass composition rather than becoming plain white. */
+body.light-mode {
+  background-color: #d9dbe7 !important;
+  background-image:
+    linear-gradient(180deg, rgba(241, 243, 249, 0.38), rgba(207, 210, 225, 0.45)),
+    url("../../assets/artwork/dodoro.png") !important;
+  color: #171822 !important;
+}
+
+body.light-mode .shell {
+  background: rgba(238, 240, 247, .26) !important;
+  border-color: rgba(255,255,255,.52) !important;
+}
+
+body.light-mode .sidebar {
+  background: rgba(238, 240, 247, .62) !important;
+  border-color: rgba(75, 78, 98, .10) !important;
+}
+
+body.light-mode .main {
+  background: rgba(244, 245, 249, .16) !important;
+}
+
+body.light-mode .card,
+body.light-mode .hero,
+body.light-mode .now-playing,
+body.light-mode .sketch-card,
+body.light-mode .audio-player,
+body.light-mode .playlist-panel,
+body.light-mode .note-workspace,
+body.light-mode .note-list-panel,
+body.light-mode .afk-card,
+body.light-mode .depth-carousel-panel,
+body.light-mode .depth-carousel,
+body.light-mode .profile {
+  background: rgba(246, 247, 251, .66) !important;
+  border-color: rgba(47, 49, 65, .10) !important;
+  color: #191a22 !important;
+  box-shadow: 0 18px 45px rgba(44, 45, 65, .12) !important;
+}
+
+body.light-mode .title h2,
+body.light-mode .hero h2,
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode strong {
+  color: #171820 !important;
+}
+
+body.light-mode .title p,
+body.light-mode .hero p,
+body.light-mode .copy,
+body.light-mode .profile p,
+body.light-mode .rows small,
+body.light-mode .gamegrid small {
+  color: #656979 !important;
+}
+
+body.light-mode .nav {
+  color: #626676 !important;
+}
+
+body.light-mode .nav.active,
+body.light-mode .tab.active {
+  background: rgba(129, 83, 206, .13) !important;
+  border-color: rgba(116, 72, 185, .22) !important;
+  color: #282331 !important;
+}
+
+/* Responsive polish matching the compact reference layout. */
+@media (max-width: 900px) {
+  body {
+    background-attachment: scroll !important;
+  }
+
+  .shell {
+    width: min(100% - 18px, 980px) !important;
+    margin: 9px auto !important;
+    grid-template-columns: 1fr !important;
+    border-radius: 19px !important;
+  }
+
+  .sidebar {
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+  }
+
+  .profile {
+    max-width: 430px;
+    margin-inline: auto;
+  }
+
+  .main {
+    padding: 14px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero {
+    min-height: 0;
+    padding: 20px !important;
+  }
+
+  .hero-avatar {
+    width: 82px !important;
+    height: 82px !important;
+  }
+
+  .two,
+  .gamegrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .afk-wrapper {
+    padding: 23px 16px !important;
+  }
+}
+
+
+/* ================================================================
+   V13 — VIDEO BACKGROUND + REFINED GLITCH
+   Keeps the v12 dark glass UI. The user-supplied video is used as
+   the fullscreen background; glitch feedback is sharper but shorter
+   so controls stay readable and do not constantly shake.
+================================================================ */
+
+body {
+  isolation: isolate;
+  overflow-x: hidden;
+}
+
+.site-video-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
+  opacity: .78;
+  transform: scale(1.025);
+  filter: brightness(.58) saturate(.92) contrast(1.06);
+  will-change: transform, filter;
+  animation: naoyaVideoSignal 9s steps(1, end) infinite;
+}
+
+/* Film, vignette and scan texture now sit above the video. */
+body::before {
+  z-index: 1 !important;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.012) 0 1px,
+      transparent 1px 4px
+    ),
+    linear-gradient(90deg, rgba(5,7,14,.45), rgba(8,8,17,.08) 42%, rgba(4,6,13,.34)),
+    linear-gradient(180deg, rgba(4,5,11,.16), rgba(4,5,10,.34) 68%, rgba(2,3,7,.66)) !important;
+}
+
+body::after {
+  z-index: 1 !important;
+}
+
+.shell {
+  position: relative;
+  z-index: 2;
+}
+
+/* Keep the video visible through the glass; the old image remains only
+   as a fallback while the MP4 is loading or if video playback fails. */
+body {
+  background-position: center !important;
+}
+
+@keyframes naoyaVideoSignal {
+  0%, 92%, 100% {
+    transform: scale(1.025) translate3d(0,0,0);
+    filter: brightness(.58) saturate(.92) contrast(1.06);
+  }
+  93% {
+    transform: scale(1.028) translate3d(-2px, 0, 0);
+    filter: brightness(.61) saturate(1.02) contrast(1.12) hue-rotate(-2deg);
+  }
+  94% {
+    transform: scale(1.024) translate3d(2px, -1px, 0);
+    filter: brightness(.56) saturate(.88) contrast(1.10) hue-rotate(2deg);
+  }
+  95% {
+    transform: scale(1.026) translate3d(0, 1px, 0);
+    filter: brightness(.59) saturate(.96) contrast(1.07);
+  }
+}
+
+/* ---------- Refined glitch tokens ---------- */
+:root {
+  --glitch-cyan: #00f0ff;
+  --glitch-red: #ff315b;
+  --glitch-blue: #6e7cff;
+  --glitch-white: #f7f8fb;
+  --glitch-panel: rgba(9, 11, 19, .82);
+}
+
+/* Make pseudo glitch layers self-contained without changing layout. */
+.nav,
+.tab,
+.player-btn,
+.playlist-item,
+.afk-btn,
+.link > a,
+.note-tool-btn,
+.note-item-actions button,
+.depth-nav,
+.profile .discord-status,
+.card,
+.gamegrid > div,
+.stats div,
+.media-item,
+.note-list-item {
+  isolation: isolate;
+}
+
+/* Controls: short RGB split burst instead of endless shaking. */
+.nav:hover,
+.tab:hover,
+.player-btn:hover,
+.playlist-item:hover,
+.afk-btn:hover,
+.link > a:hover,
+.note-tool-btn:not(.danger):hover:not(:disabled),
+.note-item-actions button:not(.danger):hover,
+.depth-nav:hover,
+.profile .discord-status:hover {
+  background-color: rgba(10, 12, 21, .84) !important;
+  background-image: none !important;
+  border-color: rgba(246, 248, 252, .78) !important;
+  color: #fff !important;
+  text-shadow:
+    -2px 0 0 rgba(0, 240, 255, .80),
+     2px 0 0 rgba(255, 49, 91, .76) !important;
+  box-shadow:
+    -4px 0 0 rgba(0, 240, 255, .46),
+     4px 0 0 rgba(255, 49, 91, .42),
+     0 10px 28px rgba(0,0,0,.32) !important;
+  animation: naoyaGlitchBurst .42s steps(2, end) 1 !important;
+}
+
+/* Main play button keeps its absolute centering while glitching. */
+.player-btn.main:hover {
+  animation: naoyaGlitchMainBurst .42s steps(2, end) 1 !important;
+}
+
+/* Cards get a signal-split border without moving the whole layout. */
+.card:hover,
+.hero:hover,
+.gamegrid > div:hover,
+.stats div:hover,
+.media-item:hover,
+.depth-carousel-panel:hover,
+.note-list-item:hover {
+  border-color: rgba(239, 243, 250, .54) !important;
+  box-shadow:
+    -3px 0 0 rgba(0, 240, 255, .31),
+     3px 0 0 rgba(255, 49, 91, .28),
+     0 18px 42px rgba(0,0,0,.34) !important;
+  animation: naoyaGlitchPanelBurst .48s steps(2, end) 1 !important;
+}
+
+/* First glitch layer: digital slices / broken signal bands. */
+.nav:hover::before,
+.tab:hover::before,
+.player-btn:hover::before,
+.playlist-item:hover::before,
+.afk-btn:hover::before,
+.link > a:hover::before,
+.note-tool-btn:not(.danger):hover:not(:disabled)::before,
+.depth-nav:hover::before,
+.card:hover::before,
+.gamegrid > div:hover::before,
+.stats div:hover::before,
+.media-item:hover::before,
+.note-list-item:hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: .72;
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(90deg, transparent 0 8%, rgba(0,240,255,.30) 8% 38%, rgba(255,255,255,.10) 38% 58%, rgba(255,49,91,.24) 58% 88%, transparent 88% 100%) 0 12% / 100% 9% no-repeat,
+    linear-gradient(90deg, transparent 0 20%, rgba(255,49,91,.20) 20% 46%, rgba(0,240,255,.22) 46% 76%, transparent 76% 100%) 0 44% / 100% 7% no-repeat,
+    linear-gradient(90deg, transparent 0 5%, rgba(0,240,255,.22) 5% 31%, rgba(255,49,91,.20) 31% 68%, transparent 68% 100%) 0 73% / 100% 10% no-repeat;
+  animation: naoyaGlitchSlices .46s steps(3, end) 1;
+}
+
+/* Second layer: bright scan tear. */
+.nav:hover::after,
+.tab:hover::after,
+.player-btn:hover::after,
+.playlist-item:hover::after,
+.afk-btn:hover::after,
+.link > a:hover::after,
+.note-tool-btn:not(.danger):hover:not(:disabled)::after,
+.depth-nav:hover::after,
+.card:hover::after,
+.gamegrid > div:hover::after,
+.stats div:hover::after,
+.media-item:hover::after,
+.note-list-item:hover::after {
+  content: "";
+  position: absolute;
+  z-index: 8;
+  left: -4%;
+  width: 108%;
+  top: 50%;
+  height: 2px;
+  pointer-events: none;
+  opacity: .88;
+  background: linear-gradient(
+    90deg,
+    transparent 0 6%,
+    rgba(0,240,255,.86) 14% 34%,
+    rgba(255,255,255,.92) 42% 57%,
+    rgba(255,49,91,.84) 64% 86%,
+    transparent 94% 100%
+  );
+  box-shadow: 0 0 8px rgba(255,255,255,.18);
+  mix-blend-mode: screen;
+  animation: naoyaGlitchTear .42s steps(3, end) 1 !important;
+}
+
+/* Gallery cards: image itself gets a tiny signal pop, but carousel transforms stay intact. */
+.depth-slide:hover {
+  border-color: rgba(245,248,252,.48) !important;
+  box-shadow:
+    -3px 0 0 rgba(0,240,255,.27),
+     3px 0 0 rgba(255,49,91,.25),
+     0 24px 56px rgba(0,0,0,.42) !important;
+}
+
+.depth-slide:hover img {
+  animation: naoyaGlitchImage .36s steps(2, end) 1;
+}
+
+/* Elastic slider glitch: keep spring physics, only replace the purple halo. */
+.elastic-slider:hover .elastic-slider-visual::before,
+.elastic-slider:focus-within .elastic-slider-visual::before,
+.elastic-slider.is-dragging .elastic-slider-visual::before {
+  border-color: rgba(246,248,252,.72) !important;
+  box-shadow:
+    -2px 0 0 rgba(0,240,255,.30),
+     2px 0 0 rgba(255,49,91,.28) !important;
+}
+
+.elastic-slider:hover .elastic-slider-thumb,
+.elastic-slider:focus-within .elastic-slider-thumb,
+.elastic-slider.is-dragging .elastic-slider-thumb {
+  border-color: rgba(248,249,252,.92) !important;
+  box-shadow:
+    -4px 0 0 rgba(0,240,255,.48),
+     4px 0 0 rgba(255,49,91,.44),
+     0 6px 18px rgba(0,0,0,.36) !important;
+}
+
+@keyframes naoyaGlitchBurst {
+  0%, 100% { transform: translate3d(0,0,0); filter: none; }
+  14% { transform: translate3d(-2px,0,0); filter: contrast(1.12); }
+  28% { transform: translate3d(2px,-1px,0); filter: contrast(1.04) saturate(1.12); }
+  43% { transform: translate3d(-1px,1px,0); filter: brightness(1.08); }
+  57% { transform: translate3d(1px,0,0); filter: contrast(1.09); }
+  72% { transform: translate3d(0,-1px,0); filter: none; }
+}
+
+@keyframes naoyaGlitchMainBurst {
+  0%, 100% { transform: translate(-50%, -50%); filter: none; }
+  14% { transform: translate(calc(-50% - 2px), -50%); filter: contrast(1.12); }
+  30% { transform: translate(calc(-50% + 2px), calc(-50% - 1px)); filter: saturate(1.12); }
+  48% { transform: translate(calc(-50% - 1px), calc(-50% + 1px)); }
+  68% { transform: translate(calc(-50% + 1px), -50%); }
+}
+
+@keyframes naoyaGlitchPanelBurst {
+  0%, 100% { filter: none; }
+  22% { filter: contrast(1.08) saturate(1.08); }
+  40% { filter: brightness(1.035) contrast(1.12); }
+  58% { filter: contrast(1.04); }
+  76% { filter: none; }
+}
+
+@keyframes naoyaGlitchSlices {
+  0%   { transform: translateX(-5px); opacity: .18; }
+  24%  { transform: translateX(5px);  opacity: .84; }
+  42%  { transform: translateX(-2px); opacity: .36; }
+  64%  { transform: translateX(3px);  opacity: .72; }
+  82%  { transform: translateX(-1px); opacity: .28; }
+  100% { transform: translateX(0); opacity: 0; }
+}
+
+@keyframes naoyaGlitchTear {
+  0%   { top: 16%; transform: translateX(-3%); opacity: .25; }
+  26%  { top: 63%; transform: translateX(2%); opacity: .92; }
+  47%  { top: 39%; transform: translateX(-1%); opacity: .48; }
+  68%  { top: 78%; transform: translateX(1%); opacity: .72; }
+  100% { top: 52%; transform: translateX(0); opacity: 0; }
+}
+
+@keyframes naoyaGlitchImage {
+  0%,100% { filter: none; transform: translate3d(0,0,0) scale(1); }
+  25% { filter: contrast(1.12) saturate(1.18) hue-rotate(-3deg); transform: translate3d(-2px,0,0) scale(1.006); }
+  50% { filter: contrast(1.05) hue-rotate(3deg); transform: translate3d(2px,-1px,0) scale(1.008); }
+  75% { filter: contrast(1.08); transform: translate3d(0,1px,0) scale(1.004); }
+}
+
+/* Light mode still uses the video, just softened so text remains readable. */
+body.light-mode .site-video-bg {
+  opacity: .46;
+  filter: brightness(.90) saturate(.70) contrast(.92);
+}
+
+body.light-mode::before {
+  background:
+    repeating-linear-gradient(0deg, rgba(30,35,50,.018) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, rgba(239,241,248,.38), rgba(221,224,235,.55)) !important;
+}
+
+/* Reduced motion: preserve visual RGB edge but stop all animated jitter/scan. */
+body.reduce-motion .site-video-bg,
+body.reduce-motion .nav:hover,
+body.reduce-motion .tab:hover,
+body.reduce-motion .player-btn:hover,
+body.reduce-motion .playlist-item:hover,
+body.reduce-motion .afk-btn:hover,
+body.reduce-motion .link > a:hover,
+body.reduce-motion .card:hover,
+body.reduce-motion .gamegrid > div:hover,
+body.reduce-motion .stats div:hover,
+body.reduce-motion .media-item:hover,
+body.reduce-motion .note-list-item:hover,
+body.reduce-motion .depth-slide:hover img,
+body.reduce-motion .nav:hover::before,
+body.reduce-motion .nav:hover::after,
+body.reduce-motion .tab:hover::before,
+body.reduce-motion .tab:hover::after {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-video-bg {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .site-video-bg {
+    object-position: 52% center;
+    opacity: .70;
+  }
+}
+
+/* ================================================================
+   V14 — PERFORMANCE PASS
+   Preserve the dark glass + video + glitch look, but remove the
+   expensive full-screen filter animation and reduce repeated blur.
+================================================================ */
+
+/* Decoding a 720p/24fps background is much cheaper than 1080p/30fps.
+   Darkening/color treatment is moved into the static overlay instead
+   of recalculating CSS filters for every video frame. */
+.site-video-bg {
+  opacity: .72 !important;
+  filter: none !important;
+  animation: none !important;
+  transform: scale(1.012) translateZ(0) !important;
+  will-change: auto !important;
+  backface-visibility: hidden;
+}
+
+body::before {
+  background:
+    linear-gradient(90deg, rgba(5,7,14,.52), rgba(8,8,17,.16) 42%, rgba(4,6,13,.42)),
+    linear-gradient(180deg, rgba(4,5,11,.24), rgba(4,5,10,.44) 68%, rgba(2,3,7,.72)) !important;
+}
+
+/* Full-screen video + many backdrop filters is one of the biggest GPU
+   costs. Keep the glass appearance, but use smaller blur radii. */
+:root {
+  --glass-blur: 7px !important;
+}
+
+.shell {
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+}
+
+.sidebar {
+  backdrop-filter: blur(8px) saturate(1.05) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.05) !important;
+}
+
+.topbar,
+.topbar button,
+#motion,
+.profile,
+.tab,
+.player-btn,
+.depth-nav,
+.note-tool-btn,
+.note-item-actions button,
+.afk-btn,
+textarea,
+.note-editor,
+.note-search input,
+.note-title-input,
+.stats div,
+.gamegrid > div,
+.note-list-item,
+.playlist-item {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.now-playing,
+.card,
+.sketch-card,
+.audio-player,
+.playlist-panel,
+.note-workspace,
+.note-list-panel,
+.afk-card,
+.depth-carousel-panel,
+.depth-carousel,
+.afk-wrapper {
+  backdrop-filter: blur(7px) saturate(1.05) !important;
+  -webkit-backdrop-filter: blur(7px) saturate(1.05) !important;
+}
+
+/* Glitch remains visible but does not trigger another expensive blur pass. */
+.nav:hover,
+.tab:hover,
+.player-btn:hover,
+.playlist-item:hover,
+.afk-btn:hover,
+.link > a:hover,
+.note-tool-btn:not(.danger):hover:not(:disabled),
+.note-item-actions button:not(.danger):hover,
+.depth-nav:hover,
+.profile .discord-status:hover {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Avoid permanently reserving compositor layers for controls that move
+   only while dragged/animated. */
+.elastic-slider-thumb,
+.depth-slide,
+.custom-range::-webkit-slider-thumb {
+  will-change: auto !important;
+}
+
+/* Keep light mode cheap as well; overlay does the visual work. */
+body.light-mode .site-video-bg {
+  opacity: .40 !important;
+  filter: none !important;
+}
+
+/* On smaller screens reduce background work a little further. */
+@media (max-width: 700px) {
+  .site-video-bg {
+    opacity: .64 !important;
+    transform: scale(1.006) translateZ(0) !important;
+  }
+
+  .now-playing,
+  .card,
+  .sketch-card,
+  .audio-player,
+  .playlist-panel,
+  .note-workspace,
+  .note-list-panel,
+  .afk-card,
+  .depth-carousel-panel,
+  .depth-carousel,
+  .afk-wrapper {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-video-bg {
+    animation: none !important;
+  }
+}
+
+
+/* ================================================================
+   V15 — COLLAPSIBLE PROFILE RAIL + CENTERED MAIN CONTENT
+   Keeps the v14 dark glass look. The left profile can be tucked into
+   a compact icon rail by clicking or dragging the edge handle.
+================================================================ */
+
+.shell {
+  --sidebar-width: 248px;
+  position: relative !important;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr) !important;
+  transition: grid-template-columns .34s cubic-bezier(.22,.8,.2,1) !important;
+}
+
+/* Keep the important content visually centered instead of stretching
+   all the way across the available area. */
+.main > .topbar,
+.main > .page {
+  width: min(100%, 1040px);
+  margin-inline: auto !important;
+}
+
+.sidebar {
+  min-width: 0;
+  overflow: hidden;
+  transition:
+    padding .34s cubic-bezier(.22,.8,.2,1),
+    gap .34s cubic-bezier(.22,.8,.2,1),
+    background .24s ease !important;
+}
+
+.sidebar-toggle {
+  position: absolute;
+  z-index: 40;
+  top: 50%;
+  left: var(--sidebar-width);
+  width: 28px;
+  height: 64px;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px;
+  background: rgba(8,10,18,.78);
+  color: rgba(244,246,251,.88);
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.05);
+  cursor: ew-resize;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition:
+    left .34s cubic-bezier(.22,.8,.2,1),
+    width .2s ease,
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease !important;
+}
+
+.sidebar-toggle:hover,
+.sidebar-toggle:focus-visible,
+.sidebar-toggle.is-dragging {
+  width: 32px;
+  border-color: rgba(255,255,255,.38);
+  background: rgba(10,12,21,.94);
+  outline: none;
+  box-shadow:
+    -2px 0 0 rgba(0,240,255,.28),
+     2px 0 0 rgba(255,49,91,.26),
+     0 12px 30px rgba(0,0,0,.38);
+}
+
+.sidebar-toggle-icon {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 23px;
+  line-height: 1;
+  transform: translateY(-1px);
+  pointer-events: none;
+}
+
+.shell.sidebar-collapsed {
+  --sidebar-width: 76px;
+}
+
+.shell.sidebar-collapsed .sidebar {
+  padding: 18px 9px !important;
+  gap: 12px !important;
+}
+
+.shell.sidebar-collapsed .profile {
+  padding: 10px 5px !important;
+  border-radius: 15px !important;
+}
+
+.shell.sidebar-collapsed .profile .avatar {
+  width: 44px !important;
+  height: 44px !important;
+  margin-bottom: 0 !important;
+  box-shadow:
+    0 0 0 3px rgba(163,104,255,.08),
+    0 8px 20px rgba(0,0,0,.25) !important;
+}
+
+.shell.sidebar-collapsed .profile h1,
+.shell.sidebar-collapsed .profile p,
+.shell.sidebar-collapsed .discord-status-text,
+.shell.sidebar-collapsed .now-playing {
+  display: none !important;
+}
+
+.shell.sidebar-collapsed .discord-status {
+  display: grid !important;
+  place-items: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  margin: 9px auto 0 !important;
+  padding: 0 !important;
+}
+
+.shell.sidebar-collapsed .discord-dot {
+  margin: 0 !important;
+}
+
+.shell.sidebar-collapsed nav {
+  width: 100%;
+}
+
+.shell.sidebar-collapsed .nav {
+  min-height: 45px !important;
+  padding: 10px 0 !important;
+  text-align: center !important;
+  font-size: 16px !important;
+  letter-spacing: 0 !important;
+}
+
+.shell.sidebar-collapsed .nav span {
+  display: none !important;
+}
+
+.shell.sidebar-collapsed .nav.active {
+  box-shadow:
+    inset 2px 0 0 rgba(177,126,255,.82),
+    0 0 0 1px rgba(255,255,255,.02) !important;
+}
+
+/* When the rail is compact, give the actual page slightly more breathing
+   room while preserving the centered max-width above. */
+.shell.sidebar-collapsed .main {
+  padding-left: 28px !important;
+  padding-right: 28px !important;
+}
+
+body.light-mode .sidebar-toggle {
+  background: rgba(243,244,249,.86);
+  color: #262934;
+  border-color: rgba(48,51,66,.16);
+  box-shadow: 0 10px 26px rgba(45,46,61,.14);
+}
+
+/* Tablet/mobile: the profile becomes a top drawer. Tucking it in removes
+   the whole drawer, leaving the important content centered below. */
+@media (max-width: 900px) {
+  .shell,
+  .shell.sidebar-collapsed {
+    --sidebar-width: 100%;
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar-toggle {
+    top: 18px;
+    right: 18px;
+    left: auto !important;
+    width: 42px;
+    height: 32px;
+    transform: none;
+    cursor: ns-resize;
+  }
+
+  .sidebar-toggle:hover,
+  .sidebar-toggle:focus-visible,
+  .sidebar-toggle.is-dragging {
+    width: 46px;
+  }
+
+  .sidebar-toggle-icon {
+    transform: rotate(90deg);
+    font-size: 21px;
+  }
+
+  .shell.sidebar-collapsed .sidebar {
+    max-height: 0 !important;
+    min-height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+    opacity: 0;
+    border-bottom: 0 !important;
+    pointer-events: none;
+  }
+
+  .sidebar {
+    max-height: 880px;
+    opacity: 1;
+    transition:
+      max-height .42s cubic-bezier(.22,.8,.2,1),
+      opacity .22s ease,
+      padding .34s ease !important;
+  }
+
+  .shell.sidebar-collapsed .main,
+  .main {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .main > .topbar,
+  .main > .page {
+    width: min(100%, 760px);
+  }
+}
+
+@media (max-width: 520px) {
+  .main > .topbar,
+  .main > .page {
+    width: 100%;
+  }
+
+  .sidebar-toggle {
+    right: 12px;
+    top: 13px;
+  }
+}

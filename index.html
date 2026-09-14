@@ -4,13 +4,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Naoya Style Hub</title>
-    <link rel="stylesheet" href="style.css?v=elastic-v10" />
+    <link rel="stylesheet" href="style.css?v=sidebar-v15" />
     <link
       href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
+    <!-- Fullscreen animated background. Muted + playsinline allows browser autoplay. -->
+    <video
+      id="siteVideoBackground"
+      class="site-video-bg"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="assets/video/hu-tao-poster.jpg"
+      aria-hidden="true"
+    >
+      <source src="assets/video/hu-tao-background.mp4" type="video/mp4" />
+    </video>
     <div id="loader" class="loader">
       <div class="loader-content">
         <img src="../../assets/avatar.jpg" class="avatar" />
@@ -104,6 +118,18 @@
           </button>
         </nav>
       </aside>
+
+      <!-- Drag/click this handle to tuck the profile sidebar in or pull it back out. -->
+      <button
+        id="sidebarToggle"
+        class="sidebar-toggle"
+        type="button"
+        aria-label="Collapse profile sidebar"
+        aria-expanded="true"
+        title="Drag or click to collapse profile"
+      >
+        <span class="sidebar-toggle-icon" aria-hidden="true">‹</span>
+      </button>
 
       <main class="main">
         <header class="topbar">
@@ -554,6 +580,6 @@
       <img id="galleryLightboxImage" src="" alt="" />
       <div class="gallery-lightbox-caption" id="galleryLightboxCaption"></div>
     </div>
-    <script src="script.js?v=elastic-v10"></script>
+    <script src="script.js?v=sidebar-v15"></script>
   </body>
 </html>

@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Naoya Style Hub</title>
+    <link rel="stylesheet" href="style.css?v=video-glass-v12" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="loader" class="loader">
+      <div class="loader-content">
+        <img src="../../assets/avatar.jpg" class="avatar" />
+
+        <h1>Naoya</h1>
+
+        <p class="loader-status">INITIALIZING PERSONA HUB</p>
+
+        <div class="loader-progress">
+          <div id="loaderBar"></div>
+        </div>
+
+        <div id="loaderPercent">00%</div>
+      </div>
+
+      <div class="loader-corner top-left">SYBAU // 01</div>
+
+      <div class="loader-corner bottom-right">Naoya.INFO</div>
+    </div>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="profile">
+          <img src="../../assets/avatar.jpg" class="avatar" />
+          <h1>Naoya</h1>
+          <p>Food Mercernary / Coder</p>
+          <a
+            id="discordStatus"
+            class="discord-status status-loading"
+            href="https://discord.com/users/869568513864519690"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open Discord profile"
+            aria-label="Discord status: loading"
+          >
+            <span class="discord-dot" aria-hidden="true"></span>
+            <span class="discord-status-text">Loading...</span>
+          </a>
+        </div>
+        <div class="now-playing">
+          <small>click on slider to run music</small>
+          <strong>♫ BGM / LOCAL</strong>
+          <span
+            id="volumeText"
+            style="
+              display: block;
+              font-size: 11px;
+              margin-top: 6px;
+              color: #a8acb6;
+            "
+            >Volume: 24%</span
+          >
+
+          <div class="elastic-slider elastic-slider-bgm" data-elastic-range>
+            <div class="elastic-slider-visual" aria-hidden="true">
+              <div class="elastic-slider-fill"></div>
+              <div class="elastic-slider-thumb"></div>
+            </div>
+            <input
+              id="volume"
+              type="range"
+              min="0"
+              max="100"
+              value="24"
+              class="elastic-range-input"
+              aria-label="Background music volume"
+            />
+          </div>
+
+          <!-- Background music: controlled only by the sidebar volume slider. -->
+          <audio
+            id="backgroundMusic"
+            src="assets/audio/bus_theme.mp3"
+            autoplay
+            loop
+          ></audio>
+        </div>
+
+        <nav>
+          <button class="nav active" data-page="home">
+            ⌂ <span>HOME</span>
+          </button>
+          <button class="nav" data-page="about">◉ <span>ABOUT</span></button>
+          <button class="nav" data-page="artwork">
+            ▧ <span>GALLERY</span>
+          </button>
+          <button class="nav" data-page="notepad">
+            ✎ <span>NOTEPAD</span>
+          </button>
+          <button class="nav" data-page="contact">
+            ◌ <span>AFK ZONE</span>
+          </button>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <span id="crumb">Home Dashboard</span>
+          <div>
+            <button id="motion">◐</button>
+          </div>
+        </header>
+
+        <section id="home" class="page active">
+          <div class="hero card">
+            <div>
+              <small>WELCOME BACK</small>
+              <h2>yuru_e</h2>
+              <p>pls order me food!! i can eat</p>
+              <span class="status">● IDLE · NOT PLAYING ANYTHING</span>
+            </div>
+            <img src="../../assets/aizen.gif" class="hero-avatar" />
+          </div>
+
+          <div class="two">
+            <article class="card">
+              <header>GITHUB <em>PROFILE</em></header>
+              <div class="stats">
+                <div><b>--</b><small>REPOS</small></div>
+                <div><b>--</b><small>FOLLOWERS</small></div>
+                <div><b>--</b><small>FOLLOWING</small></div>
+              </div>
+            </article>
+            <article class="card">
+              <header>STEAM <em>PROFILE</em></header>
+              <div class="stats">
+                <div><b>--</b><small>GAMES</small></div>
+                <div><b>--</b><small>LEVEL</small></div>
+                <div><b>--</b><small>ACHIEVS</small></div>
+              </div>
+            </article>
+          </div>
+
+          <article class="card link">
+            <header>SOCIAL LINK <em>EXTERNAL</em></header>
+
+            <!-- Link X / Twitter -->
+            <a href="https://x.com/Naoya_Totodile">
+              <img src="../../assets/icons/x.png" class="social-icon" alt="X" />
+              <div>
+                <strong>X / Twitter</strong>
+                <small>@naoya_totodile</small>
+              </div>
+              <b>↗</b>
+            </a>
+
+            <!-- Link TikTok -->
+            <a href="https://www.tiktok.com/@iggar0392?lang=vi-VN">
+              <img
+                src="../../assets/icons/tiktok.jpeg"
+                class="social-icon"
+                alt="TikTok"
+              />
+              <div>
+                <strong>Tiktok</strong>
+                <small>@iggar0392</small>
+              </div>
+              <b>↗</b>
+            </a>
+
+            <!-- Link Facebook -->
+            <a
+              href="https://www.facebook.com/Junkimgoon?locale=en_US"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="social-icon social-icon-text facebook-icon" aria-hidden="true">f</span>
+              <div>
+                <strong>Facebook</strong>
+                <small>Junkimgoon</small>
+              </div>
+              <b>↗</b>
+            </a>
+          </article>
+        </section>
+
+        <section id="about" class="page">
+          <div class="title">
+            <div>
+              <small>PROFILE</small>
+              <h2>Maskguy\Naoya</h2>
+              <p>@yuru_e</p>
+            </div>
+            <span class="badge">STATUS: ONLINE</span>
+          </div>
+          <div class="two">
+            <article class="card">
+              <header>ABOUT ME</header>
+              <p class="copy">
+                Hello, I am Naoya (Maskguy) . I am a beginner coder building a
+                small personal corner on the web.
+              </p>
+              <div class="tags">
+                <span>#dark_fantasy</span><span>#digital_core</span
+                ><span>#naoya</span>
+              </div>
+            </article>
+            <article class="card">
+              <header>FAVORITES</header>
+              <div class="rows">
+                <div><small>ROLE</small><span>Ace Eater</span></div>
+                <div><small>FAV GAME</small><span>Fear and Hunger</span></div>
+                <div><small>MOOD</small><span>Quiet / Nocturnal</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="gamegrid">
+            <!-- Game 01 -->
+            <div>
+              <div class="game-info">
+                <small>01</small>
+                <strong>Limbus Company</strong>
+                <small>ACTIVE - Turn-based RPG</small>
+              </div>
+              <img
+                src="../../assets/icons/limbus.jpeg"
+                class="game-logo"
+                alt="Limbus Logo"
+              />
+            </div>
+
+            <!-- Game 02 -->
+            <div>
+              <div class="game-info">
+                <small>02</small>
+                <strong>Genshin Impact</strong>
+                <small>ACTIVE - Open World</small>
+              </div>
+              <img
+                src="../../assets/icons/genshin.jpeg"
+                class="game-logo"
+                alt="Genshin Logo"
+              />
+            </div>
+
+            <!-- Game 03 -->
+            <div>
+              <div class="game-info">
+                <small>03</small>
+                <strong>SMT:Persona/Megami Ibunruku Persona</strong>
+                <small>COMPLETED - Turn-base RPG</small>
+              </div>
+              <img
+                src="../../assets/icons/Persona.jpeg"
+                class="game-logo"
+                alt="Persona Logo"
+              />
+            </div>
+
+            <!-- Game 04 -->
+            <div>
+              <div class="game-info">
+                <small>04</small>
+                <strong>Fear and Hunger</strong>
+                <small>COMPLETED - Dark Fantasy</small>
+              </div>
+              <img
+                src="../../assets/icons/funger.jpeg"
+                class="game-logo"
+                alt="Fear & Hunger Logo"
+              />
+            </div>
+          </div>
+        </section>
+        <section id="artwork" class="page">
+          <div class="title">
+            <div>
+              <small>PGR MEDIA LAYOUT</small>
+              <h2>MEDIA HUB</h2>
+              <p>Gallery / Visual Drafts / Sound Archive</p>
+            </div>
+          </div>
+
+          <!-- BỘ NÚT CHUYỂN TAB -->
+          <div class="tabs">
+            <button class="tab active" data-filter="artwork">Gallery</button>
+            <button class="tab" data-filter="game">Game Project</button>
+            <button class="tab" data-filter="audio">Audio</button>
+          </div>
+
+          <!-- KHUNG HIỂN THỊ MEDIA BENTO GRID -->
+          <div class="media-grid" id="mediaGrid">
+            <!-- 1. ARTWORK TAB - DEPTH CAROUSEL -->
+            <div class="media-item depth-carousel-panel" data-category="artwork">
+              <div
+                class="depth-carousel"
+                id="galleryDepthCarousel"
+                tabindex="0"
+                aria-label="Artwork depth carousel"
+              >
+                <div class="depth-carousel-head">
+                  <div>
+                    <span class="media-tag">#GALLERY_DEPTH</span>
+                    <h3>Artwork Archive</h3>
+                  </div>
+                  <div class="depth-counter" aria-live="polite">
+                    <span id="depthCurrent">01</span>
+                    <span>/</span>
+                    <span id="depthTotal">04</span>
+                  </div>
+                </div>
+
+                <div class="depth-stage" id="depthStage">
+                  <article class="depth-slide" data-depth-index="0" tabindex="0">
+                    <img src="../../assets/artwork/bocchi.png" alt="Bocchi Digital" draggable="false" />
+                    <div class="depth-slide-overlay">
+                      <span class="media-tag">#Roblox</span>
+                      <strong>BOCCHI DIGITAL</strong>
+                    </div>
+                  </article>
+
+                  <article class="depth-slide" data-depth-index="1" tabindex="0">
+                    <img src="../../assets/artwork/image.png" alt="Project Slop" draggable="false" />
+                    <div class="depth-slide-overlay">
+                      <span class="media-tag">#DON</span>
+                      <strong>PROJECT SLOP</strong>
+                    </div>
+                  </article>
+
+                  <article class="depth-slide" data-depth-index="2" tabindex="0">
+                    <img src="../../assets/artwork/kcorp.webp" alt="K-Corp District" draggable="false" />
+                    <div class="depth-slide-overlay">
+                      <span class="media-tag">#Kcorp</span>
+                      <strong>K-CORP DISTRICT</strong>
+                    </div>
+                  </article>
+
+                  <article class="depth-slide" data-depth-index="3" tabindex="0">
+                    <img src="../../assets/artwork/dodoro.png" alt="Dodoro" draggable="false" />
+                    <div class="depth-slide-overlay">
+                      <span class="media-tag">#ENVIRONMENT</span>
+                      <strong>DODORO</strong>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="depth-controls">
+                  <button id="depthPrev" class="depth-nav" type="button" aria-label="Previous artwork">‹</button>
+                  <div class="depth-dots" id="depthDots" aria-label="Artwork slides"></div>
+                  <button id="depthNext" class="depth-nav" type="button" aria-label="Next artwork">›</button>
+                </div>
+                <small class="depth-hint">DRAG / SWIPE · ← → · AUTO</small>
+              </div>
+            </div>
+
+            <!-- 2. GAME PROJECT TAB (Ẩn mặc định) -->
+            <div class="media-item wide hidden" data-category="game">
+              <div class="sketch-card">
+                <span class="media-tag">#PJ_01</span>
+                <h3>Limbus Feel the Don</h3>
+                <p>Rough light novel lines / renpy practice</p>
+              </div>
+            </div>
+
+            <div class="media-item hidden" data-category="game">
+              <div class="sketch-card">
+                <span class="media-tag">#PJ_02</span>
+                <h3>JAVA slop</h3>
+              </div>
+            </div>
+
+            <!-- 3. AUDIO TAB (Ẩn mặc định) -->
+            <div class="media-item wide hidden" data-category="audio">
+              <div class="audio-card" id="audioPlayer">
+                <!-- This player has its OWN audio element, independent from the BGM above. -->
+                <audio id="music" preload="metadata"></audio>
+                <div class="audio-cover">♫</div>
+                <div class="audio-main">
+                  <div class="audio-top">
+                    <div class="audio-info">
+                      <span class="media-tag">#OST_TRACK</span>
+                      <h3 id="trackTitle">City Ambient Track</h3>
+                      <small id="trackMeta">Local audio · Stereo</small>
+                    </div>
+                    <div class="audio-status"><span id="audioStatusDot"></span><span id="audioStatus">PAUSED</span></div>
+                  </div>
+
+                  <div class="audio-progress-row">
+                    <span id="currentTime">0:00</span>
+                    <div class="elastic-slider elastic-slider-progress" data-elastic-range>
+                      <div class="elastic-slider-visual" aria-hidden="true">
+                        <div class="elastic-slider-fill"></div>
+                        <div class="elastic-slider-thumb"></div>
+                      </div>
+                      <input id="progressBar" class="elastic-range-input" type="range" min="0" max="100" value="0" step="0.1" aria-label="Music progress" />
+                    </div>
+                    <span id="duration">0:00</span>
+                  </div>
+
+                  <div class="audio-controls">
+                    <button id="prevTrack" class="player-btn small" type="button" title="Previous">⏮</button>
+                    <button id="playBtn" class="player-btn main" type="button" title="Play">▶</button>
+                    <button id="nextTrack" class="player-btn small" type="button" title="Next">⏭</button>
+                    <button id="muteBtn" class="player-btn small" type="button" title="Mute">🔊</button>
+                    <div class="mini-volume">
+                      <span>VOL</span>
+                      <div class="elastic-slider elastic-slider-volume" data-elastic-range>
+                        <div class="elastic-slider-visual" aria-hidden="true">
+                          <div class="elastic-slider-fill"></div>
+                          <div class="elastic-slider-thumb"></div>
+                        </div>
+                        <input id="playerVolume" class="elastic-range-input" type="range" min="0" max="100" value="24" aria-label="Player volume" />
+                      </div>
+                    </div>
+                    <div class="audio-wave" aria-hidden="true">
+                      <i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SPOTIFY-STYLE PLAYLIST -->
+            <div class="playlist-panel hidden" data-category="audio">
+              <div class="playlist-header">
+                <div>
+                  <span class="media-tag">#PLAYLIST</span>
+                  <h3>Audio Library</h3>
+                </div>
+                <span id="playlistCount">5 TRACKS</span>
+              </div>
+              <div id="playlist" class="playlist" aria-label="Music playlist"></div>
+            </div>
+          </div>
+        </section>
+        <!-- KHU VỰC NOTEPAD -->
+        <section id="notepad" class="page">
+          <div class="title notepad-page-title">
+            <div>
+              <small>LOCAL NOTEBOARD</small>
+              <h2>NOTEPAD</h2>
+              <p>write / edit / import / export locally</p>
+            </div>
+            <span id="noteGlobalState" class="note-global-state">LOCAL STORAGE</span>
+          </div>
+
+          <div class="notepad-shell">
+            <article class="card notepad-editor-card" id="notepadEditorCard">
+              <div class="notepad-toolbar" role="toolbar" aria-label="Notepad tools">
+                <div class="notepad-toolgroup">
+                  <button class="note-tool-btn primary" id="noteNew" type="button" title="New note (Ctrl/Cmd + N)">＋ NEW</button>
+                  <button class="note-tool-btn" id="noteSave" type="button" title="Save note (Ctrl/Cmd + S)">SAVE</button>
+                  <button class="note-tool-btn danger" id="noteDelete" type="button" title="Delete selected note" disabled>DELETE</button>
+                </div>
+
+                <div class="notepad-toolgroup">
+                  <button class="note-tool-btn icon-tool" id="noteUndo" type="button" title="Undo (Ctrl/Cmd + Z)" aria-label="Undo">↶</button>
+                  <button class="note-tool-btn icon-tool" id="noteRedo" type="button" title="Redo (Ctrl/Cmd + Shift + Z / Ctrl + Y)" aria-label="Redo">↷</button>
+                  <button class="note-tool-btn" id="noteCut" type="button" title="Cut selected text">CUT</button>
+                  <button class="note-tool-btn" id="noteCopy" type="button" title="Copy selected text">COPY</button>
+                  <button class="note-tool-btn" id="notePaste" type="button" title="Paste from clipboard">PASTE</button>
+                </div>
+
+                <div class="notepad-toolgroup import-export-group">
+                  <button class="note-tool-btn" id="noteImport" type="button" title="Import .txt or .json">IMPORT</button>
+                  <button class="note-tool-btn" id="noteExport" type="button" title="Save current note as .txt">SAVE FILE</button>
+                  <button class="note-tool-btn" id="noteExportAll" type="button" title="Backup all notes as .json">BACKUP</button>
+                  <input id="noteFileInput" type="file" accept=".txt,.json,text/plain,application/json" hidden />
+                </div>
+              </div>
+
+              <input
+                id="noteTitle"
+                class="note-title-input"
+                type="text"
+                maxlength="80"
+                placeholder="Untitled note"
+                autocomplete="off"
+                spellcheck="true"
+              />
+
+              <textarea
+                id="note"
+                rows="13"
+                placeholder="write something..."
+                spellcheck="true"
+              ></textarea>
+
+              <div class="note-statusbar">
+                <span id="noteMode">NEW NOTE</span>
+                <span id="noteStats">0 chars · 0 words</span>
+                <span id="noteSavedState">Ready</span>
+              </div>
+            </article>
+
+            <aside class="card note-library-card">
+              <div class="note-library-head">
+                <div>
+                  <small>NOTE LIBRARY</small>
+                  <strong id="noteCount">0 NOTES</strong>
+                </div>
+                <button class="note-tool-btn compact" id="noteClearAll" type="button" title="Delete every saved note">CLEAR ALL</button>
+              </div>
+
+              <label class="note-search-wrap" for="noteSearch">
+                <span>⌕</span>
+                <input id="noteSearch" type="search" placeholder="Search notes..." autocomplete="off" />
+              </label>
+
+              <div id="notes" class="notes-list" aria-live="polite"></div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- KHU VỰC AFK ZONE (Đã đổi ID thành "afk") -->
+        <section id="contact" class="page">
+          <div class="afk-wrapper">
+            <small class="afk-sub">SYSTEM STATUS (AFK farm)</small>
+            <h2 class="afk-title">AFK MODE</h2>
+
+            <!-- Đồng hồ LED -->
+            <div id="afkTimer" class="afk-timer">00:00:00</div>
+
+            <!-- Khung thông tin -->
+            <div class="afk-card">
+              <div class="afk-row">
+                <span>OPERATOR</span><strong>Naoya</strong>
+              </div>
+              <div class="afk-row">
+                <span>ORIGIN</span><strong>Vietnam</strong>
+              </div>
+              <div class="afk-row">
+                <span>STATUS</span><strong>AFK / exploring</strong>
+              </div>
+            </div>
+
+            <!-- Nút liên hệ -->
+            <a
+              href="https://x.com/Naoya_Totodile"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="afk-btn"
+            >
+              CONTACT OPERATOR ↗
+            </a>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true">
+      <button class="gallery-lightbox-close" id="galleryLightboxClose" type="button" aria-label="Close preview">×</button>
+      <img id="galleryLightboxImage" src="" alt="" />
+      <div class="gallery-lightbox-caption" id="galleryLightboxCaption"></div>
+    </div>
+    <script src="script.js?v=elastic-v10"></script>
+  </body>
+</html>

@@ -9,6 +9,113 @@ const afkStartTime = Date.now();
 
 document.addEventListener("DOMContentLoaded", () => {
   // ================================
+  // COLLAPSIBLE / DRAGGABLE PROFILE SIDEBAR
+  // Drag the edge handle left to tuck the profile in, right to restore it.
+  // Clicking the handle does the same thing and the choice is remembered.
+  // ================================
+  const siteShell = document.querySelector(".shell");
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  const SIDEBAR_STATE_KEY = "naoyaSidebarCollapsed";
+
+  function setSidebarCollapsed(collapsed, persist = true) {
+    if (!siteShell || !sidebarToggle) return;
+
+    siteShell.classList.toggle("sidebar-collapsed", collapsed);
+    sidebarToggle.setAttribute("aria-expanded", String(!collapsed));
+    sidebarToggle.setAttribute(
+      "aria-label",
+      collapsed ? "Expand profile sidebar" : "Collapse profile sidebar"
+    );
+    sidebarToggle.title = collapsed
+      ? "Drag or click to expand profile"
+      : "Drag or click to collapse profile";
+
+    const icon = sidebarToggle.querySelector(".sidebar-toggle-icon");
+    if (icon) icon.textContent = collapsed ? "›" : "‹";
+
+    if (persist) {
+      localStorage.setItem(SIDEBAR_STATE_KEY, collapsed ? "1" : "0");
+    }
+  }
+
+  if (siteShell && sidebarToggle) {
+    const storedSidebarState = localStorage.getItem(SIDEBAR_STATE_KEY);
+    setSidebarCollapsed(storedSidebarState === "1", false);
+
+    let sidebarDragStartX = 0;
+    let sidebarDragMoved = false;
+    let sidebarPointerId = null;
+
+    sidebarToggle.addEventListener("pointerdown", (event) => {
+      sidebarDragStartX = event.clientX;
+      sidebarDragMoved = false;
+      sidebarPointerId = event.pointerId;
+      sidebarToggle.classList.add("is-dragging");
+      sidebarToggle.setPointerCapture?.(event.pointerId);
+    });
+
+    sidebarToggle.addEventListener("pointermove", (event) => {
+      if (sidebarPointerId !== event.pointerId) return;
+      const deltaX = event.clientX - sidebarDragStartX;
+
+      if (Math.abs(deltaX) > 6) sidebarDragMoved = true;
+      if (deltaX <= -42) setSidebarCollapsed(true);
+      if (deltaX >= 42) setSidebarCollapsed(false);
+    });
+
+    const finishSidebarDrag = (event) => {
+      if (sidebarPointerId !== null && event.pointerId !== sidebarPointerId) return;
+      sidebarToggle.classList.remove("is-dragging");
+      if (sidebarPointerId !== null) {
+        try { sidebarToggle.releasePointerCapture?.(sidebarPointerId); } catch {}
+      }
+      sidebarPointerId = null;
+    };
+
+    sidebarToggle.addEventListener("pointerup", finishSidebarDrag);
+    sidebarToggle.addEventListener("pointercancel", finishSidebarDrag);
+
+    sidebarToggle.addEventListener("click", () => {
+      if (sidebarDragMoved) {
+        sidebarDragMoved = false;
+        return;
+      }
+      setSidebarCollapsed(!siteShell.classList.contains("sidebar-collapsed"));
+    });
+
+    sidebarToggle.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        setSidebarCollapsed(true);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        setSidebarCollapsed(false);
+      }
+    });
+  }
+  // ================================
+  // BACKGROUND VIDEO PERFORMANCE
+  // ================================
+  const siteVideoBackground = document.getElementById("siteVideoBackground");
+
+  if (siteVideoBackground) {
+    const syncBackgroundVideo = () => {
+      if (document.hidden) {
+        siteVideoBackground.pause();
+        return;
+      }
+
+      if (!document.body.classList.contains("reduce-motion")) {
+        siteVideoBackground.play().catch(() => {});
+      }
+    };
+
+    document.addEventListener("visibilitychange", syncBackgroundVideo);
+    window.addEventListener("pagehide", () => siteVideoBackground.pause());
+    window.addEventListener("pageshow", syncBackgroundVideo);
+    syncBackgroundVideo();
+  }
+  // ================================
   // ELASTIC RANGE SLIDERS
   // React Bits-inspired stretch + spring snap, implemented in vanilla JS.
   // ================================
@@ -258,7 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function updateDiscordPresence() {
-    if (!discordStatus || discordPresenceRequestRunning) return;
+    if (!discordStatus || discordPresenceRequestRunning || document.hidden) return;
 
     discordPresenceRequestRunning = true;
     try {
