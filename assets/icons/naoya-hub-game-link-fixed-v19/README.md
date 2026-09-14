@@ -52,5 +52,3 @@ Discord Avatar v18: the loader/profile avatar now syncs from the existing Lanyar
 
 
 Game Project link update: the Limbus Feel the Don card opens https://feed-the-don.vercel.app/ in a new tab. The game itself is not bundled into this Naoya Hub package.
-
-Game Project v20: the live URL stays on the left side of the Limbus Feel the Don card while the PLAY button is pinned to the far-right corner of the same action row. No game source is embedded.

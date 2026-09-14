@@ -51,6 +51,4 @@ V15: Added a draggable/clickable profile-sidebar handle. On desktop it collapses
 Discord Avatar v18: the loader/profile avatar now syncs from the existing Lanyard Discord presence response for user 869568513864519690. The local avatar remains as fallback if Discord data is unavailable.
 
 
-Game Project link update: the Limbus Feel the Don card opens https://feed-the-don.vercel.app/ in a new tab. The game itself is not bundled into this Naoya Hub package.
-
-Game Project v20: the live URL stays on the left side of the Limbus Feel the Don card while the PLAY button is pinned to the far-right corner of the same action row. No game source is embedded.
+Game Project v19: PJ_01 now includes a PLAY button that opens https://feed-the-don.vercel.app/ in a new tab.

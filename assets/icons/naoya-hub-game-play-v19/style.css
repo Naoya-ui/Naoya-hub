@@ -6490,123 +6490,146 @@ body.light-mode .sidebar-toggle {
   object-fit: cover;
 }
 
-/* ================================
-   GAME PROJECT EXTERNAL LAUNCH v20
-   URL on the left, PLAY button pinned to the far right.
-================================ */
-.project-launch-row {
-  width: 100%;
+
+/* =========================================================
+   V19 — GAME PROJECT WEB PLAY LINK
+   Adds a lightweight external PLAY action without changing
+   the existing Naoya Hub layout or project-card styling.
+========================================================= */
+.project-card {
+  gap: 0;
+}
+
+.project-actions {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(148, 154, 171, .15);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.project-live-link {
-  flex: 1 1 auto;
+.project-link-label {
   min-width: 0;
-  color: rgba(214, 218, 230, 0.66);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  text-decoration: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #777e8d;
+  font-family: "Share Tech Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: .14em;
   white-space: nowrap;
-  transition: color 0.18s ease;
-}
-
-.project-live-link:hover {
-  color: #fff;
 }
 
 .project-play-btn {
-  margin-left: auto;
-  flex: 0 0 auto;
+  min-width: 94px;
+  min-height: 38px;
+  padding: 9px 16px;
+  border: 1px solid rgba(168, 85, 247, .55);
+  border-radius: 10px;
+  background: rgba(168, 85, 247, .12);
+  color: #f5efff;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  min-width: 98px;
-  min-height: 38px;
-  padding: 0 16px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.055);
-  color: #f4f5f8;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-decoration: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045);
-  transition: transform 0.18s ease, border-color 0.18s ease,
-    background 0.18s ease, box-shadow 0.18s ease;
+  gap: 8px;
+  flex: 0 0 auto;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+  transition:
+    transform 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
 }
 
-.project-play-btn span {
+.project-play-btn > span {
   display: inline-grid;
   place-items: center;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   font-size: 9px;
   line-height: 1;
+  transform: translateX(1px);
 }
 
-.project-play-btn:hover {
+.project-play-btn:hover,
+.project-play-btn:focus-visible {
+  background: #111318;
+  color: #fff;
+  border-color: rgba(255,255,255,.55);
+  outline: none;
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.32);
   box-shadow:
-    -2px 0 rgba(0, 238, 255, 0.42),
-     2px 0 rgba(255, 42, 96, 0.38),
-     inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    -2px 0 0 rgba(0, 235, 255, .7),
+     2px 0 0 rgba(255, 47, 95, .62),
+     0 8px 20px rgba(0,0,0,.22);
+  text-shadow:
+    1px 0 rgba(0, 235, 255, .75),
+   -1px 0 rgba(255, 47, 95, .68);
 }
 
-body.light-mode .project-launch-row {
-  border-top-color: rgba(26, 31, 43, 0.10);
+.project-play-btn:active {
+  transform: translateY(0) scale(.98);
 }
 
-body.light-mode .project-live-link {
-  color: #6b7280 !important;
+body.light-mode .project-actions {
+  border-top-color: rgba(57, 63, 79, .12) !important;
+}
+
+body.light-mode .project-link-label {
+  color: #747d8f !important;
   background: transparent !important;
   border: 0 !important;
 }
 
-body.light-mode .project-live-link:hover {
-  color: #242a35 !important;
-}
-
 body.light-mode .project-play-btn {
-  background: rgba(255, 255, 255, 0.72) !important;
-  border-color: rgba(46, 53, 68, 0.18) !important;
-  color: #1d2330 !important;
-  box-shadow: 0 6px 18px rgba(28, 34, 46, 0.06) !important;
+  background: rgba(45, 51, 67, .08) !important;
+  color: #242a36 !important;
+  border-color: rgba(49, 56, 73, .24) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65) !important;
 }
 
-body.light-mode .project-play-btn:hover {
-  background: #fff !important;
-  border-color: rgba(38, 44, 58, 0.32) !important;
+body.light-mode .project-play-btn:hover,
+body.light-mode .project-play-btn:focus-visible {
+  background: rgba(247,249,253,.94) !important;
+  color: #151820 !important;
+  border-color: rgba(56,62,78,.25) !important;
   box-shadow:
-    -2px 0 rgba(0, 185, 210, 0.34),
-     2px 0 rgba(222, 50, 99, 0.28),
-     0 8px 20px rgba(28, 34, 46, 0.08) !important;
+    -2px 0 0 rgba(0,190,210,.55),
+     2px 0 0 rgba(230,62,91,.46),
+     0 8px 20px rgba(36,41,57,.08) !important;
 }
 
-@media (max-width: 640px) {
-  .project-launch-row {
+@media (max-width: 620px) {
+  .project-actions {
+    margin-top: 15px;
+    padding-top: 12px;
     gap: 10px;
   }
 
-  .project-live-link {
-    font-size: 9px;
+  .project-link-label {
+    font-size: 8px;
+    letter-spacing: .10em;
   }
 
   .project-play-btn {
-    min-width: 84px;
+    min-width: 88px;
     min-height: 40px;
-    padding: 0 12px;
+    padding: 9px 13px;
+  }
+}
+
+@media (max-width: 420px) {
+  .project-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .project-play-btn {
+    width: 100%;
   }
 }
