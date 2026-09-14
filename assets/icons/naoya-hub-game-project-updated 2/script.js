@@ -1358,91 +1358,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ================================
-  // AFK TIMER - rolling counter
-  // Inspired by the React Bits Counter motion, adapted to vanilla JS.
+  // AFK TIMER
   // Starts from page/script load, NOT when AFK tab is opened.
   // ================================
   const timerElement = document.getElementById("afkTimer");
-  const afkDigitState = [];
-
-  function buildAFKCounter(initialValue = "00:00:00") {
-    if (!timerElement) return;
-
-    timerElement.textContent = "";
-    timerElement.setAttribute("aria-label", initialValue);
-
-    let digitIndex = 0;
-
-    [...initialValue].forEach((character) => {
-      if (character === ":") {
-        const separator = document.createElement("span");
-        separator.className = "afk-counter-separator";
-        separator.textContent = ":";
-        separator.setAttribute("aria-hidden", "true");
-        timerElement.appendChild(separator);
-        return;
-      }
-
-      const digit = Number(character);
-      const slot = document.createElement("span");
-      slot.className = "afk-counter-digit";
-      slot.setAttribute("aria-hidden", "true");
-
-      const reel = document.createElement("span");
-      reel.className = "afk-counter-reel";
-
-      // Three 0-9 cycles let the digit roll through 9 -> 0 smoothly.
-      for (let cycle = 0; cycle < 3; cycle += 1) {
-        for (let number = 0; number <= 9; number += 1) {
-          const cell = document.createElement("span");
-          cell.className = "afk-counter-number";
-          cell.textContent = String(number);
-          reel.appendChild(cell);
-        }
-      }
-
-      const step = 10 + digit;
-      reel.style.setProperty("--counter-step", String(step));
-      slot.appendChild(reel);
-      timerElement.appendChild(slot);
-
-      afkDigitState[digitIndex] = { reel, digit, step };
-      digitIndex += 1;
-    });
-  }
-
-  function setAFKCounter(value) {
-    if (!timerElement) return;
-
-    timerElement.setAttribute("aria-label", value);
-    const digits = value.replaceAll(":", "").split("").map(Number);
-
-    digits.forEach((nextDigit, index) => {
-      const state = afkDigitState[index];
-      if (!state || state.digit === nextDigit) return;
-
-      // Timer values normally move forward, so use forward modulo distance.
-      const distance = (nextDigit - state.digit + 10) % 10;
-      state.step += distance || 10;
-      state.digit = nextDigit;
-      state.reel.style.setProperty("--counter-step", String(state.step));
-
-      // Keep the reel inside the middle cycle after the animation completes.
-      if (state.step >= 20) {
-        window.setTimeout(() => {
-          state.reel.classList.add("is-resetting");
-          state.step = 10 + state.digit;
-          state.reel.style.setProperty("--counter-step", String(state.step));
-
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              state.reel.classList.remove("is-resetting");
-            });
-          });
-        }, 680);
-      }
-    });
-  }
 
   function updateAFKTimer() {
     if (!timerElement) return;
@@ -1457,10 +1376,8 @@ document.addEventListener("DOMContentLoaded", () => {
       Math.floor((elapsedSeconds % 3600) / 60)
     ).padStart(2, "0");
     const seconds = String(elapsedSeconds % 60).padStart(2, "0");
-    const displayValue = `${hours}:${minutes}:${seconds}`;
 
-    if (!afkDigitState.length) buildAFKCounter(displayValue);
-    setAFKCounter(displayValue);
+    timerElement.textContent = `${hours}:${minutes}:${seconds}`;
   }
 
   updateAFKTimer();
